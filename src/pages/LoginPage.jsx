@@ -7,15 +7,15 @@ const LoginPage = () => {
       <div
         className="w-1/2 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${picgramLogin})`, // Resim URL'sini buraya ekleyin
+          backgroundImage: `url(${picgramLogin})`
         }}
       ></div>
 
       {/* Sağ Taraf - Login Formu */}
-      <div className="w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-r from-pink-500 via-pink-300 to-purple-500">
+      <div className="w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-r from-gray-200 via-gray-500 to-gray-800">
         <div className=" bg-gray-50  p-6 rounded-lg shadow-md w-full max-w-sm">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="mt-2 mb-10 italic font-script text-center text-6xl font-bold tracking-tight text-gray-900 ">
+            <h2 className="mt-2 mb-10 italic font-script text-center text-6xl font-bold tracking-tight text-gray-800 ">
               picgram
             </h2>
           </div>
@@ -23,23 +23,23 @@ const LoginPage = () => {
             <input
               type="text"
               placeholder="Kullanıcı adı veya e-posta"
-              className="w-full p-3 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-100 bg-purple-100"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
             <input
               type="password"
               placeholder="Şifre"
-              className="w-full p-3 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-100 bg-purple-100"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
             <button
               type="submit"
-              className="w-full bg-purple-500 text-white py-2 rounded-md hover:bg-purple-600 transition"
+              className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition"
             >
               Giriş Yap
             </button>
           </form>
           <div className="flex items-center justify-between my-4">
             <hr className="w-1/4 border-gray-300" />
-            <span className="text-gray-400 text-sm">YA DA</span>
+            <span className="text-gray-500 text-sm">YA DA</span>
             <hr className="w-1/4 border-gray-300" />
           </div>
           <div className="flex justify-center space-x-4">
@@ -85,7 +85,7 @@ const LoginPage = () => {
           </div>
 
           <div className="text-center text-sm text-gray-500 mt-4">
-            <a href="#" className="text-purple-500 hover:underline">
+            <a href="#" className="text-gray-600 hover:underline">
               Şifrenizi mi unuttunuz?
             </a>
           </div>
