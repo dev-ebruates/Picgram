@@ -11,6 +11,7 @@ export default {
       sans: ['Poppins', 'sans-serif'],
       script: ['"Dancing Script"', 'cursive'],},
   },
+  
   plugins: [
     
   ],

@@ -1,46 +1,41 @@
+import NavButton from "../navButton/NavButton";
 import "./Header.css";
 
 function Header() {
   return (
     <header className="header border-r border-gray-900 h-10 ">
       <div className="logo">
-        <h2 className="italic font-script text-4xl font-bold tracking-tight text-white">
+        <h2 className=" italic font-serif text-4xl tracking-tight text-white">
           picgram
         </h2>
       </div>
 
       <nav className="menu">
         <ul>
-          <li className="flex items-center -space-x-5 hover:text-gray-500">
-            <i className="fas fa-home text-xl"></i>
-            <button className=" px-2 py-2 mt-1 italic text-xl font-bold text-white bg-gradient-to-r focus:ring-offset-2  hover:text-gray-500">
-              Home
-            </button>
+          <li>
+            <NavButton buttonIcon="fas fa-home" buttonName="Home" />
           </li>
-          <li className="flex items-center -space-x-1 hover:text-gray-500">
-            <i className="fas fa-home text-xl"></i>
-            <button className=" px-2 py-2 mt-1 italic text-xl font-bold text-white bg-gradient-to-r focus:ring-offset-2  hover:text-gray-500">
-              Message
-            </button>
+          <li>
+            <NavButton buttonIcon="fas fa-comment" buttonName="Message" />
           </li>
-          <li className="flex items-center -space-x-5 hover:text-gray-500">
-            <i className="fas fa-home text-xl"></i>
-            <button className=" px-2 py-2 mt-1 italic text-xl font-bold text-white bg-gradient-to-r focus:ring-offset-2  hover:text-gray-500">
-              Search
-            </button>
+          <li>
+            <NavButton buttonIcon="fas fa-search" buttonName="Search" />
           </li>
-          <li className="flex items-center -space-x-6 hover:text-gray-500">
-            {/* Profil Resmi */}
-            <img
-              src="https://picsum.photos/210"
-              alt="Profile"
-              className="w-7 h-7 rounded-full border-2 border-gray-300 hover:border-gray-500 cursor-pointer"
-            />
+          <li>
+            <NavButton buttonIcon="fas fa-heart" buttonName="Notifications" />
+          </li>
+          <li>
+            <NavButton buttonIcon="fas fa-plus-square" buttonName="Create" />
+          </li>
 
-            {/* Profil Butonu */}
-            <button className="px-2 py-2 italic text-xl font-bold text-white bg-gradient-to-r focus:ring-offset-2 hover:text-gray-500">
-              Profile
-            </button>
+          <li>
+            <NavButton buttonIcon="fas fa-home" buttonName="Profile" />
+          </li>
+          <li className="mt-auto">
+            <NavButton
+              buttonIcon="fas fa-sign-out-alt"
+              buttonName="Sing Out"
+            />
           </li>
         </ul>
       </nav>
