@@ -1,0 +1,11 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+}

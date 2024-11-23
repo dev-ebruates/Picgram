@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: black; /* Arka plan */
+  color: white;
+
+  
+}
+
+.header {
+  display: flex;
+  flex-direction: column; /* Elemanları dikey hizalar */
+  align-items: center; /* Dikeyde ortalanır */
+  width: 210px; /* Yan çubuğun genişliği */
+  height: 100vh; /* Tam ekran yüksekliği */
+  background-color: black; /* Yan çubuğun rengi */
+  position: fixed; /* Sayfanın soluna sabitlenir */
+  top: 0;
+  left: 0;
+ 
+  padding: 1rem;
+  /* box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); Gölge efekti */
+  
+}
+
+
+.logo {
+  margin-bottom: 4rem; /* Logonun altında boşluk */
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%; /* Düğmeleri tam genişlik yapar */
+  
+}
+
+.menu li {
+  margin-bottom: 0.5rem; /* Düğmeler arasında boşluk */
+
+}
+
+.menu button {
+  width: 100%; /* Düğmeleri tam genişlik yapar */
+  padding: 1rem;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
