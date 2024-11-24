@@ -1,11 +1,12 @@
 .app {
   display: flex;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .main-content {
-  display: flex;
-  flex-direction: column;
-  margin-left: 200px;
+  flex: 1;
+  margin-right: 380px; /* Sağda Follow için boşluk bırak */
+  margin-left: 250px;
+  
 }

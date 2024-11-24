@@ -13,28 +13,28 @@ function Header() {
       <nav className="menu">
         <ul>
           <li>
-            <NavButton buttonIcon="fas fa-home" buttonName="Home" />
+            <NavButton buttonIcon="fas fa-home" buttonTitle="Home" />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-comment" buttonName="Message" />
+            <NavButton buttonIcon="fas fa-comment" buttonTitle="Message" />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-search" buttonName="Search" />
+            <NavButton buttonIcon="fas fa-search" buttonTitle="Search" />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-heart" buttonName="Notifications" />
+            <NavButton buttonIcon="fas fa-heart" buttonTitle="Notifications" />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-plus-square" buttonName="Create" />
+            <NavButton buttonIcon="fas fa-plus-square" buttonTitle="Create" />
           </li>
 
           <li>
-            <NavButton buttonIcon="fas fa-home" buttonName="Profile" />
+            <NavButton buttonTitle="Profile" />
           </li>
           <li className="mt-auto">
             <NavButton
               buttonIcon="fas fa-sign-out-alt"
-              buttonName="Sing Out"
+              buttonTitle="Sing Out"
             />
           </li>
         </ul>
