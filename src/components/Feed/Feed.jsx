@@ -7,7 +7,7 @@ function Feed() {
       username: "dogancem",
       time: "30m",
       content: "First post!",
-      profileImage: "https://picsum.photos/200",
+      profileImage: "https://picsum.photos/200/300",
       image: "https://picsum.photos/200",
       location: "Istanbul, Turkey",
     },
