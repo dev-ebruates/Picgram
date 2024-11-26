@@ -5,13 +5,16 @@ import App from './App.jsx'
 import ProfilePage from './pages/ProfilePage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 
+import RegisterPage from './pages/RegisterPage.jsx'
+
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* <App /> */}
     {/* <LoginPage/> */}
-    <ProfilePage/>
+    {/* <ProfilePage/> */}
+    <RegisterPage/>
 
-  </StrictMode>,
+  </StrictMode>
 )
