@@ -163,6 +163,10 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-400">following</p>
               </div>
             </div>
+             {/* Yeni Gönderi Ekle Butonu */}
+             <button className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500">
+              New post
+            </button>
             <div className="grid grid-cols-3 gap-2 w-full mr-10" >
               {images.map((image, index) => (
                 <div
@@ -172,16 +176,13 @@ const ProfilePage = () => {
                   <img
                     src={image}
                     alt={`Image ${index + 1}`}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-49 object-cover"
                   />
                 </div>
               ))}
             </div>
 
-            {/* Yeni Gönderi Ekle Butonu */}
-            <button className="text-white px-6 py-2 bg-blue-600 rounded-full mb-6 hover:bg-blue-500">
-              New post
-            </button>
+           
           </div>
         </div>
       </div>
