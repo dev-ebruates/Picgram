@@ -1,12 +1,13 @@
-
 import picgramLogin from "../images/picgram-login-left.png";
 import { useContext } from "react";
 import AuthenticatedContext from "../components/context/AuthenticatedContext";
+import { Link } from "react-router-dom";
 
-const LoginPage = (  ) => {
- const { isAuthenticated,setIsAuthenticated } = useContext(AuthenticatedContext);
+const LoginPage = () => {
+  const { isAuthenticated, setIsAuthenticated } =
+    useContext(AuthenticatedContext);
   const handleLogin = () => {
-  
+    localStorage.setItem("isAuthenticated", "true");
     setIsAuthenticated(true);
   };
   return (
@@ -38,14 +39,13 @@ const LoginPage = (  ) => {
               placeholder="Şifre"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
-           <button
+            <button
               type="submit"
               className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition"
               onClick={() => handleLogin()}
             >
-              Giriş Yap
+              Sign in
             </button>
-            
           </form>
           <div className="flex items-center justify-between my-4">
             <hr className="w-1/4 border-gray-300" />
@@ -94,14 +94,30 @@ const LoginPage = (  ) => {
 
           <div className="text-center text-sm text-gray-500 mt-4">
             <a href="#" className="text-gray-600 hover:underline">
-              Şifrenizi mi unuttunuz?
+              you forgot your password?
             </a>
           </div>
+          <div className="flex items-center justify-between my-4">
+            <hr className="w-full border-gray-300" />
+            <span className="text-gray-500 text-sm"></span>
+          </div>
+
+          <Link to="/register">
+            <div className="flex items-center justify-between">
+              <a className=" text-center text-sm text-gray-500 mt-4">
+                Don't have an account?
+              </a>
+
+              <button className="text-center text-sm bg-gray-400 mt-4 border border-gray-400 rounded-md p-2 hover:bg-gray-600 w-full  ">
+                Sign up
+              </button>
+            </div>
+          </Link>
+          <div></div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default LoginPage;
