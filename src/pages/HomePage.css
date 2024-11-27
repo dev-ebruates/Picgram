@@ -1,0 +1,12 @@
+.home {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.main-content {
+  flex: 1;
+  margin-right: 380px; /* Sağda Follow için boşluk bırak */
+  margin-left: 250px;
+  
+}

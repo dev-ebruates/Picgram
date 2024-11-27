@@ -1,13 +1,20 @@
 import picgramLogin from "../images/picgram-login-left.png";
 
-const LoginPage = () => {
+const LoginPage = ({setIsAuthenticated}) => {
+  const handleLogin = () => {
+    localStorage.setItem("isAuthenticated", "true");
+    setIsAuthenticated(true)
+    
+    
+
+  };
   return (
     <div className="h-screen flex">
       {/* Sol Taraf - Arka Plan Resmi */}
       <div
         className="w-1/2 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${picgramLogin})`
+          backgroundImage: `url(${picgramLogin})`,
         }}
       ></div>
 
@@ -33,6 +40,7 @@ const LoginPage = () => {
             <button
               type="submit"
               className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition"
+              onClick={() => handleLogin()}
             >
               Giriş Yap
             </button>
@@ -51,9 +59,7 @@ const LoginPage = () => {
                 fill="currentColor"
                 className="h-6 w-6"
               >
-                <path
-                  d="M22.675 0H1.325C.594 0 0 .594 0 1.326v21.348C0 23.406.594 24 1.325 24h11.495v-9.294H9.69V11.41h3.13V8.822c0-3.1 1.893-4.787 4.657-4.787 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.506 0-1.798.716-1.798 1.765v2.314h3.595l-.468 3.297h-3.127V24h6.127c.73 0 1.324-.594 1.324-1.326V1.326C24 .594 23.406 0 22.675 0z"
-                />
+                <path d="M22.675 0H1.325C.594 0 0 .594 0 1.326v21.348C0 23.406.594 24 1.325 24h11.495v-9.294H9.69V11.41h3.13V8.822c0-3.1 1.893-4.787 4.657-4.787 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.506 0-1.798.716-1.798 1.765v2.314h3.595l-.468 3.297h-3.127V24h6.127c.73 0 1.324-.594 1.324-1.326V1.326C24 .594 23.406 0 22.675 0z" />
               </svg>
             </button>
 
@@ -94,4 +100,8 @@ const LoginPage = () => {
     </div>
   );
 };
+// LoginPage.propTypes = {
+//   setIsAuthenticated: propTypes.func
+// };
+
 export default LoginPage;

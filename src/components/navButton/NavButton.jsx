@@ -1,7 +1,8 @@
-const NavButton = ({ buttonIcon, buttonTitle }) => {
+const NavButton = ({ buttonIcon, buttonTitle ,onClick }) => {
+  
   
   return (
-    <button className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12">
+    <button className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12" onClick={onClick}>
 
  {buttonTitle === "Profile" ? (
       <img

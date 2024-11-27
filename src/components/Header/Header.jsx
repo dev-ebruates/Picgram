@@ -1,7 +1,13 @@
 import NavButton from "../navButton/NavButton";
 import "./Header.css";
 
-function Header() {
+function Header( {setIsAuthenticated}) {
+  const handleClick = () => {
+    console.log("signout tıklandı"); 
+    localStorage.setItem("isAuthenticated", "false");
+    setIsAuthenticated(false)
+
+  }
   return (
     <header className="header border-r border-gray-900 h-10 ">
       <div className="logo">
@@ -35,6 +41,7 @@ function Header() {
             <NavButton
               buttonIcon="fas fa-sign-out-alt"
               buttonTitle="Sing Out"
+              onClick={() => handleClick()}
             />
           </li>
         </ul>

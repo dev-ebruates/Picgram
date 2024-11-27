@@ -1,24 +1,49 @@
-import "./App.css";
-import Feed from "./components/Feed/Feed";
-import Header from "./components/Header/Header";
-import Story from "./components/Story/Story";
-import Follow from "./components/follow/Follow";
+import  { useEffect, useState } from "react";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import { Routes, Route } from "react-router-dom";
+import RegisterPage from "./pages/RegisterPage";
+
+
+
 
 
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  console.log(isAuthenticated);
+  useEffect(() => {
+    console.log(isAuthenticated);
+    const auth = localStorage.getItem("isAuthenticated");
+    console.log(isAuthenticated);
+    if (auth === "true") {
+      setIsAuthenticated(true);
+    }
+    console.log(isAuthenticated);
+  }, [setIsAuthenticated]);
+
+
   return (
-    <div className="app ">
-      <Header />
-      <div className="main-content">
-        <Story />
-        <Feed />
-      </div>
-      <div className="follow">
-        <Follow />
-      </div>
-    </div>
+    <Routes>
+    <Route
+      path="/login"
+      element={<LoginPage setIsAuthenticated={setIsAuthenticated} />}
+    />
+    {/* Ana Sayfa - Yalnızca Giriş Yapıldıysa */}
+    <Route
+      path="/register"
+      element={<RegisterPage/>}
+    />
+    <Route
+          path="/"
+          element={
+            isAuthenticated ? <HomePage setIsAuthenticated={setIsAuthenticated}  /> : <LoginPage setIsAuthenticated={setIsAuthenticated} />
+          }
+        />
+  </Routes>
   );
+   
+
 }
 
 export default App;
