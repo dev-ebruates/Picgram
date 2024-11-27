@@ -10,7 +10,13 @@ import AuthenticatedContext from "./components/context/AuthenticatedContext";
 function App() {
   const { isAuthenticated, setIsAuthenticated } =
     useContext(AuthenticatedContext);
-
+    useEffect(() => {
+      console.log("useEffecte girdi");
+      const auth = localStorage.getItem("isAuthenticated");
+      if (auth === "true") {
+        setIsAuthenticated(true);
+      }
+    }, [isAuthenticated]);
     
 
   return (

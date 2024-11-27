@@ -7,6 +7,7 @@ function Header() {
   const { setIsAuthenticated } = useContext(AuthenticatedContext);
   const handleClick = () => {
     console.log("signout tıklandı");
+    localStorage.setItem("isAuthenticated", false);
     
     setIsAuthenticated(false);
   };
