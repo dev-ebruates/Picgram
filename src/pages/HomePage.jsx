@@ -1,23 +1,21 @@
-import Feed from "../components/Feed/Feed"
-import Header from "../components/Header/Header"
-import Story from "../components/Story/Story"
-import Follow from "../components/follow/Follow"
-import "./HomePage.css"
+import Feed from "../components/Feed/Feed";
+import Header from "../components/Header/Header";
+import Story from "../components/Story/Story";
+import Follow from "../components/follow/Follow";
 
-
-const HomePage = ( {setIsAuthenticated}) => {
+const HomePage = ({ setIsAuthenticated }) => {
   return (
-    <div className="home ">
-    <Header setIsAuthenticated={setIsAuthenticated} />
-    <div className="main-content">
-      <Story />
-      <Feed />
+    <div className="flex flex-row justify-between ">
+      <Header setIsAuthenticated={setIsAuthenticated} />
+      <div className="flex-1 mr-[380px] ml-[250px]">
+        <Story />
+        <Feed />
+      </div>
+      <div className="flex flex-row justify-between">
+        <Follow />
+      </div>
     </div>
-    <div className="follow">
-      <Follow />
-    </div>
-  </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

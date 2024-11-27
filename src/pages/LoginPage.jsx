@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom";
 import picgramLogin from "../images/picgram-login-left.png";
 
-const LoginPage = ({setIsAuthenticated}) => {
+const LoginPage = ( {setIsAuthenticated} ) => {
   const handleLogin = () => {
     localStorage.setItem("isAuthenticated", "true");
-    setIsAuthenticated(true)
+    setIsAuthenticated(true);
     
     
 
@@ -37,13 +38,14 @@ const LoginPage = ({setIsAuthenticated}) => {
               placeholder="Şifre"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
-            <button
+            <Link to="/"> <button
               type="submit"
               className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition"
               onClick={() => handleLogin()}
             >
               Giriş Yap
-            </button>
+            </button></Link>;
+            
           </form>
           <div className="flex items-center justify-between my-4">
             <hr className="w-1/4 border-gray-300" />
