@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import NavButton from "../navButton/NavButton";
 import "./Header.css";
+import AuthenticatedContext from "../context/AuthenticatedContext";
 
-function Header({ setIsAuthenticated }) {
+function Header() {
+  const { setIsAuthenticated } = useContext(AuthenticatedContext);
   const handleClick = () => {
     console.log("signout tıklandı");
-    localStorage.setItem("isAuthenticated", "false");
+    
     setIsAuthenticated(false);
   };
   return (

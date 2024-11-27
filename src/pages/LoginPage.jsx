@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
+
 import picgramLogin from "../images/picgram-login-left.png";
+import { useContext } from "react";
+import AuthenticatedContext from "../components/context/AuthenticatedContext";
 
-const LoginPage = ( {setIsAuthenticated} ) => {
+const LoginPage = (  ) => {
+ const { isAuthenticated,setIsAuthenticated } = useContext(AuthenticatedContext);
   const handleLogin = () => {
-    localStorage.setItem("isAuthenticated", "true");
+  
     setIsAuthenticated(true);
-    
-    
-
   };
   return (
     <div className="h-screen flex">
@@ -38,13 +38,13 @@ const LoginPage = ( {setIsAuthenticated} ) => {
               placeholder="Şifre"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
-            <Link to="/"> <button
+           <button
               type="submit"
               className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition"
               onClick={() => handleLogin()}
             >
               Giriş Yap
-            </button></Link>;
+            </button>
             
           </form>
           <div className="flex items-center justify-between my-4">
@@ -102,8 +102,6 @@ const LoginPage = ( {setIsAuthenticated} ) => {
     </div>
   );
 };
-// LoginPage.propTypes = {
-//   setIsAuthenticated: propTypes.func
-// };
+
 
 export default LoginPage;
