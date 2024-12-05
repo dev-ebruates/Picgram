@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { createUser } from "../services/userServices";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -9,24 +10,41 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    console.log(name, value);
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Şifreler eşleşmiyor!");
       return;
     }
-    console.log("Kayıt başarılı:", formData);
+ 
+    try {
+      var response =await createUser(formData);
+      console.log(response);
+      alert(response);
+      if(response.username == ""){
+        console.log(response.message);
+        alert(response.message);
+      }
+      else
+      alert("Kayıt başarılı");
+      console.log("Kayıt başarılı:", formData);
+      navigate("/login"); 
+    } catch (error) {
+      alert(error);
+    }
+
     // Burada API isteği gönderebilirsiniz
   };
 
@@ -138,22 +156,20 @@ const RegisterPage = () => {
           </button>
         </form>
       </div>
-    
-    <Link to="/login">
-      <div className="flex p-8 w-96 justify-center   ">
-        <div className="flex flex-col justify-center">
-          <h2 className="text-l  mb-4 text-center text-gray-500">
-            If you're not redirected, click
-          </h2>
-   
-          <button className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300">
-            LOGIN
-          </button>
-        
+
+      <Link to="/login">
+        <div className="flex p-8 w-96 justify-center   ">
+          <div className="flex flex-col justify-center">
+            <h2 className="text-l  mb-4 text-center text-gray-500">
+              If you're not redirected, click
+            </h2>
+
+            <button className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300">
+              LOGIN
+            </button>
+          </div>
         </div>
-      </div>
       </Link>
-      
     </div>
   );
 };

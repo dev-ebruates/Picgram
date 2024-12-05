@@ -7,8 +7,11 @@ const LoginPage = () => {
   const { isAuthenticated, setIsAuthenticated } =
     useContext(AuthenticatedContext);
   const handleLogin = () => {
+
+    
     localStorage.setItem("isAuthenticated", "true");
     setIsAuthenticated(true);
+
   };
   return (
     <div className="h-screen flex">
