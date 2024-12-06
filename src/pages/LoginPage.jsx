@@ -1,17 +1,35 @@
 import picgramLogin from "../images/picgram-login-left.png";
-import { useContext } from "react";
-import AuthenticatedContext from "../components/context/AuthenticatedContext";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authenticate } from "../services/authServices.js";
 
 const LoginPage = () => {
-  const { isAuthenticated, setIsAuthenticated } =
-    useContext(AuthenticatedContext);
-  const handleLogin = () => {
+  const [formData, setFormData] = useState({
+    emailOrUsername: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
-    
-    localStorage.setItem("isAuthenticated", "true");
-    setIsAuthenticated(true);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    var response = await authenticate(formData);
+    if (response.success === true) {
+      var authToken = response.data.token;
+      localStorage.setItem("authToken", authToken);
+      navigate("/");
+    }
+    else{
+      localStorage.removeItem("authToken");
+    }
   };
   return (
     <div className="h-screen flex">
@@ -24,28 +42,35 @@ const LoginPage = () => {
       ></div>
 
       {/* Sağ Taraf - Login Formu */}
-      <div className="w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-r from-gray-200 via-gray-500 to-gray-800">
+      <div className="w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-r from-gray-200 via-gray-500 to-gray-800 text-black">
         <div className=" bg-gray-50  p-6 rounded-lg shadow-md w-full max-w-sm">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-2 mb-10 italic font-script text-center text-6xl font-bold tracking-tight text-gray-800 ">
               picgram
             </h2>
           </div>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
+              id="emailOrUsername"
+              name="emailOrUsername"
+              value={formData.username}
+              onChange={handleChange}
               placeholder="Kullanıcı adı veya e-posta"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
             <input
               type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Şifre"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
             <button
               type="submit"
-              className="w-full bg-gray-400 text-white py-2 rounded-md hover:bg-gray-500 transition"
-              onClick={() => handleLogin()}
+              className="w-full bg-gray-400 text-black py-2 rounded-md hover:bg-gray-500 transition"
             >
               Sign in
             </button>

@@ -1,33 +1,16 @@
-import { useContext, useEffect } from "react";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import { Routes, Route } from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 
-import AuthenticatedContext from "./components/context/AuthenticatedContext";
-
 function App() {
-  const { isAuthenticated, setIsAuthenticated } =
-    useContext(AuthenticatedContext);
-    useEffect(() => {
-      console.log("useEffecte girdi");
-      const auth = localStorage.getItem("isAuthenticated");
-      if (auth === "true") {
-        setIsAuthenticated(true);
-      }
-    }, [isAuthenticated]);
-    
-
   return (
     <Routes>
-      <Route path="/login" element={isAuthenticated ? <HomePage /> : <LoginPage />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route
-        path="/"
-        element={isAuthenticated ? <HomePage /> : <LoginPage />}
-      />
     </Routes>
   );
 }

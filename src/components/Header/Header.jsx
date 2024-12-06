@@ -1,15 +1,13 @@
-import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import NavButton from "../navButton/NavButton";
 import "./Header.css";
-import AuthenticatedContext from "../context/AuthenticatedContext";
 
 function Header() {
-  const { setIsAuthenticated } = useContext(AuthenticatedContext);
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    console.log("signout tıklandı");
-    localStorage.setItem("isAuthenticated", false);
-    
-    setIsAuthenticated(false);
+    localStorage.removeItem("authToken");
+    navigate("/login");
   };
   return (
     <header className="header border-r border-gray-900 h-10 ">
@@ -25,16 +23,32 @@ function Header() {
             <NavButton buttonIcon="fas fa-home" buttonTitle="Home" linkTo="/" />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-comment" buttonTitle="Message" linkTo={"/"} />
+            <NavButton
+              buttonIcon="fas fa-comment"
+              buttonTitle="Message"
+              linkTo={"/"}
+            />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-search" buttonTitle="Search" linkTo={"/"}/>
+            <NavButton
+              buttonIcon="fas fa-search"
+              buttonTitle="Search"
+              linkTo={"/"}
+            />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-heart" buttonTitle="Notifications" linkTo={"/"}  />
+            <NavButton
+              buttonIcon="fas fa-heart"
+              buttonTitle="Notifications"
+              linkTo={"/"}
+            />
           </li>
           <li>
-            <NavButton buttonIcon="fas fa-plus-square" buttonTitle="Create" linkTo={"/"} />
+            <NavButton
+              buttonIcon="fas fa-plus-square"
+              buttonTitle="Create"
+              linkTo={"/"}
+            />
           </li>
 
           <li>
