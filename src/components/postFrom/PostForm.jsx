@@ -14,10 +14,10 @@ const PostForm = ({ onSubmit }) => {
 
   return (
     <div className="flex flex-col justify-center items-center h-100 w-full">
-      {/* Küçük Resim */}
+      {/* Resim Önizlemesi */}
       <div className="w-full flex justify-center mb-4">
         <img
-          src={createPostImage}
+          src={mediaUrl || createPostImage} // Eğer mediaUrl varsa, onu göster, yoksa varsayılan resim kullan
           alt="Create Post"
           className="rounded-md"
           style={{
