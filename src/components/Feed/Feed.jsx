@@ -1,89 +1,15 @@
+import { useEffect, useState } from "react";
 import Post from "../Post/Post";
 import "./Feed.css";
+import { getAllPosts } from "../../services/postServices.js";
 
 function Feed() {
-  const posts = [
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200/300",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-    {
-      username: "dogancem",
-      time: "30m",
-      content: "First post!",
-      profileImage: "https://picsum.photos/200",
-      image: "https://picsum.photos/200",
-      location: "Istanbul, Turkey",
-    },
-  ];
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getAllPosts().then(response => setPosts(response.data));
+  
+  }, []);
 
   return (
     <div className="feed">
@@ -91,10 +17,10 @@ function Feed() {
         <Post
           key={index}
           username={post.username}
-          profileImage={post.profileImage}
-          time={post.time}
-          content={post.content}
-          image={post.image}
+          profileImage={post.userProfilePicture}
+          time={post.createdAt}
+          content={post.caption}
+          image={post.mediaUrl}
           location={post.location}
         />
       ))}
