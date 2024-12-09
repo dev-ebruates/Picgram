@@ -56,7 +56,7 @@ const LoginPage = () => {
               name="emailOrUsername"
               value={formData.username}
               onChange={handleChange}
-              placeholder="Kullanıcı adı veya e-posta"
+              placeholder="Username or Email"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
             <input
@@ -65,7 +65,7 @@ const LoginPage = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Şifre"
+              placeholder="Password"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
             />
             <button

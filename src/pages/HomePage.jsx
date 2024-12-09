@@ -3,10 +3,10 @@ import Header from "../components/Header/Header";
 import Story from "../components/Story/Story";
 import Follow from "../components/follow/Follow";
 
-const HomePage = ({ setIsAuthenticated }) => {
+const HomePage = () => {
   return (
     <div className="flex flex-row justify-between ">
-      <Header setIsAuthenticated={setIsAuthenticated} />
+      <Header />
       <div className="flex-1 mr-[380px] ml-[250px]">
         <Story />
         <Feed />
