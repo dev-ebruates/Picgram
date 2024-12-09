@@ -1,9 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import NavButton from "../navButton/NavButton";
 import "./Header.css";
+import { useState } from "react";
+import Modal from "../modal/modal";
+import PostForm from "../postFrom/PostForm";
 
 function Header() {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCreateClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handlePostSubmit = (newPost) => {
+    console.log("Yeni gönderi oluşturuldu:", newPost);
+    handleCloseModal();
+  };
 
   const handleClick = () => {
     localStorage.removeItem("authToken");
@@ -44,11 +61,9 @@ function Header() {
             />
           </li>
           <li>
-            <NavButton
-              buttonIcon="fas fa-plus-square"
-              buttonTitle="Create"
-              linkTo={"/"}
-            />
+            <button
+              onClick={handleCreateClick}
+            >Create</button>
           </li>
 
           <li>
@@ -64,6 +79,10 @@ function Header() {
           </li>
         </ul>
       </nav>
+        {/* Modal Bileşeni */}
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <PostForm onSubmit={handlePostSubmit} />
+      </Modal>
     </header>
   );
 }
