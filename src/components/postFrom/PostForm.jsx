@@ -1,13 +1,21 @@
 import { useState } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
+import { createPost } from "../../services/postServices";
 
 const PostForm = ({ onSubmit }) => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [caption, setCaption] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     onSubmit({ mediaUrl, caption });
+    try {
+      var response = await createPost({ mediaUrl, caption });
+      console.log(response);
+      alert(response.message);
+    } catch (error) {
+      alert(error);
+    }
     setMediaUrl("");
     setCaption("");
   };

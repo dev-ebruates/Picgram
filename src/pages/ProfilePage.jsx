@@ -1,7 +1,24 @@
 import Header from "../components/Header/Header";
+import { useState } from "react";
+import Modal from "../components/modal/modal.jsx"
+import PostForm from "../components/postFrom/PostForm.jsx";
 
 
 const ProfilePage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCreateClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handlePostSubmit = (newPost) => {
+    console.log("Yeni gönderi oluşturuldu:", newPost);
+    handleCloseModal();
+  };
+
   const images = [
     "https://picsum.photos/200",
     "https://picsum.photos/200",
@@ -164,7 +181,7 @@ const ProfilePage = () => {
               </div>
             </div>
              {/* Yeni Gönderi Ekle Butonu */}
-             <button className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500">
+             <button className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 " onClick={handleCreateClick}>
               New post
             </button>
             <div className="grid grid-cols-3 gap-2 w-full mr-10" >
@@ -186,6 +203,9 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <PostForm onSubmit={handlePostSubmit} />
+      </Modal>
     </div>
   );
 };

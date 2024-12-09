@@ -8,3 +8,12 @@ export const getAllPosts = async () => {
     throw error.response?.data || error.message;
   }
 }
+
+export const createPost = async (post) => {
+  try {
+    const response = await apiClient.post("/posts", post);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}

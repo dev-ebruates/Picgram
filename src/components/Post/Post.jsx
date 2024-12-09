@@ -34,10 +34,10 @@ function Post({ username, time, content, image, location, profileImage }) {
       {/* Açıklama ve Yorum */}
       <div className="px-4 pb-4">
         <p>
-          <span className="font-semibold">{username} </span>Lorem ipsum dolor sit amet consectetur adipisicing elit. ❤️
+          <span className="font-semibold">{username} </span>{content}
         </p>
         <p className="text-sm text-gray-500 mt-2">View all 10 comments</p>
-        <p className="text-sm text-gray-400 mt-1">2 hours ago</p>
+        <p className="text-sm text-gray-400 mt-1">{time}</p>
       </div>
     </div>
   );
