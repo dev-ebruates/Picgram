@@ -61,9 +61,12 @@ function Header() {
             />
           </li>
           <li>
-            <button
-              onClick={handleCreateClick}
-            >Create</button>
+            <button onClick={handleCreateClick} className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12">
+              <i className="fas fa-plus  text-2xl"></i>
+              <span className="px-2 py-2 mt-1  text-l  text-white ">
+               Create
+              </span>
+            </button>
           </li>
 
           <li>
@@ -79,8 +82,8 @@ function Header() {
           </li>
         </ul>
       </nav>
-        {/* Modal Bileşeni */}
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      {/* Modal Bileşeni */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <PostForm onSubmit={handlePostSubmit} />
       </Modal>
     </header>
