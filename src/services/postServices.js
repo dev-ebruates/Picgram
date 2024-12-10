@@ -17,3 +17,11 @@ export const createPost = async (post) => {
     throw error.response?.data || error.message;
   }
 }
+export const getAllByUserId = async()=>{
+  try {
+    const response = await apiClient.get("/user-posts");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+}

@@ -7,9 +7,9 @@ function Feed() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    getAllPosts().then(response => {setPosts(response.data), console.log(response)});
- 
-  
+    if(posts.length>setPosts.length){
+    getAllPosts().then(response => {setPosts(response.data), console.log(response)});}
+   
   }, []);
 
   return (

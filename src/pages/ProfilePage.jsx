@@ -1,11 +1,49 @@
 import Header from "../components/Header/Header";
-import { useState } from "react";
-import Modal from "../components/modal/modal.jsx"
+import { useEffect, useState } from "react";
+import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postFrom/PostForm.jsx";
-
+import { getAllByUserId } from "../services/postServices.js";
 
 const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    fullname: "",
+    bio: "",
+    followers: 0,
+    following: 0,
+    profileImage: "",
+  });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getAllByUserId();
+        const posts = response.data;
+
+        if (posts && posts.length > 0) {
+          setUserPosts(posts);
+  
+          setUserInfo({
+            username: posts[0].username || "",
+            fullname: posts[0].fullname || "",
+            bio: posts[0].bio || "",
+            followers: posts[0].followers || 0,
+            following: posts[0].following || 0,
+            profileImage: posts[0].userProfilePicture || "",
+          });
+        } else {
+          console.warn("Boş bir veri seti döndü.");
+        }
+      } catch (error) {
+        console.error("Veri çekilirken bir hata oluştu:", error);
+      }
+    };
+  
+    fetchUserData();
+  }, []);
+  
   const handleCreateClick = () => {
     setIsModalOpen(true);
   };
@@ -19,114 +57,6 @@ const ProfilePage = () => {
     handleCloseModal();
   };
 
-  const images = [
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-   
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-  ];
-
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200/300",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  //   {
-  //     username: "dogancem",
-  //     time: "30m",
-  //     content: "First post!",
-  //     profileImage: "https://picsum.photos/200",
-  //     image: "https://picsum.photos/200",
-  //     location: "Istanbul, Turkey",
-  //   },
-  // ];
 
   return (
     <div className="flex h-screen">
@@ -146,15 +76,15 @@ const ProfilePage = () => {
             <div className="w-full flex justify-between items-center p-6">
               <div className="flex items-center space-x-4">
                 <img
-                  src="https://via.placeholder.com/150"
+                  src={userInfo.profileImage ? userInfo.profileImage :"https://via.placeholder.com/150"}
                   alt="Profile"
                   className="w-24 h-24 rounded-full border-4 border-gray-600"
                 />
                 <div className="flex justify-center">
                   <div>
-                    <h2 className="text-3xl font-semibold">ebru</h2>
-                    <p className="text-sm">Ebru Kayadelen Ateş</p>
-                    <p className="text-sm">ziyan olduk ziyadesiyle</p>
+                    <h2 className="text-3xl font-semibold">{userInfo.username}</h2>
+                    <p className="text-sm">{userInfo.fullname}</p>
+                    <p className="text-sm">{userInfo.bio}</p>
                   </div>
                   <div>
                     <button className="text-sm px-4 py-2 border-gray-600  rounded-lg bg-gray-600 hover:bg-gray-800">
@@ -180,26 +110,27 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-400">following</p>
               </div>
             </div>
-             {/* Yeni Gönderi Ekle Butonu */}
-             <button className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 " onClick={handleCreateClick}>
+            {/* Yeni Gönderi Ekle Butonu */}
+            <button
+              className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 "
+              onClick={handleCreateClick}
+            >
               New post
             </button>
-            <div className="grid grid-cols-3 gap-2 w-full mr-10" >
-              {images.map((image, index) => (
+            <div className="grid grid-cols-3 gap-2 w-full mr-10">
+              {userPosts.map((item, index) => (
                 <div
                   key={index}
                   className="bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
                 >
                   <img
-                    src={image}
-                    alt={`Image ${index + 1}`}
+                    src={item.mediaUrl}
+                    alt="UserPost"
                     className="w-full h-49 object-cover"
                   />
                 </div>
               ))}
             </div>
-
-           
           </div>
         </div>
       </div>
