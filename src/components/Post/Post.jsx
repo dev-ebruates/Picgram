@@ -1,9 +1,15 @@
 import "./Post.css";
-import { formatDistanceToNow } from "date-fns";
-import { enUS } from "date-fns/locale";
+import { formatDistanceToNow } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 function Post({ username, time, content, image, location, profileImage }) {
-  const distance = formatDistanceToNow(time, { locale: enUS, addSuffix: true });
+
+
+
+
+const distance = formatDistanceToNow(time, { locale: enUS, addSuffix: true });
+
+
 
   return (
     <div className="max-w-md mx-auto my-5 border border-black rounded-lg shadow-md bg-black border-b-gray-900">
@@ -16,7 +22,7 @@ function Post({ username, time, content, image, location, profileImage }) {
         />
         <div className="ml-3">
           <p className="font-semibold">{username}</p>
-          <p className="text-sm text-gray-500">{location}</p>
+          <p className="text-sm text-gray-500">{distance}</p>
         </div>
       </div>
 
@@ -38,11 +44,10 @@ function Post({ username, time, content, image, location, profileImage }) {
       {/* Açıklama ve Yorum */}
       <div className="px-4 pb-4">
         <p>
-          <span className="font-semibold">{username} </span>
-          {content}
+          <span className="font-semibold">{username} </span>{content}
         </p>
         <p className="text-sm text-gray-500 mt-2">View all 10 comments</p>
-        <p className="text-sm text-gray-400 mt-1">{distance}</p>
+       
       </div>
     </div>
   );
