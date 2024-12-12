@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postFrom/PostForm.jsx";
 import { getAllByUserId } from "../services/postServices.js";
-
+import { updateUserBio } from "../services/userServices.js";
 const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
@@ -46,6 +46,14 @@ const ProfilePage = () => {
 
     fetchUserData();
   }, []);
+
+  const handleClickBio = async () => {
+    setUserInfo((prev) => ({ ...prev, bio: newBio }));
+
+    var response = await updateUserBio({ bio: newBio });
+    console.log(response);
+    setIsEditing(false);
+  };
 
   const handleCreateClick = () => {
     setIsModalOpen(true);
@@ -99,10 +107,7 @@ const ProfilePage = () => {
                       />
                       <button
                         className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check "
-                        onClick={() => {
-                          setUserInfo((prev) => ({ ...prev, bio: newBio }));
-                          setIsEditing(false);
-                        }}
+                        onClick={() => handleClickBio()}
                       ></button>
                       <button
                         className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times "
