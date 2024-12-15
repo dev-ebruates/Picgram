@@ -11,9 +11,9 @@ const HomePage = () => {
         <Story />
         <Feed />
       </div>
-      <div className="flex flex-row justify-between">
+      {/* <div className="flex flex-row justify-between">
         <Follow />
-      </div>
+      </div> */}
     </div>
   );
 };
