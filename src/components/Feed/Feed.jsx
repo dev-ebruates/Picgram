@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Post from "../Post/Post";
+import Post from "../post/Post";
 import "./Feed.css";
 import { getAllPosts } from "../../services/postServices.js";
 
@@ -7,9 +7,9 @@ function Feed() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-   
-    getAllPosts().then(response => {setPosts(response.data)});
-   
+    getAllPosts().then((response) => {
+      setPosts(response.data);
+    });
   }, []);
 
   return (

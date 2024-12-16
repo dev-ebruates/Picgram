@@ -3,13 +3,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
 function Post({ username, time, content, image, location, profileImage }) {
-
-
-
-
+  
 const distance = formatDistanceToNow(time, { locale: enUS, addSuffix: true });
-
-
 
   return (
     <div className="max-w-md mx-auto my-5 border border-black rounded-lg shadow-md bg-black border-b-gray-900">
