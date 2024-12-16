@@ -8,7 +8,7 @@ function Feed() {
 
   useEffect(() => {
    
-    getAllPosts().then(response => {setPosts(response.data), console.log(response)});
+    getAllPosts().then(response => {setPosts(response.data)});
    
   }, []);
 

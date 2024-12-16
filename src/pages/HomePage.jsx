@@ -10,9 +10,8 @@ const HomePage = () => {
 
   useEffect(() => {
     getAllStories().then((response) => {
-      setStories(response.data), console.log(response);
+      setStories(response.data)
     });
-    console.log(stories);
   }, []);
 
   return (

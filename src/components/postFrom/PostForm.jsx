@@ -11,7 +11,6 @@ const PostForm = ({ onSubmit }) => {
     onSubmit({ mediaUrl, caption });
     try {
       var response = await createPost({ mediaUrl, caption });
-      console.log(response);
       alert(response.message);
     } catch (error) {
       alert(error);

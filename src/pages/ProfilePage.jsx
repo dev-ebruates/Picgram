@@ -51,7 +51,7 @@ const ProfilePage = () => {
     setUserInfo((prev) => ({ ...prev, bio: newBio }));
 
     var response = await updateUserBio({ bio: newBio });
-    console.log(response);
+
     setIsEditing(false);
   };
 
@@ -64,7 +64,6 @@ const ProfilePage = () => {
   };
 
   const handlePostSubmit = (newPost) => {
-    console.log("Yeni gönderi oluşturuldu:", newPost);
     handleCloseModal();
   };
   return (

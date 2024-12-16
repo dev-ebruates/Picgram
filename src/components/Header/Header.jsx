@@ -18,7 +18,6 @@ function Header() {
   };
 
   const handlePostSubmit = (newPost) => {
-    console.log("Yeni gönderi oluşturuldu:", newPost);
     handleCloseModal();
   };
 

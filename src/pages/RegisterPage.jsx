@@ -31,15 +31,12 @@ const RegisterPage = () => {
  
     try {
       var response =await createUser(formData);
-      console.log(response);
       alert(response);
       if(response.username == ""){
-        console.log(response.message);
         alert(response.message);
       }
       else
       alert("Kayıt başarılı");
-      console.log("Kayıt başarılı:", formData);
       navigate("/login"); 
     } catch (error) {
       alert(error);
