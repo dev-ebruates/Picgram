@@ -4,17 +4,21 @@ import { getAllStoriesByUsername } from "../services/storyServices";
 
 const StoryPage = () => {
   const location = useLocation();
-  const username = useState(location.state.username);
+  const [username, setUsername] = useState(location.state.username);
   // const stories = location.state.stories;
   const [userStories, setUserStories] = useState([]);
 
   useEffect(() => {
-    getAllStoriesByUsername(username[0]).then((data) => {
+    getAllStoriesByUsername(username).then((data) => {
       setUserStories(data.data);
     });
-  }, []);
+  }, [username]);
 
   const [currentUserImageIndex, setCurrentUserImageIndex] = useState(0);
+
+  const handle = () =>{
+    setUsername("ali");
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,7 +52,7 @@ const StoryPage = () => {
       </div>
 
       {/* Sağ Post Ok */}
-      <button className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-200 p-3 rounded-full shadow hover:bg-gray-300 focus:outline-none">
+      <button onClick={()=>handle()} className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-200 p-3 rounded-full shadow hover:bg-gray-300 focus:outline-none">
         ▶
       </button>
     </div>
