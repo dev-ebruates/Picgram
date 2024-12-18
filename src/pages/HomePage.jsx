@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import Feed from "../components/Feed/Feed";
 import Header from "../components/Header/Header";
 import Story from "../components/Story/Story";
-import Follow from "../components/follow/Follow";
 import { getAllStories } from "../services/storyServices";
+import ReduxExample from "../components/reduxExample/ReduxExample.jsx";
+import ReduxApiExample from "../components/reduxApiExample/ReduxApiExample.jsx";
 
 const HomePage = () => {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
     getAllStories().then((response) => {
-      setStories(response.data)
+      setStories(response.data);
     });
   }, []);
 
@@ -21,6 +22,10 @@ const HomePage = () => {
         <Story stories={stories} />
         <Feed />
       </div>
+     <div>
+      <ReduxExample/>
+      <ReduxApiExample/>
+     </div>
       {/* <div className="flex flex-row justify-between">
         <Follow />
       </div> */}
