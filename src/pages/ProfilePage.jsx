@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import Header from "../components/Header/Header";
 import { useEffect, useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postFrom/PostForm.jsx";
 import { getAllByUserId } from "../services/postServices.js";
-import { updateUserBio } from "../services/userServices.js";
+import {useUpdateUserBioMutation} from "../features/userFeatures/userApi.js"
 const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
@@ -18,6 +19,12 @@ const ProfilePage = () => {
     profileImage: "",
   });
   const [newBio, setNewBio] = useState(userInfo.bio);
+ 
+  const [updateUserBioMutation,{
+    data:updateUserBioData,
+    error: updateUserBioError,
+    isLoading: updateUserBioLoading,
+  }] = useUpdateUserBioMutation();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -50,7 +57,8 @@ const ProfilePage = () => {
   const handleClickBio = async () => {
     setUserInfo((prev) => ({ ...prev, bio: newBio }));
 
-    var response = await updateUserBio({ bio: newBio });
+    var response = await updateUserBioMutation({ bio: newBio });
+    console.log(response);
 
     setIsEditing(false);
   };

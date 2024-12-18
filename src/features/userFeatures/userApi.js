@@ -32,7 +32,17 @@ export const userApi = createApi({
         body: credentials,
       }),
     }),
+    updateUserBio: builder.mutation({
+      query: (credentials) => ({
+        url: "/user-bio",
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: credentials,
+      }),
+    }),
   }),
 });
 
-export const { useCreateUserMutation } = userApi;
+export const { useCreateUserMutation, useUpdateUserBioMutation } = userApi;
