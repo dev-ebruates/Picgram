@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { createUser } from "../services/userServices";
+import { useCreateUserMutation } from "../features/userFeatures/userApi.js";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -10,12 +10,20 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
+  const [
+    createUserMutation,
+    {
+      data: createUserData,
+      error: createUserError,
+      isLoading: createUserLoading,
+    },
+  ] = useCreateUserMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -28,20 +36,19 @@ const RegisterPage = () => {
       alert("Şifreler eşleşmiyor!");
       return;
     }
- 
+
     try {
-      var response =await createUser(formData);
-      alert(response);
-      if(response.username == ""){
-        alert(response.message);
+      var response = await createUserMutation(formData);
+      console.log(response);
+      if (response.data.success === false) {
+        alert(response.data.data.message);
+      } else {
+        alert("Kayıt başarılı");
+        navigate("/login");
       }
-      else
-      alert("Kayıt başarılı");
-      navigate("/login"); 
     } catch (error) {
       alert(error);
     }
-
     // Burada API isteği gönderebilirsiniz
   };
 
