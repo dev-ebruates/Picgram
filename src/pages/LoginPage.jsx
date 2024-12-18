@@ -1,15 +1,24 @@
 import picgramLogin from "../images/picgram-login-left.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authenticate } from "../services/authServices.js";
+import { useAuthMutation } from "../features/authFeatures/authApi.js";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     emailOrUsername: "",
     password: "",
   });
-  const navigate = useNavigate();
 
+
+  const [authMutation,{
+    data: authData,
+    error: authError,
+    isLoading: authLoading,
+  }] = useAuthMutation();
+
+
+
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -21,13 +30,15 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    var response = await authenticate(formData);
-    if (response.success === true) {
-      var authToken = response.data.token;
+    console.log(authLoading);
+    const result = await authMutation(formData);
+    console.log(result);
+    console.log(authLoading);
+    if (result.data.success === true) {
+      var authToken = result.data.data.token;
       localStorage.setItem("authToken", authToken);
       navigate("/");
-    }
-    else{
+    } else {
       localStorage.removeItem("authToken");
     }
   };
