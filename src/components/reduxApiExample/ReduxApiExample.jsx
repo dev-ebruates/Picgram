@@ -1,25 +1,40 @@
 import {
-  // useGetPostsQuery,
+  useGetPostsQuery,
   useGetPostByIdQuery,
 } from "../../features/featureApi.js";
 
 const ReduxApiExample = () => {
-  const { data, error, isLoading } = useGetPostByIdQuery(2);
+  // Tüm gönderiler
+  const { data: posts, error: postsError, isLoading: postsLoading } = useGetPostsQuery();
+  // Belirli bir gönderi
+  const { data: post, error: postError, isLoading: postLoading } = useGetPostByIdQuery(2);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
-
-
-  console.log(data);
+  // Yükleme durumu
+  if (postsLoading || postLoading) return <p>Loading...</p>;
+  // Hata durumu
+  if (postsError || postError) return <p>Error!</p>;
 
   return (
     <div>
-      {/* <ul>
-        {data.map((post) => (
+      {/* Tüm gönderilerin listesi */}
+      <ul>
+        {posts?.map((post) => (
           <li key={post.id}>{post.title}</li>
         ))}
-      </ul> */}
-      <div>{JSON.stringify(data) || "Loading..."}</div>
+      </ul>
+
+      {/* Belirli bir gönderi */}
+      <div>
+        <h2>Post Details</h2>
+        {post ? (
+          <div>
+            <h3>{post.title}</h3>
+            <p>{post.body}</p>
+          </div>
+        ) : (
+          <p>Loading post...</p>
+        )}
+      </div>
     </div>
   );
 };
