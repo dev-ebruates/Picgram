@@ -1,24 +1,31 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { getAllStoriesByUsername } from "../services/storyServices";
+import { useGetAllStoriesByUsernameQuery } from "../features/storyFeatures/storyApi.js";
 
 const StoryPage = () => {
   const location = useLocation();
   const [username, setUsername] = useState(location.state.username);
+  console.log(username);
   // const stories = location.state.stories;
   const [userStories, setUserStories] = useState([]);
+  
 
+
+  const {data, isLoading, error} = useGetAllStoriesByUsernameQuery(username);
+  console.log(data);
   useEffect(() => {
-    getAllStoriesByUsername(username).then((data) => {
+    if (data) {
       setUserStories(data.data);
-    });
-  }, [username]);
+    }
+  }, [data]);
+
+
 
   const [currentUserImageIndex, setCurrentUserImageIndex] = useState(0);
 
-  const handle = () =>{
+  const handle = () => {
     setUsername("ali");
-  }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,7 +59,10 @@ const StoryPage = () => {
       </div>
 
       {/* Sağ Post Ok */}
-      <button onClick={()=>handle()} className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-200 p-3 rounded-full shadow hover:bg-gray-300 focus:outline-none">
+      <button
+        onClick={() => handle()}
+        className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-200 p-3 rounded-full shadow hover:bg-gray-300 focus:outline-none"
+      >
         ▶
       </button>
     </div>

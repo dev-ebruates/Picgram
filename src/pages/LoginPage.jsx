@@ -33,7 +33,6 @@ const LoginPage = () => {
     console.log(authLoading);
     const result = await authMutation(formData);
     console.log(result);
-    console.log(authLoading);
     if (result.data.success === true) {
       var authToken = result.data.data.token;
       localStorage.setItem("authToken", authToken);

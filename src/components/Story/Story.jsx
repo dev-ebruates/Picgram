@@ -1,8 +1,18 @@
 import { Link } from "react-router-dom";
 import "./Story.css";
 import propTypes from "prop-types";
+import { useGetAllStoriesQuery } from "../../features/storyFeatures/storyApi.js";
+import { useEffect, useState } from "react";
 
-function Story({ stories }) {
+function Story() {
+  const { data, isLoading, error } = useGetAllStoriesQuery();
+  const [stories, setStories] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setStories(data.data); // RTK Query'den gelen veriyi state'e kopyala
+    }
+  }, [data]); 
  
   return (
     <div className="story-bar  border-t  overflow-x-scroll border-gray-900">
