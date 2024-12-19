@@ -42,7 +42,10 @@ export const userApi = createApi({
         body: credentials,
       }),
     }),
+    getMyProfile: builder.query({
+      query: () => "/my-profile",
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useUpdateUserBioMutation } = userApi;
+export const { useCreateUserMutation, useUpdateUserBioMutation, useGetMyProfileQuery } = userApi;

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postFrom/PostForm.jsx";
 import { getAllByUserId } from "../services/postServices.js";
-import {useUpdateUserBioMutation} from "../features/userFeatures/userApi.js"
+import { useUpdateUserBioMutation } from "../features/userFeatures/userApi.js";
+import { useGetMyProfileQuery } from "../features/userFeatures/userApi.js";
 const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
@@ -14,45 +15,41 @@ const ProfilePage = () => {
     username: "",
     fullname: "",
     bio: "",
-    followers: 0,
-    following: 0,
     profileImage: "",
   });
   const [newBio, setNewBio] = useState(userInfo.bio);
- 
-  const [updateUserBioMutation,{
-    data:updateUserBioData,
-    error: updateUserBioError,
-    isLoading: updateUserBioLoading,
-  }] = useUpdateUserBioMutation();
 
+  const [
+    updateUserBioMutation,
+    {
+      data: updateUserBioData,
+      error: updateUserBioError,
+      isLoading: updateUserBioLoading,
+    },
+  ] = useUpdateUserBioMutation();
+
+  const {
+    data: getMyProfileData,
+    error: getMyProfileError,
+    isLoading: getMyProfileLoading,
+  } = useGetMyProfileQuery();
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await getAllByUserId();
-        const posts = response.data;
-
-        if (posts && posts.length > 0) {
-          setUserPosts(posts);
-
+    try {
+      getAllByUserId().then((response) => {
+        setUserPosts(response.data);
+        if (getMyProfileData && getMyProfileData.data) {
+          console.log(getMyProfileData);
           setUserInfo({
-            username: posts[0].username || "",
-            fullname: posts[0].fullname || "",
-            bio: posts[0].bio || "",
-            followers: posts[0].followers || 0,
-            following: posts[0].following || 0,
-            profileImage: posts[0].userProfilePicture || "",
+            username: getMyProfileData.data.username,
+            bio: getMyProfileData.data.bio,
+            profileImage: getMyProfileData.data.userProfilePicture,
           });
-        } else {
-          console.warn("Boş bir veri seti döndü.");
         }
-      } catch (error) {
-        console.error("Veri çekilirken bir hata oluştu:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+      });
+    } catch (error) {
+      console.error("Veri çekilirken bir hata oluştu:", error);
+    }
+  }, [getMyProfileData]);
 
   const handleClickBio = async () => {
     setUserInfo((prev) => ({ ...prev, bio: newBio }));
