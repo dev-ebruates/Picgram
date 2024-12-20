@@ -17,8 +17,8 @@ const HomePage = () => {
         <Feed />
       </div>
       <div>
-        <ReduxExample />
-        <ReduxApiExample />
+        {/* <ReduxExample />
+        <ReduxApiExample /> */}
       </div>
       {/* <div className="flex flex-row justify-between">
         <Follow />
