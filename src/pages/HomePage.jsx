@@ -1,4 +1,4 @@
-import Feed from "../components/Feed/Feed";
+import Feed from "../components/feed/Feed";
 import Header from "../components/Header/Header";
 import Story from "../components/Story/Story";
 import ReduxExample from "../components/reduxExample/ReduxExample.jsx";
