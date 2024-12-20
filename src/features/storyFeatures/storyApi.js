@@ -1,18 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export const storyApi = createApi({
-  reducerPath: "storyApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5148",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  
-  }),  endpoints: (builder) => ({
+import { baseApi } from "../baseApi/baseApi";
+export const storyApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
     getAllStories: builder.query({
       query: () => "/stories/latest",
     }),
@@ -21,7 +9,7 @@ export const storyApi = createApi({
         url: "/stories",
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: credentials,
       }),
