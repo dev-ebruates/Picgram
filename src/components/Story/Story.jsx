@@ -14,13 +14,19 @@ function Story() {
     }
   }, [data, stories]);
 
+  // Story'si olan tüm kullanıcıların listesini oluştur
+  const allUsersWithStories = stories.map(story => story.username);
+
   return (
     <div className="story-bar  border-t  overflow-x-scroll border-gray-900">
       {stories.map((story, index) => (
         <div key={index} className="story flex-none  ">
           <Link
             to="/story"
-            state={{ username: story.username}} // State gönderimi
+            state={{ 
+              username: story.username,
+              allUsers: allUsersWithStories,
+            }}
           >
             <img
               src={story.userProfilePicture}

@@ -8,6 +8,11 @@ const StoryPage = () => {
   const [username, setUsername] = useState(location.state?.username);
   const [userStories, setUserStories] = useState([]);
   const [currentUserImageIndex, setCurrentUserImageIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [allUsers, setAllUsers] = useState(location.state?.allUsers || []);
+  const [currentUserIndex, setCurrentUserIndex] = useState(
+    allUsers.findIndex(user => user === username) || 0
+  );
   const STORY_DURATION = 5000; // 5 saniye
 
   const { data, isLoading } = useGetAllStoriesByUsernameQuery(username);
@@ -19,15 +24,30 @@ const StoryPage = () => {
     }
   }, [data]);
 
-  // Otomatik story geçişi
+  // Otomatik story geçişi ve progress bar kontrolü
   useEffect(() => {
     if (userStories.length === 0) return;
+
+    setProgress(0); // Her story değişiminde progress'i sıfırla
+    
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + (100 / (STORY_DURATION / 100));
+      });
+    }, 100);
 
     const timer = setTimeout(() => {
       handleNextStory();
     }, STORY_DURATION);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressInterval);
+    };
   }, [currentUserImageIndex, userStories]);
 
   // Klavye olaylarını dinleme
@@ -47,17 +67,37 @@ const StoryPage = () => {
   }, [currentUserImageIndex, userStories.length]);
 
   const handlePrevStory = () => {
-    setCurrentUserImageIndex((prev) =>
-      prev === 0 ? userStories.length - 1 : prev - 1
-    );
+    if (currentUserImageIndex === 0) {
+      // İlk story'de ise önceki kullanıcıya geç
+      if (currentUserIndex > 0) {
+        // Önceki kullanıcıya geç
+        const prevUser = allUsers[currentUserIndex - 1];
+        setCurrentUserIndex(prev => prev - 1);
+        setUsername(prevUser);
+        setCurrentUserImageIndex(0);
+      }
+    } else {
+      // Aynı kullanıcının önceki story'sine geç
+      setCurrentUserImageIndex(prev => prev - 1);
+    }
   };
 
   const handleNextStory = () => {
     if (currentUserImageIndex === userStories.length - 1) {
-      // Son story'de ise ana sayfaya dön
-      navigate(-1);
+      // Son story'de ise diğer kullanıcıya geç
+      if (currentUserIndex < allUsers.length - 1) {
+        // Sonraki kullanıcıya geç
+        const nextUser = allUsers[currentUserIndex + 1];
+        setCurrentUserIndex(prev => prev + 1);
+        setUsername(nextUser);
+        setCurrentUserImageIndex(0);
+      } else {
+        // Tüm kullanıcıların storyleri bitti, ana sayfaya dön
+        navigate(-1);
+      }
     } else {
-      setCurrentUserImageIndex((prev) => prev + 1);
+      // Aynı kullanıcının diğer story'sine geç
+      setCurrentUserImageIndex(prev => prev + 1);
     }
   };
 
@@ -98,11 +138,8 @@ const StoryPage = () => {
                   className="h-full bg-white"
                   style={{
                     width: index < currentUserImageIndex ? "100%" : 
-                          index === currentUserImageIndex ? "0%" : "0%",
-                    transition: index === currentUserImageIndex ? "width 5s linear" : "none",
-                    ...(index === currentUserImageIndex && {
-                      animation: "progress 5s linear forwards"
-                    })
+                           index === currentUserImageIndex ? `${progress}%` : "0%",
+                    transition: "width 100ms linear"
                   }}
                 />
               </div>
