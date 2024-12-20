@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import Header from "../components/Header/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postFrom/PostForm.jsx";
-import { getAllByUserId } from "../services/postServices.js";
 import { useUpdateUserBioMutation } from "../features/userFeatures/userApi.js";
 import { useGetMyProfileQuery } from "../features/userFeatures/userApi.js";
+import { useGetAllByUserIdQuery } from "../features/postFeatures/postApi";
+
 const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userPosts, setUserPosts] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
@@ -33,23 +33,23 @@ const ProfilePage = () => {
     error: getMyProfileError,
     isLoading: getMyProfileLoading,
   } = useGetMyProfileQuery();
-  useEffect(() => {
-    try {
-      getAllByUserId().then((response) => {
-        setUserPosts(response.data);
-        if (getMyProfileData && getMyProfileData.data) {
-          console.log(getMyProfileData);
-          setUserInfo({
-            username: getMyProfileData.data.username,
-            bio: getMyProfileData.data.bio,
-            profileImage: getMyProfileData.data.userProfilePicture,
-          });
-        }
-      });
-    } catch (error) {
-      console.error("Veri çekilirken bir hata oluştu:", error);
-    }
-  }, [getMyProfileData]);
+
+  const {
+    data: userPosts = [],
+    isLoading: postsLoading,
+    error: postsError
+  } = useGetAllByUserIdQuery();
+
+  if (getMyProfileData && getMyProfileData.data && userInfo.username === "") {
+    setUserInfo({
+      username: getMyProfileData.data.username,
+      bio: getMyProfileData.data.bio,
+      profileImage: getMyProfileData.data.userProfilePicture,
+    });
+  }
+
+  if (getMyProfileLoading || postsLoading) return <div>Yükleniyor...</div>;
+  if (getMyProfileError || postsError) return <div>Hata oluştu!</div>;
 
   const handleClickBio = async () => {
     setUserInfo((prev) => ({ ...prev, bio: newBio }));
@@ -71,6 +71,7 @@ const ProfilePage = () => {
   const handlePostSubmit = (newPost) => {
     handleCloseModal();
   };
+
   return (
     <div className="flex h-screen ">
       <div className="w-[190px] bg-white">
@@ -159,7 +160,7 @@ const ProfilePage = () => {
                 New post
               </button>
               <div className="grid grid-cols-3 gap-2 w-full mr-10">
-                {userPosts.map((item, index) => (
+                {userPosts.data?.map((item, index) => (
                   <div
                     key={index}
                     className="bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden "

@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
 import Post from "../post/Post";
 import "./Feed.css";
-import { getAllPosts } from "../../services/postServices.js";
+import { useGetAllPostsQuery } from "../../features/postFeatures/postApi";
 
 function Feed() {
-  const [posts, setPosts] = useState([]);
+  const { data: posts = [], isLoading, error } = useGetAllPostsQuery();
 
-  useEffect(() => {
-    getAllPosts().then((response) => {
-      setPosts(response.data);
-    });
-  }, []);
+  if (isLoading) return <div>Yükleniyor...</div>;
+  if (error) return <div>Hata: {error.message}</div>;
+
+  console.log('Posts data:', posts); // Gelen veriyi kontrol edelim
 
   return (
     <div className="feed">
-      {posts.map((post, index) => (
+      {posts?.data?.map((post, index) => (
         <Post
           key={index}
           username={post.username}
