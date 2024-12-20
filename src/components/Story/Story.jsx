@@ -6,21 +6,21 @@ import { useEffect, useState } from "react";
 
 function Story() {
   const { data, isLoading, error } = useGetAllStoriesQuery();
+  console.log(data);
   const [stories, setStories] = useState([]);
-
   useEffect(() => {
-    if (data) {
-      setStories(data.data); // RTK Query'den gelen veriyi state'e kopyala
+    if (data && data.data !== stories) {
+      setStories(data.data);
     }
-  }, [data]); 
- 
+  }, [data, stories]);
+
   return (
     <div className="story-bar  border-t  overflow-x-scroll border-gray-900">
       {stories.map((story, index) => (
         <div key={index} className="story flex-none  ">
           <Link
-           to="/story"
-            state={{ username: story.username, stories: {stories} }} // State gönderimi
+            to="/story"
+            state={{ username: story.username}} // State gönderimi
           >
             <img
               src={story.userProfilePicture}

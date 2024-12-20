@@ -5,20 +5,10 @@ import { useGetAllStoriesByUsernameQuery } from "../features/storyFeatures/story
 const StoryPage = () => {
   const location = useLocation();
   const [username, setUsername] = useState(location.state.username);
-  console.log(username);
   // const stories = location.state.stories;
   const [userStories, setUserStories] = useState([]);
-  
-
 
   const {data, isLoading, error} = useGetAllStoriesByUsernameQuery(username);
-  console.log(data);
-  useEffect(() => {
-    if (data) {
-      setUserStories(data.data);
-    }
-  }, [data]);
-
 
 
   const [currentUserImageIndex, setCurrentUserImageIndex] = useState(0);
@@ -28,6 +18,9 @@ const StoryPage = () => {
   };
 
   useEffect(() => {
+    if (data) {
+      setUserStories(data.data);
+    }
     const interval = setInterval(() => {
       setCurrentUserImageIndex((prev) =>
         prev === userStories.length - 1 ? 0 : prev + 1
@@ -35,7 +28,7 @@ const StoryPage = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [userStories]);
+  }, [data]);
 
   return (
     <div className="relative w-full max-w-lg mx-auto mt-8">
