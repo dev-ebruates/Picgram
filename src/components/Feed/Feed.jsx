@@ -1,30 +1,34 @@
 import Post from "../post/Post";
-import "./Feed.css";
 import { useGetAllPostsQuery } from "../../features/postFeatures/postApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts, selectAllPosts, selectPostLoading, selectPostError } from "../../features/postFeatures/postSlice";
+import { useEffect } from "react";
+import "./Feed.css";
 
-function Feed() {
-  const { data: posts = [], isLoading, error } = useGetAllPostsQuery();
+const Feed = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector(selectAllPosts);
+  const isLoading = useSelector(selectPostLoading);
+  const error = useSelector(selectPostError);
+  
+  const { data: postsData, isLoading: isPostsLoading } = useGetAllPostsQuery();
 
-  if (isLoading) return <div>Yükleniyor...</div>;
-  if (error) return <div>Hata: {error.message}</div>;
+  useEffect(() => {
+    if (postsData?.data) {
+      dispatch(setPosts(postsData.data));
+    }
+  }, [postsData, dispatch]);
 
-  console.log('Posts data:', posts); // Gelen veriyi kontrol edelim
+  if (isPostsLoading || isLoading) return <div>Yükleniyor...</div>;
+  if (error) return <div>Hata: {error}</div>;
 
   return (
     <div className="feed">
-      {posts?.data?.map((post, index) => (
-        <Post
-          key={index}
-          username={post.username}
-          profileImage={post.userProfilePicture}
-          time={post.createdAt}
-          content={post.caption}
-          image={post.mediaUrl}
-          location={post.location}
-        />
+      {posts?.map((post) => (
+        <Post key={post.id} post={post} />
       ))}
     </div>
   );
-}
+};
 
 export default Feed;

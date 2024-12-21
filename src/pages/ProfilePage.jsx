@@ -15,11 +15,12 @@ import {
   selectUserLoading,
   setLoading
 } from "../features/userFeatures/userSlice";
+import { setUserPosts, selectUserPosts as selectPostsFromPostSlice } from "../features/postFeatures/postSlice";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const profile = useSelector(selectUserProfile);
-  const posts = useSelector(selectUserPosts);
+  const posts = useSelector(selectPostsFromPostSlice);
   const loading = useSelector(selectUserLoading);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,19 +46,12 @@ const ProfilePage = () => {
     }
   }, [getMyProfileData, dispatch, profile]);
 
-  // Biyografiyi güncelle
+  // Kullanıcı gönderilerini güncelle
   useEffect(() => {
-    if (profile?.bio && !newBio) {
-      setNewBio(profile.bio);
+    if (userPosts?.data) {
+      dispatch(setUserPosts(userPosts.data));
     }
-  }, [profile, newBio]);
-
-  // Gönderileri güncelle
-  useEffect(() => {
-    if (userPosts?.data && (!posts || posts.length === 0)) {
-      dispatch(setPosts(userPosts.data));
-    }
-  }, [userPosts, dispatch, posts]);
+  }, [userPosts, dispatch]);
 
   // Loading durumunu güncelle
   useEffect(() => {
@@ -67,19 +61,28 @@ const ProfilePage = () => {
     }
   }, [getMyProfileLoading, postsLoading, dispatch, loading]);
 
+  // Biyografiyi güncelle
+  useEffect(() => {
+    if (profile?.bio && !newBio) {
+      setNewBio(profile.bio);
+    }
+  }, [profile, newBio]);
+
   const handleUpdateBio = async () => {
     try {
-      const result = await updateUserBioMutation({ bio: newBio });
-      if (result.data.success) {
+      const response = await updateUserBioMutation({ bio: newBio }).unwrap();
+      if (response.success) {
         dispatch(setProfile({ ...profile, bio: newBio }));
         setIsEditing(false);
       }
     } catch (error) {
-      console.error("Bio güncelleme hatası:", error);
+      console.error('Bio güncelleme hatası:', error);
     }
   };
 
-  if (loading) return <div>Yükleniyor...</div>;
+  if (loading) {
+    return <div>Yükleniyor...</div>;
+  }
 
   return (
     <div className="flex h-screen ">

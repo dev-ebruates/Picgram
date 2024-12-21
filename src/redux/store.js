@@ -7,6 +7,7 @@ import { storyApi } from '../features/storyFeatures/storyApi.js';
 import { postApi } from '../features/postFeatures/postApi.js';
 import authReducer from '../features/authFeatures/authSlice.js';
 import userReducer from '../features/userFeatures/userSlice.js';
+import postReducer from '../features/postFeatures/postSlice.js';
 import { baseApi, RESET_STATE_ACTION_TYPE } from '../features/baseApi/baseApi.js';
 
 const rootReducer = (state, action) => {
@@ -17,6 +18,7 @@ const rootReducer = (state, action) => {
     feature: featureReducer(state?.feature, action),
     auth: authReducer(state?.auth, action),
     user: userReducer(state?.user, action),
+    post: postReducer(state?.post, action),
     [featureApi.reducerPath]: featureApi.reducer(state?.[featureApi.reducerPath], action),
     [authApi.reducerPath]: authApi.reducer(state?.[authApi.reducerPath], action),
     [userApi.reducerPath]: userApi.reducer(state?.[userApi.reducerPath], action),
