@@ -3,10 +3,15 @@ import NavButton from "../navButton/NavButton";
 import "./Header.css";
 import { useState } from "react";
 import Modal from "../modal/modal";
-import PostForm from "../postFrom/PostForm";
+import PostForm from "../postForm/PostForm";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/authFeatures/authSlice";
+import { clearUserData } from "../../features/userFeatures/userSlice";
+import { resetApiState } from "../../features/baseApi/baseApi";
 
 function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreateClick = () => {
@@ -21,15 +26,21 @@ function Header() {
     handleCloseModal();
   };
 
-  const handleClick = () => {
-    localStorage.removeItem("authToken");
+  const handleLogout = () => {
+    // Tüm state'leri temizle
+    dispatch(logout());
+    dispatch(clearUserData());
+    dispatch(resetApiState());
+    
+    // Login sayfasına yönlendir
     navigate("/login");
   };
+
   return (
     <header className="header border-r border-gray-900 h-10 ">
       <div className="logo">
         <h2 className=" italic font-serif text-4xl tracking-tight text-white">
-          picgram
+          Picgram
         </h2>
       </div>
 
@@ -74,8 +85,8 @@ function Header() {
           <li className="mt-auto">
             <NavButton
               buttonIcon="fas fa-sign-out-alt"
-              buttonTitle="Sing Out"
-              onClick={() => handleClick()}
+              buttonTitle="Sign Out"
+              onClick={handleLogout}
               linkTo="/login"
             />
           </li>

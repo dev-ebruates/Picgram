@@ -2,6 +2,8 @@ import picgramLogin from "../images/picgram-login-left.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthMutation } from "../features/authFeatures/authApi.js";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../features/authFeatures/authSlice.js";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -9,19 +11,16 @@ const LoginPage = () => {
     password: "",
   });
 
-
-  const [authMutation,{
-    data: authData,
+  const dispatch = useDispatch();
+  const [authMutation, {
     error: authError,
     isLoading: authLoading,
   }] = useAuthMutation();
 
-
-
   const navigate = useNavigate();
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -30,15 +29,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(authLoading);
-    const result = await authMutation(formData);
-    console.log(result);
-    if (result.data.success === true) {
-      var authToken = result.data.data.token;
-      localStorage.setItem("authToken", authToken);
-      navigate("/");
-    } else {
-      localStorage.removeItem("authToken");
+    try {
+      const result = await authMutation(formData);
+      if (result.data.success === true) {
+        const userData = {
+          user: result.data.data.user,
+          token: result.data.data.token
+        };
+        dispatch(setCredentials(userData));
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
     }
   };
   return (
@@ -64,7 +66,7 @@ const LoginPage = () => {
               type="text"
               id="emailOrUsername"
               name="emailOrUsername"
-              value={formData.username}
+              value={formData.emailOrUsername}
               onChange={handleChange}
               placeholder="Username or Email"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"

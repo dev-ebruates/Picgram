@@ -1,76 +1,85 @@
 /* eslint-disable no-unused-vars */
 import Header from "../components/Header/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../components/modal/modal.jsx";
-import PostForm from "../components/postFrom/PostForm.jsx";
+import PostForm from "../components/postForm/PostForm.jsx";
 import { useUpdateUserBioMutation } from "../features/userFeatures/userApi.js";
 import { useGetMyProfileQuery } from "../features/userFeatures/userApi.js";
 import { useGetAllByUserIdQuery } from "../features/postFeatures/postApi";
+import { useDispatch, useSelector } from "react-redux";
+import { 
+  setProfile, 
+  setPosts, 
+  selectUserProfile, 
+  selectUserPosts,
+  selectUserLoading,
+  setLoading
+} from "../features/userFeatures/userSlice";
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+  const profile = useSelector(selectUserProfile);
+  const posts = useSelector(selectUserPosts);
+  const loading = useSelector(selectUserLoading);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [newBio, setNewBio] = useState("");
 
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    fullname: "",
-    bio: "",
-    profileImage: "",
-  });
-  const [newBio, setNewBio] = useState(userInfo.bio);
-
-  const [
-    updateUserBioMutation,
-    {
-      data: updateUserBioData,
-      error: updateUserBioError,
-      isLoading: updateUserBioLoading,
-    },
-  ] = useUpdateUserBioMutation();
+  const [updateUserBioMutation] = useUpdateUserBioMutation();
 
   const {
     data: getMyProfileData,
-    error: getMyProfileError,
     isLoading: getMyProfileLoading,
   } = useGetMyProfileQuery();
 
   const {
     data: userPosts = [],
     isLoading: postsLoading,
-    error: postsError
   } = useGetAllByUserIdQuery();
 
-  if (getMyProfileData && getMyProfileData.data && userInfo.username === "") {
-    setUserInfo({
-      username: getMyProfileData.data.username,
-      bio: getMyProfileData.data.bio,
-      profileImage: getMyProfileData.data.userProfilePicture,
-    });
-  }
+  // Profil verilerini güncelle
+  useEffect(() => {
+    if (getMyProfileData?.data && !profile) {
+      dispatch(setProfile(getMyProfileData.data));
+    }
+  }, [getMyProfileData, dispatch, profile]);
 
-  if (getMyProfileLoading || postsLoading) return <div>Yükleniyor...</div>;
-  if (getMyProfileError || postsError) return <div>Hata oluştu!</div>;
+  // Biyografiyi güncelle
+  useEffect(() => {
+    if (profile?.bio && !newBio) {
+      setNewBio(profile.bio);
+    }
+  }, [profile, newBio]);
 
-  const handleClickBio = async () => {
-    setUserInfo((prev) => ({ ...prev, bio: newBio }));
+  // Gönderileri güncelle
+  useEffect(() => {
+    if (userPosts?.data && (!posts || posts.length === 0)) {
+      dispatch(setPosts(userPosts.data));
+    }
+  }, [userPosts, dispatch, posts]);
 
-    var response = await updateUserBioMutation({ bio: newBio });
-    console.log(response);
+  // Loading durumunu güncelle
+  useEffect(() => {
+    const isLoading = getMyProfileLoading || postsLoading;
+    if (loading !== isLoading) {
+      dispatch(setLoading(isLoading));
+    }
+  }, [getMyProfileLoading, postsLoading, dispatch, loading]);
 
-    setIsEditing(false);
+  const handleUpdateBio = async () => {
+    try {
+      const result = await updateUserBioMutation({ bio: newBio });
+      if (result.data.success) {
+        dispatch(setProfile({ ...profile, bio: newBio }));
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Bio güncelleme hatası:", error);
+    }
   };
 
-  const handleCreateClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handlePostSubmit = (newPost) => {
-    handleCloseModal();
-  };
+  if (loading) return <div>Yükleniyor...</div>;
 
   return (
     <div className="flex h-screen ">
@@ -90,16 +99,16 @@ const ProfilePage = () => {
             <div className="flex items-center space-x-8 mt-6">
               <img
                 src={
-                  userInfo.profileImage
-                    ? userInfo.profileImage
+                  profile?.userProfilePicture
+                    ? profile?.userProfilePicture
                     : "https://via.placeholder.com/150"
                 }
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-gray-600"
               />
               <div>
-                <h2 className="text-3xl font-semibold ">{userInfo.username}</h2>
-                <p className="text-sm">{userInfo.fullname}</p>
+                <h2 className="text-3xl font-semibold ">{profile?.username}</h2>
+                <p className="text-sm">{profile?.fullname}</p>
                 <div className="flex items-center space-x-2">
                   {isEditing ? (
                     <div className="flex items-center space-x-2">
@@ -112,7 +121,7 @@ const ProfilePage = () => {
                       />
                       <button
                         className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check "
-                        onClick={() => handleClickBio()}
+                        onClick={() => handleUpdateBio()}
                       ></button>
                       <button
                         className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times "
@@ -121,11 +130,11 @@ const ProfilePage = () => {
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2 ml-auto">
-                      <p className="text-sm max-w-[700px]">{userInfo.bio}</p>
+                      <p className="text-sm max-w-[700px]">{profile?.bio}</p>
                       <button
                         className="text-gray-400 hover:text-white"
                         onClick={() => {
-                          setNewBio(userInfo.bio);
+                          setNewBio(profile?.bio);
                           setIsEditing(true);
                         }}
                       >
@@ -155,12 +164,12 @@ const ProfilePage = () => {
               {/* Yeni Gönderi Ekle Butonu */}
               <button
                 className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 "
-                onClick={handleCreateClick}
+                onClick={() => setIsModalOpen(true)}
               >
                 New post
               </button>
               <div className="grid grid-cols-3 gap-2 w-full mr-10">
-                {userPosts.data?.map((item, index) => (
+                {posts?.map((item, index) => (
                   <div
                     key={index}
                     className="bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden "
@@ -178,8 +187,8 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <PostForm onSubmit={handlePostSubmit} />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <PostForm onSubmit={() => setIsModalOpen(false)} />
       </Modal>
     </div>
   );
