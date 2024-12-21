@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetAllStoriesByUsernameQuery } from "../features/storyFeatures/storyApi.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setStories, setLoading, setError } from "../features/storyFeatures/storySlice.js";
 
 const StoryPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { stories, isLoading, error } = useSelector((state) => state.story);
   const [username, setUsername] = useState(location.state?.username);
-  const [userStories, setUserStories] = useState([]);
   const [currentUserImageIndex, setCurrentUserImageIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [allUsers, setAllUsers] = useState(location.state?.allUsers || []);
@@ -15,18 +18,22 @@ const StoryPage = () => {
   );
   const STORY_DURATION = 5000; // 5 saniye
 
-  const { data, isLoading } = useGetAllStoriesByUsernameQuery(username);
+  const { data } = useGetAllStoriesByUsernameQuery(username);
 
   // Story'leri yükleme
   useEffect(() => {
     if (data) {
-      setUserStories(data.data);
+      dispatch(setStories(data.data));
     }
-  }, [data]);
+    dispatch(setLoading(false));
+    if (error) {
+      dispatch(setError(error.message));
+    }
+  }, [data, error, dispatch]);
 
   // Otomatik story geçişi ve progress bar kontrolü
   useEffect(() => {
-    if (userStories.length === 0) return;
+    if (stories.length === 0) return;
 
     setProgress(0); // Her story değişiminde progress'i sıfırla
     
@@ -48,7 +55,7 @@ const StoryPage = () => {
       clearTimeout(timer);
       clearInterval(progressInterval);
     };
-  }, [currentUserImageIndex, userStories]);
+  }, [currentUserImageIndex, stories]);
 
   // Klavye olaylarını dinleme
   useEffect(() => {
@@ -64,7 +71,7 @@ const StoryPage = () => {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [currentUserImageIndex, userStories.length]);
+  }, [currentUserImageIndex, stories.length]);
 
   const handlePrevStory = () => {
     if (currentUserImageIndex === 0) {
@@ -83,7 +90,7 @@ const StoryPage = () => {
   };
 
   const handleNextStory = () => {
-    if (currentUserImageIndex === userStories.length - 1) {
+    if (currentUserImageIndex === stories.length - 1) {
       // Son story'de ise diğer kullanıcıya geç
       if (currentUserIndex < allUsers.length - 1) {
         // Sonraki kullanıcıya geç
@@ -102,7 +109,8 @@ const StoryPage = () => {
   };
 
   if (isLoading) return <div className="text-center mt-10">Yükleniyor...</div>;
-  if (!userStories.length) return <div className="text-center mt-10">Hikaye bulunamadı</div>;
+  if (error) return <div className="text-center mt-10">{error}</div>;
+  if (!stories.length) return <div className="text-center mt-10">Hikaye bulunamadı</div>;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
@@ -120,7 +128,7 @@ const StoryPage = () => {
           {/* Kullanıcı Bilgisi */}
           <div className="absolute top-4 left-4 flex items-center z-10">
             <img
-              src={userStories[currentUserImageIndex]?.userProfilePicture}
+              src={stories[currentUserImageIndex]?.userProfilePicture}
               alt={username}
               className="w-10 h-10 rounded-full border-2 border-white"
             />
@@ -129,7 +137,7 @@ const StoryPage = () => {
 
           {/* Progress Bar */}
           <div className="absolute top-0 left-0 right-0 flex gap-1 p-2">
-            {userStories.map((_, index) => (
+            {stories.map((_, index) => (
               <div
                 key={index}
                 className="flex-1 h-1 rounded-full bg-gray-400 overflow-hidden"
@@ -148,7 +156,7 @@ const StoryPage = () => {
 
           {/* Story Görseli */}
           <img
-            src={userStories[currentUserImageIndex]?.mediaUrl}
+            src={stories[currentUserImageIndex]?.mediaUrl}
             alt={`Story ${currentUserImageIndex + 1}`}
             className="w-full h-[80vh] object-contain"
           />

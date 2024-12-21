@@ -3,19 +3,25 @@ import "./Story.css";
 import propTypes from "prop-types";
 import { useGetAllStoriesQuery, useCreateStoryMutation } from "../../features/storyFeatures/storyApi.js";
 import { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setStories, setLoading, setError } from "../../features/storyFeatures/storySlice.js";
 
 function Story() {
+  const dispatch = useDispatch();
+  const { stories, loading } = useSelector((state) => state.story);
   const { data, isLoading, error } = useGetAllStoriesQuery();
   const [createStory] = useCreateStoryMutation();
-  const [stories, setStories] = useState([]);
-  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (data && data.data !== stories) {
-      setStories(data.data);
+      dispatch(setStories(data.data));
     }
-  }, [data, stories]);
+    dispatch(setLoading(isLoading));
+    if (error) {
+      dispatch(setError(error.message));
+    }
+  }, [data, isLoading, error, dispatch]);
 
   // Story'si olan tüm kullanıcıların listesini oluştur
   const allUsersWithStories = stories.map(story => story.username);
@@ -27,7 +33,7 @@ function Story() {
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      setIsUploading(true);
+      dispatch(setLoading(true));
       try {
         const formData = new FormData();
         formData.append('media', file);
@@ -35,14 +41,13 @@ function Story() {
         // Story ekleme API'sini çağır
         const response = await createStory(formData);
         if (response.data) {
-          // Story başarıyla eklendi, listeyi güncelle
-          setStories(prevStories => [...prevStories, response.data]);
+          dispatch(setStories([...stories, response.data]));
         }
       } catch (error) {
         console.error('Story yüklenirken hata oluştu:', error);
-        alert('Story yüklenirken bir hata oluştu. Lütfen tekrar deneyin.');
+        dispatch(setError('Story yüklenirken bir hata oluştu. Lütfen tekrar deneyin.'));
       } finally {
-        setIsUploading(false);
+        dispatch(setLoading(false));
       }
     }
   };
@@ -53,9 +58,9 @@ function Story() {
       <div className="story flex-none">
         <div 
           onClick={handleAddStory} 
-          className={`relative w-16 h-16 rounded-full border-2 border-gray-300 cursor-pointer hover:border-gray-400 flex items-center justify-center bg-gray-100 ${isUploading ? 'opacity-50' : ''}`}
+          className={`relative w-16 h-16 rounded-full border-2 border-gray-300 cursor-pointer hover:border-gray-400 flex items-center justify-center bg-gray-100 ${loading ? 'opacity-50' : ''}`}
         >
-          {isUploading ? (
+          {loading ? (
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-500" />
           ) : (
             <span className="text-3xl text-gray-500">+</span>
@@ -66,11 +71,11 @@ function Story() {
             onChange={handleFileChange}
             accept="image/*,video/*"
             className="hidden"
-            disabled={isUploading}
+            disabled={loading}
           />
         </div>
         <span className="text-center block mt-1">
-          {isUploading ? 'Yükleniyor...' : 'Story Ekle'}
+          {loading ? 'Yükleniyor...' : 'Story Ekle'}
         </span>
       </div>
 
@@ -98,7 +103,3 @@ function Story() {
 }
 
 export default Story;
-
-Story.propTypes = {
-  stories: propTypes.array,
-};
