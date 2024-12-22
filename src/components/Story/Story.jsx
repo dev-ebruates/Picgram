@@ -53,12 +53,12 @@ function Story() {
   };
 
   return (
-    <div className="story-bar border-t overflow-x-scroll border-gray-900">
+    <div className="story-bar border-t overflow-x-scroll border-gray-900 z-10">
       {/* Story Ekleme Butonu */}
       <div className="story flex-none">
         <div 
           onClick={handleAddStory} 
-          className={`relative w-16 h-16 rounded-full border-2 border-gray-300 cursor-pointer hover:border-gray-400 flex items-center justify-center bg-gray-100 ${loading ? 'opacity-50' : ''}`}
+          className={`relative w-16 h-16 rounded-full border-2 border-gray-300  cursor-pointer hover:border-gray-400 flex items-center justify-center bg-gray-100 ${loading ? 'opacity-50' : ''}`}
         >
           {loading ? (
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-500" />

@@ -4,7 +4,7 @@ const NavButton = ({ buttonIcon, buttonTitle, onClick, linkTo }) => {
   return (
     <Link to={`${linkTo} `}>
       <button
-        to="/about"
+        type="button"
         className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
         onClick={onClick}
       >
@@ -12,7 +12,7 @@ const NavButton = ({ buttonIcon, buttonTitle, onClick, linkTo }) => {
           <img
             src="https://picsum.photos/210"
             alt="Profile"
-            className="w-6 h-6 rounded-full border-2 border-gray-300 cursor-pointer"
+            className="w-6 h-6 rounded-full border-2 border-gray-300 cursor-pointer text-white"
           />
         ) : (
           <i className={`${buttonIcon} text-2xl`}></i>
