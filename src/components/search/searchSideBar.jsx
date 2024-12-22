@@ -1,42 +1,20 @@
 import  { useState } from "react";
 import { motion } from "framer-motion";
+import { useSearchQuery } from "../../features/searchFeatures/searchApi";
 
 const SearchSideBar = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  // const [searchResults, setSearchResults] = useState([]);
-  const searchResults = [
-    {
-      id: 1,
-      profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
-      username: "john_doe",
-      fullName: "John Doe",
-    },
-    {
-      id: 2,
-      profilePicture: "https://randomuser.me/api/portraits/women/2.jpg",
-      username: "jane_smith",
-      fullName: "Jane Smith",
-    },
-    {
-      id: 3,
-      profilePicture: "https://randomuser.me/api/portraits/men/3.jpg",
-      username: "mike_harris",
-      fullName: "Mike Harris",
-    },
-    {
-      id: 4,
-      profilePicture: "https://randomuser.me/api/portraits/women/4.jpg",
-      username: "sarah_connor",
-      fullName: "Sarah Connor",
-    },
-  ];
 
   const handleSearch = (e) => {
     const query = e.target.value;
+    console.log("Search query:", query);
     setSearchQuery(query);
-    // Burada arama mantığını ekleyeceksiniz
-    // Örneğin, kullanıcıları filtrelemek için bir API çağrısı
   };
+  const { data, isLoading, error, refetch } = useSearchQuery(searchQuery, {
+    skip: !searchQuery
+});
+
+
 
   return (
     <motion.div
@@ -65,7 +43,7 @@ const SearchSideBar = ({ isOpen, onClose }) => {
         />
 
         <div className="search-results">
-          {searchResults.map((user) => (
+          {data?.data?.map((user) => (
             <div
               key={user.id}
               className="flex items-center p-2 hover:bg-gray-500 cursor-pointer search-result-item"
