@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Header from "../components/Header/Header";
+import Header from "../components/header/Header";
 import { useState, useEffect } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
