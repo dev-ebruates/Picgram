@@ -4,18 +4,25 @@ import { useState, useEffect } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
 import { useUpdateUserBioMutation } from "../features/userFeatures/userApi.js";
-import { useGetMyProfileQuery } from "../features/userFeatures/userApi.js";
+import {
+  useGetProfileQuery,
+  useGetMyProfileQuery,
+} from "../features/userFeatures/userApi.js";
 import { useGetAllByUserIdQuery } from "../features/postFeatures/postApi";
 import { useDispatch, useSelector } from "react-redux";
-import { 
-  setProfile, 
-  setPosts, 
-  selectUserProfile, 
+import {
+  setProfile,
+  setPosts,
+  selectUserProfile,
   selectUserPosts,
   selectUserLoading,
-  setLoading
+  setLoading,
 } from "../features/userFeatures/userSlice";
-import { setUserPosts, selectUserPosts as selectPostsFromPostSlice } from "../features/postFeatures/postSlice";
+import {
+  setUserPosts,
+  selectUserPosts as selectPostsFromPostSlice,
+} from "../features/postFeatures/postSlice";
+import { useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -23,28 +30,38 @@ const ProfilePage = () => {
   const posts = useSelector(selectPostsFromPostSlice);
   const loading = useSelector(selectUserLoading);
   
+  const { username } = useParams(); // URL'den kullanıcı adını al
+  const { data: myProfile } = useGetMyProfileQuery();
+  const currentUser = myProfile?.data;
+
+  const isOwnProfile = !username || currentUser?.username === username; // Kendi profilimi mi kontrol et
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newBio, setNewBio] = useState("");
 
   const [updateUserBioMutation] = useUpdateUserBioMutation();
 
-  const {
-    data: getMyProfileData,
-    isLoading: getMyProfileLoading,
-  } = useGetMyProfileQuery();
+  const myProfileQuery = useGetMyProfileQuery();
+  const userProfileQuery = useGetProfileQuery(username);
 
-  const {
-    data: userPosts = [],
-    isLoading: postsLoading,
-  } = useGetAllByUserIdQuery();
+  const getProfileData = isOwnProfile
+    ? myProfileQuery.data
+    : userProfileQuery.data;
+
+  const getProfileLoading = isOwnProfile
+    ? myProfileQuery.isLoading
+    : userProfileQuery.isLoading;
+    
+  const { data: userPosts = [], isLoading: postsLoading } =
+    useGetAllByUserIdQuery(username || currentUser?.username);
 
   // Profil verilerini güncelle
   useEffect(() => {
-    if (getMyProfileData?.data && !profile) {
-      dispatch(setProfile(getMyProfileData.data));
+    if (getProfileData?.data && (!profile || username)) {
+      dispatch(setProfile(getProfileData.data));
     }
-  }, [getMyProfileData, dispatch, profile]);
+  }, [getProfileData, dispatch, profile, username]);
 
   // Kullanıcı gönderilerini güncelle
   useEffect(() => {
@@ -55,34 +72,23 @@ const ProfilePage = () => {
 
   // Loading durumunu güncelle
   useEffect(() => {
-    const isLoading = getMyProfileLoading || postsLoading;
+    const isLoading = getProfileLoading || postsLoading;
     if (loading !== isLoading) {
       dispatch(setLoading(isLoading));
     }
-  }, [getMyProfileLoading, postsLoading, dispatch, loading]);
+  }, [getProfileLoading, postsLoading, dispatch, loading]);
 
-  // Biyografiyi güncelle
-  useEffect(() => {
-    if (profile?.bio && !newBio) {
-      setNewBio(profile.bio);
-    }
-  }, [profile, newBio]);
-
-  const handleUpdateBio = async () => {
+  const handleBioUpdate = async () => {
     try {
-      const response = await updateUserBioMutation({ bio: newBio }).unwrap();
-      if (response.success) {
-        dispatch(setProfile({ ...profile, bio: newBio }));
-        setIsEditing(false);
-      }
+      await updateUserBioMutation({ bio: newBio });
+      setIsEditing(false);
     } catch (error) {
-      console.error('Bio güncelleme hatası:', error);
+      console.error("Biyografi güncellenirken hata oluştu:", error);
     }
   };
 
-  if (loading) {
-    return <div>Yükleniyor...</div>;
-  }
+  if (getProfileLoading) return <div>Yükleniyor...</div>;
+  if (!getProfileData?.data) return <div>Profil bulunamadı</div>;
 
   return (
     <div className="flex h-screen ">
@@ -124,7 +130,7 @@ const ProfilePage = () => {
                       />
                       <button
                         className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check "
-                        onClick={() => handleUpdateBio()}
+                        onClick={() => handleBioUpdate()}
                       ></button>
                       <button
                         className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times "
@@ -134,15 +140,17 @@ const ProfilePage = () => {
                   ) : (
                     <div className="flex items-center space-x-2 ml-auto">
                       <p className="text-sm max-w-[700px]">{profile?.bio}</p>
-                      <button
-                        className="text-gray-400 hover:text-white"
-                        onClick={() => {
-                          setNewBio(profile?.bio);
-                          setIsEditing(true);
-                        }}
-                      >
-                        <i className="fas fa-pencil-alt"></i>
-                      </button>
+                      {isOwnProfile && (
+                        <button
+                          className="text-gray-400 hover:text-white"
+                          onClick={() => {
+                            setNewBio(profile?.bio);
+                            setIsEditing(true);
+                          }}
+                        >
+                          <i className="fas fa-pencil-alt"></i>
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -152,25 +160,31 @@ const ProfilePage = () => {
               {/* Takipçi Bilgileri */}
               <div className="w-full mr-10 flex justify-around p-6 mb-10 border-b border-gray-900 ">
                 <div className="text-center">
-                  <p className="text-l font-medium">0</p>
+                  <p className="text-l font-medium">{posts?.length || 0}</p>
                   <p className="text-sm text-gray-400">posts</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-l font-medium">119</p>
+                  <p className="text-l font-medium">
+                    {profile?.followers || 0}
+                  </p>
                   <p className="text-sm text-gray-400">followers</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-l font-medium">205</p>
+                  <p className="text-l font-medium">
+                    {profile?.following || 0}
+                  </p>
                   <p className="text-sm text-gray-400">following</p>
                 </div>
               </div>
               {/* Yeni Gönderi Ekle Butonu */}
-              <button
-                className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 "
-                onClick={() => setIsModalOpen(true)}
-              >
-                New post
-              </button>
+              {isOwnProfile && (
+                <button
+                  className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 "
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  New post
+                </button>
+              )}
               <div className="grid grid-cols-3 gap-2 w-full mr-10">
                 {posts?.map((item, index) => (
                   <div
@@ -190,9 +204,11 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <PostForm onSubmit={() => setIsModalOpen(false)} />
-      </Modal>
+      {isOwnProfile && (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <PostForm onSubmit={() => setIsModalOpen(false)} />
+        </Modal>
+      )}
     </div>
   );
 };

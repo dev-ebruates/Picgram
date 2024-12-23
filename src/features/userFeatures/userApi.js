@@ -21,10 +21,13 @@ export const userApi = baseApi.injectEndpoints({
         body: credentials,
       }),
     }),
+    getProfile: builder.query({
+      query: (username) => `/profile/${username}`,
+    }),
     getMyProfile: builder.query({
       query: () => "/my-profile",
     }),
   }),
 });
 
-export const { useCreateUserMutation, useUpdateUserBioMutation, useGetMyProfileQuery } = userApi;
+export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery } = userApi;
