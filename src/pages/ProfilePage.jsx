@@ -8,7 +8,7 @@ import {
   useGetProfileQuery,
   useGetMyProfileQuery,
 } from "../features/userFeatures/userApi.js";
-import { useGetAllByUserIdQuery } from "../features/postFeatures/postApi";
+import { useGetAllByUsernameQuery } from "../features/postFeatures/postApi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProfile,
@@ -55,7 +55,7 @@ const ProfilePage = () => {
     : userProfileQuery.isLoading;
     
   const { data: userPosts = [], isLoading: postsLoading } =
-    useGetAllByUserIdQuery(username || currentUser?.username);
+    useGetAllByUsernameQuery(username || currentUser?.username);
 
   // Profil verilerini güncelle
   useEffect(() => {

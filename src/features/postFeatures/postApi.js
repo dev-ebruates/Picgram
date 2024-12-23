@@ -24,9 +24,9 @@ export const postApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Posts", "UserPosts"],
     }),
-    getAllByUserId: builder.query({
-      query: () => ({
-        url: "/user-posts",
+    getAllByUsername: builder.query({
+      query: (username) => ({
+        url: `/user-posts/${username}`,
         method: "GET"
       }),
       transformResponse: (response) => {
@@ -58,7 +58,7 @@ export const postApi = baseApi.injectEndpoints({
 export const {
   useGetAllPostsQuery,
   useCreatePostMutation,
-  useGetAllByUserIdQuery,
+  useGetAllByUsernameQuery,
   useUpdatePostMutation,
   useDeletePostMutation,
 } = postApi;
