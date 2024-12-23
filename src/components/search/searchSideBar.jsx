@@ -6,13 +6,13 @@ const SearchSideBar = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
-    const query = e.target.value;
+    const query = e.target.value.trim();
     console.log("Search query:", query);
     setSearchQuery(query);
   };
-  const { data, isLoading, error, refetch } = useSearchQuery(searchQuery, {
-    skip: !searchQuery
-});
+  const { data } = useSearchQuery(searchQuery, {
+    skip: !searchQuery || searchQuery.length === 0
+  });
 
 
 
