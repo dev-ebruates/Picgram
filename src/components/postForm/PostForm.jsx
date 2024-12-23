@@ -7,7 +7,7 @@ import { addPost } from "../../features/postFeatures/postSlice";
 const PostForm = ({ onSubmit }) => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [caption, setCaption] = useState("");
-  
+
   const dispatch = useDispatch();
   const [createPost, { isLoading }] = useCreatePostMutation();
 
@@ -21,7 +21,7 @@ const PostForm = ({ onSubmit }) => {
       setMediaUrl("");
       setCaption("");
     } catch (error) {
-      alert(error.data?.message || 'Bir hata oluştu');
+      alert(error.data?.message || "Bir hata oluştu");
     }
   };
 
@@ -36,7 +36,7 @@ const PostForm = ({ onSubmit }) => {
           style={{
             width: "250px",
             height: "250px",
-            objectFit: "cover"
+            objectFit: "cover",
           }}
         />
       </div>
@@ -80,7 +80,7 @@ const PostForm = ({ onSubmit }) => {
           disabled={isLoading}
           className="w-full inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 transition-colors duration-300"
         >
-          {isLoading ? 'Gönderiliyor...' : 'Paylaş'}
+          {isLoading ? "Gönderiliyor..." : "Share"}
         </button>
       </form>
     </div>
