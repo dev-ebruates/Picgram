@@ -54,11 +54,12 @@ function Post({ post }) {
     <div className="max-w-md mx-auto my-5 border border-black rounded-lg shadow-md bg-black border-b-gray-900">
       {/* Profil Bilgileri */}
       <div className="flex items-center px-4 py-3 ">
-        <img
+        <Link to={`/${post.username}`}> <img
           src={post.userProfilePicture || "https://via.placeholder.com/40"}
           alt="Profil Resmi"
           className="w-16 h-16 rounded-full"
-        />
+        /></Link>
+       
         <div className="ml-3">
           <p className="font-semibold">{post.username}</p>
           <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
