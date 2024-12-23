@@ -26,17 +26,16 @@ const PostForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-100 w-full bg-black p-6 rounded-lg">
+    <div className="flex flex-col justify-center items-center h-100 w-full bg-gray-900  p-6 rounded-lg">
       {/* Resim Önizlemesi */}
       <div className="w-full flex justify-center mb-6">
         <img
           src={mediaUrl || createPostImage}
           alt="Create Post"
-          className="rounded-md border-4 border-gray-800"
+          className="rounded-full overflow-hidden border-4 border-gray-800 object-cover"
           style={{
             width: "250px",
-            height: "auto",
-            maxHeight: "300px",
+            height: "250px",
             objectFit: "cover"
           }}
         />
@@ -48,7 +47,7 @@ const PostForm = ({ onSubmit }) => {
         <div>
           <label
             htmlFor="media"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="block text-sm font-medium text-gray-300 mb-1"
           >
             Media URL:
           </label>
@@ -57,14 +56,14 @@ const PostForm = ({ onSubmit }) => {
             id="media"
             value={mediaUrl}
             onChange={(e) => setMediaUrl(e.target.value)}
-            className="mt-6 block w-full rounded-md bg-gray-800 border-gray-600 text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm py-2 px-3 border border-transparent"
+            className="mt-2 block w-full rounded-md bg-gray-500 border-gray-600 text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm py-2 px-3 border border-transparent"
             required
           />
         </div>
         <div>
           <label
             htmlFor="caption"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="block text-sm font-medium text-gray-300 mb-1"
           >
             Caption:
           </label>
@@ -72,14 +71,14 @@ const PostForm = ({ onSubmit }) => {
             id="caption"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="mt-6 block w-full rounded-md bg-gray-800 border-gray-600 text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm py-2 px-3 min-h-[100px] border border-transparent"
+            className="mt-2 block w-full rounded-md bg-gray-500 border-gray-600 text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm py-2 px-3 min-h-[100px] border border-transparent"
             required
           />
         </div>
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 transition-colors duration-300"
+          className="w-full inline-flex justify-center rounded-md border border-transparent bg-gray-500 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 transition-colors duration-300"
         >
           {isLoading ? 'Gönderiliyor...' : 'Paylaş'}
         </button>
