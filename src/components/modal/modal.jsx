@@ -7,11 +7,11 @@ const Modal = ({ isOpen, onClose, children }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md"
+        className="bg-black p-6 rounded-lg shadow-lg relative w-full max-w-md"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-200"
           onClick={onClose}
         >
           ✖
