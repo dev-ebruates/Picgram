@@ -30,7 +30,8 @@ const ProfilePage = () => {
   const posts = useSelector(selectPostsFromPostSlice);
   const loading = useSelector(selectUserLoading);
   
-  const { username } = useParams(); // URL'den kullanıcı adını al
+  const params = useParams(); // URL'den parametreleri al
+  const username = params.username; // URL'den kullanıcı adını al
   const { data: myProfile } = useGetMyProfileQuery();
   const currentUser = myProfile?.data;
 

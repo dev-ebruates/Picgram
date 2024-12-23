@@ -110,7 +110,7 @@ function Header() {
             <NavButton
               buttonIcon="fas fa-user"
               buttonTitle="Profile"
-              linkTo={`/profile/${username}`}
+              linkTo={`/${username}`}
             />
           </li>
           <li className="mt-auto">
