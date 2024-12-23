@@ -1,6 +1,7 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useSearchQuery } from "../../features/searchFeatures/searchApi";
+import { Link } from "react-router-dom";
 
 const SearchSideBar = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,10 +12,10 @@ const SearchSideBar = ({ isOpen, onClose }) => {
     setSearchQuery(query);
   };
   const { data } = useSearchQuery(searchQuery, {
-    skip: !searchQuery || searchQuery.length === 0
+    skip: !searchQuery || searchQuery.length === 0,
   });
-
-
+  console.log("Search Query:", searchQuery);
+  console.log("Search Data:", data);
 
   return (
     <motion.div
@@ -48,17 +49,18 @@ const SearchSideBar = ({ isOpen, onClose }) => {
               key={user.id}
               className="flex items-center p-2 hover:bg-gray-500 cursor-pointer search-result-item"
             >
-              <img
-                src={user.profilePicture}
-                alt={user.username}
-                className="w-10 h-10 rounded-full mr-3 search-result-avatar"
-              />
-              <div>
-                <p className="font-semibold search-result-username">
-                  {user.username}
-                </p>
-          
-              </div>
+              <Link to={`/${user.username}`} className="flex items-center w-full">
+                <img
+                  src={user.profilePicture}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full mr-3 search-result-avatar"
+                />
+                <div>
+                  <p className="font-semibold search-result-username">
+                    {user.username}
+                  </p>
+                </div>
+              </Link>
             </div>
           ))}
         </div>
