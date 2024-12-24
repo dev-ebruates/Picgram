@@ -53,7 +53,7 @@ function Story() {
   };
 
   return (
-    <div className="story-bar border-t overflow-x-scroll border-gray-900 z-10">
+    <div className="story-bar border-t overflow-x-scroll border-gray-900">
       {/* Story Ekleme Butonu */}
       <div className="story flex-none">
         <div 

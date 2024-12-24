@@ -11,6 +11,7 @@ import { resetApiState } from "../../features/baseApi/baseApi";
 import SearchSideBar from "../search/searchSideBar.jsx";
 import { useSelector } from "react-redux";
 import { useGetMyProfileQuery } from "../../features/userFeatures/userApi.js";
+import { Link } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
@@ -20,7 +21,8 @@ function Header() {
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
-  const profilePicture = myProfile?.data?.userProfilePicture || "https://via.placeholder.com/150";
+  const profilePicture =
+    myProfile?.data?.userProfilePicture || "https://via.placeholder.com/150";
 
   const handleCreateClick = () => {
     setIsModalOpen(true);
@@ -57,9 +59,11 @@ function Header() {
   return (
     <header className="header border-r border-gray-900 h-10 ">
       <div className="logo">
-        <h2 className=" italic font-serif text-4xl tracking-tight text-white">
-          Picgram
-        </h2>
+        <Link to="/">
+          <h2 className=" italic font-serif text-4xl tracking-tight text-white">
+            Picgram
+          </h2>
+        </Link>
       </div>
 
       <nav className="menu">
@@ -69,15 +73,15 @@ function Header() {
           </li>
           <li>
             <li>
-            <button
-              onClick={toggleSearch}
-              className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
-            >
-              <i className="fas fa-search  text-2xl"></i>
-              <span className="px-2 py-2 mt-1  text-l  text-white ">
-                Search
-              </span>
-            </button>
+              <button
+                onClick={toggleSearch}
+                className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
+              >
+                <i className="fas fa-search  text-2xl"></i>
+                <span className="px-2 py-2 mt-1  text-l  text-white ">
+                  Search
+                </span>
+              </button>
             </li>
           </li>
           <li>
@@ -127,7 +131,6 @@ function Header() {
       <SearchSideBar
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
-  
       />
 
       {/* Modal Bileşeni */}
