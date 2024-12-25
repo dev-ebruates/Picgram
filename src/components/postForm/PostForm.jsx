@@ -32,7 +32,7 @@ const PostForm = ({ onSubmit }) => {
         <img
           src={mediaUrl || createPostImage}
           alt="Create Post"
-          className="rounded-full overflow-hidden border-4 border-gray-800 object-cover"
+          className={`w-full h-full object-cover ${mediaUrl ? '' : 'rounded-full'} overflow-hidden border-4 border-gray-800`}
           style={{
             width: "250px",
             height: "250px",
