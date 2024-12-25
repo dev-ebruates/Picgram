@@ -82,6 +82,7 @@ const ProfilePage = () => {
   const handleBioUpdate = async () => {
     try {
       await updateUserBioMutation({ bio: newBio });
+      myProfileQuery.refetch(); // Profili yeniden yükle
       setIsEditing(false);
     } catch (error) {
       console.error("Biyografi güncellenirken hata oluştu:", error);
