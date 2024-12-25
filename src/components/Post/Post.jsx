@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updatePost, deletePost } from "../../features/postFeatures/postSlice";
-import { useUpdatePostMutation, useDeletePostMutation } from "../../features/postFeatures/postApi";
+import {
+  useUpdatePostMutation,
+  useDeletePostMutation,
+  useLikedPostMutation,
+} from "../../features/postFeatures/postApi";
 
 function Post({ post }) {
   const dispatch = useDispatch();
@@ -13,18 +17,19 @@ function Post({ post }) {
 
   const [updatePostMutation] = useUpdatePostMutation();
   const [deletePostMutation] = useDeletePostMutation();
+  const [likedPostMutation] = useLikedPostMutation();
 
   const handleUpdatePost = async () => {
     try {
       const response = await updatePostMutation({
         id: post.id,
-        caption: editedCaption
+        caption: editedCaption,
       }).unwrap();
-      
+
       dispatch(updatePost(response.data));
       setIsEditing(false);
     } catch (error) {
-      console.error('Post güncelleme hatası:', error);
+      console.error("Post güncelleme hatası:", error);
     }
   };
 
@@ -33,20 +38,28 @@ function Post({ post }) {
       await deletePostMutation(post.id).unwrap();
       dispatch(deletePost(post.id));
     } catch (error) {
-      console.error('Post silme hatası:', error);
+      console.error("Post silme hatası:", error);
+    }
+  };
+
+  const handleLikePost = async () => {
+    try {
+      await likedPostMutation(post.id).unwrap();
+    } catch (error) {
+      console.error("Beğeni hatası:", error);
     }
   };
 
   // Tarih formatlaması
   const formatDate = (dateString) => {
     try {
-      if (!dateString) return '';
+      if (!dateString) return "";
       const date = new Date(dateString);
-      if (isNaN(date.getTime())) return '';
+      if (isNaN(date.getTime())) return "";
       return formatDistanceToNow(date, { locale: enUS, addSuffix: true });
     } catch (error) {
-      console.error('Tarih formatlama hatası:', error);
-      return '';
+      console.error("Tarih formatlama hatası:", error);
+      return "";
     }
   };
 
@@ -54,12 +67,15 @@ function Post({ post }) {
     <div className="max-w-md mx-auto my-5 border border-black rounded-lg shadow-md bg-black border-b-gray-900">
       {/* Profil Bilgileri */}
       <div className="flex items-center px-4 py-3 ">
-        <Link to={`/${post.username}`}> <img
-          src={post.userProfilePicture || "https://via.placeholder.com/40"}
-          alt="Profil Resmi"
-          className="w-16 h-16 rounded-full"
-        /></Link>
-       
+        <Link to={`/${post.username}`}>
+          {" "}
+          <img
+            src={post.userProfilePicture || "https://via.placeholder.com/40"}
+            alt="Profil Resmi"
+            className="w-16 h-16 rounded-full"
+          />
+        </Link>
+
         <div className="ml-3">
           <p className="font-semibold">{post.username}</p>
           <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
@@ -75,13 +91,22 @@ function Post({ post }) {
 
       {/* Etkileşim Butonları */}
       <div className="flex justify-between items-center px-4 py-2">
-        <div className="flex space-x-4">
-          <button>
-            <i className="far fa-heart text-2xl"></i>
-          </button>
-          <button>
-            <i className="far fa-comment text-2xl"></i>
-          </button>
+        <div className="flex flex-col space-y-1">
+          <div className="flex space-x-4">
+            <button onClick={handleLikePost}>
+              <i
+                className={`${post.isLiked ? "fas" : "far"} fa-heart text-2xl ${
+                  post.isLiked ? "text-red-500" : "text-white"
+                }`}
+              ></i>
+            </button>
+            <button>
+              <i className="far fa-comment text-2xl"></i>
+            </button>
+          </div>
+          {post.likeCount > 0 && (
+            <p className="text-white text-sm">{post.likeCount} likes</p>
+          )}
         </div>
       </div>
 
@@ -108,7 +133,7 @@ function Post({ post }) {
             {post.caption}
           </p>
         )}
-        
+
         {post.isOwner && (
           <div className="flex items-center space-x-2 mt-2">
             <button
@@ -125,7 +150,7 @@ function Post({ post }) {
             </button>
           </div>
         )}
-        
+
         <p className="text-sm text-gray-500 mt-2">View all 10 comments</p>
       </div>
     </div>

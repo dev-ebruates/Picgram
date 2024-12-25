@@ -5,13 +5,13 @@ export const postApi = baseApi.injectEndpoints({
     getAllPosts: builder.query({
       query: () => ({
         url: "/posts",
-        method: "GET"
+        method: "GET",
       }),
       transformResponse: (response) => {
         // API yanıtını dönüştür
         return {
           data: Array.isArray(response.data) ? response.data : [],
-          message: response.message
+          message: response.message,
         };
       },
       providesTags: ["Posts"],
@@ -27,12 +27,12 @@ export const postApi = baseApi.injectEndpoints({
     getAllByUsername: builder.query({
       query: (username) => ({
         url: `/user-posts/${username}`,
-        method: "GET"
+        method: "GET",
       }),
       transformResponse: (response) => {
         return {
           data: Array.isArray(response.data) ? response.data : [],
-          message: response.message
+          message: response.message,
         };
       },
       providesTags: ["UserPosts"],
@@ -52,6 +52,13 @@ export const postApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Posts", "UserPosts"],
     }),
+    likedPost: builder.mutation({
+      query: (id) => ({
+        url: `/posts/${id}/like`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Posts", "UserPosts"],
+    }),
   }),
 });
 
@@ -61,4 +68,5 @@ export const {
   useGetAllByUsernameQuery,
   useUpdatePostMutation,
   useDeletePostMutation,
+  useLikedPostMutation,
 } = postApi;

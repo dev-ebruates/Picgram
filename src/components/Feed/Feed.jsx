@@ -12,6 +12,7 @@ const Feed = () => {
   const error = useSelector(selectPostError);
   
   const { data: postsData, isLoading: isPostsLoading } = useGetAllPostsQuery();
+  console.log("Posts Data:", postsData);
 
   useEffect(() => {
     if (postsData?.data) {
