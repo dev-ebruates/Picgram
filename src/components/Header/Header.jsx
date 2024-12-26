@@ -72,17 +72,15 @@ function Header() {
             <NavButton buttonIcon="fas fa-home" buttonTitle="Home" linkTo="/" />
           </li>
           <li>
-            <li>
-              <button
-                onClick={toggleSearch}
-                className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
-              >
-                <i className="fas fa-search  text-2xl"></i>
-                <span className="px-2 py-2 mt-1  text-l  text-white ">
-                  Search
-                </span>
-              </button>
-            </li>
+            <button
+              onClick={toggleSearch}
+              className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
+            >
+              <i className="fas fa-search  text-2xl"></i>
+              <span className="px-2 py-2 mt-1  text-l  text-white ">
+                Search
+              </span>
+            </button>
           </li>
           <li>
             <NavButton
