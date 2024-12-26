@@ -8,14 +8,11 @@ const SearchSideBar = ({ isOpen, onClose }) => {
 
   const handleSearch = (e) => {
     const query = e.target.value.trim();
-    console.log("Search query:", query);
     setSearchQuery(query);
   };
   const { data } = useSearchQuery(searchQuery, {
     skip: !searchQuery || searchQuery.length === 0,
   });
-  console.log("Search Query:", searchQuery);
-  console.log("Search Data:", data);
 
   return (
     <motion.div
