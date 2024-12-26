@@ -142,17 +142,16 @@ const LoginPage = () => {
             <span className="text-gray-500 text-sm"></span>
           </div>
 
-          <Link to="/register">
-            <div className="flex items-center justify-between">
-              <a className=" text-center text-sm text-gray-500 mt-4">
+          <div className="flex items-center justify-between">
+            <Link to="/register" className="w-full">
+              <div className="text-center text-sm text-gray-500 mb-4">
                 Don't have an account?
-              </a>
-
-              <button className="text-center text-sm bg-gray-400 mt-4 border border-gray-400 rounded-md p-2 hover:bg-gray-600 w-full  ">
+              </div>
+              <button className="text-center text-sm bg-gray-400 border border-gray-400 rounded-md p-2 hover:bg-gray-600 w-full">
                 Sign up
               </button>
-            </div>
-          </Link>
+            </Link>
+          </div>
           <div></div>
         </div>
       </div>
