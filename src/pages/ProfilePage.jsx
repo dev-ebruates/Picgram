@@ -10,25 +10,13 @@ import {
 } from "../features/userFeatures/userApi.js";
 import { useGetAllByUsernameQuery } from "../features/postFeatures/postApi";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setProfile,
-  setPosts,
-  selectUserProfile,
-  selectUserPosts,
-  selectUserLoading,
-  setLoading,
-} from "../features/userFeatures/userSlice";
-import {
-  setUserPosts,
-  selectUserPosts as selectPostsFromPostSlice,
-} from "../features/postFeatures/postSlice";
 import { useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
-  const profile = useSelector(selectUserProfile);
-  const posts = useSelector(selectPostsFromPostSlice);
-  const loading = useSelector(selectUserLoading);
+  const profile = useSelector((state) => state.user.profile);
+  const posts = useSelector((state) => state.user.posts);
+  const loading = useSelector((state) => state.user.loading);
   
   const params = useParams(); // URL'den parametreleri al
   const username = params.username; // URL'den kullanıcı adını al
@@ -60,14 +48,14 @@ const ProfilePage = () => {
   // Profil verilerini güncelle
   useEffect(() => {
     if (getProfileData?.data && (!profile || username)) {
-      dispatch(setProfile(getProfileData.data));
+      dispatch({ type: 'SET_PROFILE', payload: getProfileData.data });
     }
   }, [getProfileData, dispatch, profile, username]);
 
   // Kullanıcı gönderilerini güncelle
   useEffect(() => {
     if (userPosts?.data) {
-      dispatch(setUserPosts(userPosts.data));
+      dispatch({ type: 'SET_POSTS', payload: userPosts.data });
     }
   }, [userPosts, dispatch]);
 
@@ -75,7 +63,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const isLoading = getProfileLoading || postsLoading;
     if (loading !== isLoading) {
-      dispatch(setLoading(isLoading));
+      dispatch({ type: 'SET_LOADING', payload: isLoading });
     }
   }, [getProfileLoading, postsLoading, dispatch, loading]);
 

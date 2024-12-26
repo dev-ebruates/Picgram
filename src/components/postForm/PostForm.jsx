@@ -1,22 +1,18 @@
 import { useState } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
 import { useCreatePostMutation } from "../../features/postFeatures/postApi";
-import { useDispatch } from "react-redux";
-import { addPost } from "../../features/postFeatures/postSlice";
 
 const PostForm = ({ onSubmit }) => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [caption, setCaption] = useState("");
 
-  const dispatch = useDispatch();
   const [createPost, { isLoading }] = useCreatePostMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await createPost({ mediaUrl, caption }).unwrap();
-      dispatch(addPost(response.data));
-      onSubmit && onSubmit({ mediaUrl, caption });
+      onSubmit && onSubmit(response.data);
       alert(response.message);
       setMediaUrl("");
       setCaption("");

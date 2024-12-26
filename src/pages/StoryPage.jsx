@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useGetAllStoriesByUsernameQuery } from "../features/storyFeatures/storyApi.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setStories, setLoading, setError } from "../features/storyFeatures/storySlice.js";
 
 const StoryPage = () => {
   const location = useLocation();
@@ -23,11 +22,11 @@ const StoryPage = () => {
   // Story'leri yükleme
   useEffect(() => {
     if (data) {
-      dispatch(setStories(data.data));
+      dispatch({ type: 'setStories', payload: data.data });
     }
-    dispatch(setLoading(false));
+    dispatch({ type: 'setLoading', payload: false });
     if (error) {
-      dispatch(setError(error.message));
+      dispatch({ type: 'setError', payload: error.message });
     }
   }, [data, error, dispatch]);
 

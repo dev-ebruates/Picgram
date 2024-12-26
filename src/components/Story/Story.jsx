@@ -4,7 +4,6 @@ import propTypes from "prop-types";
 import { useGetAllStoriesQuery, useCreateStoryMutation } from "../../features/storyFeatures/storyApi.js";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setStories, setLoading, setError } from "../../features/storyFeatures/storySlice.js";
 
 function Story() {
   const dispatch = useDispatch();
@@ -15,11 +14,11 @@ function Story() {
 
   useEffect(() => {
     if (data && data.data !== stories) {
-      dispatch(setStories(data.data));
+      dispatch({ type: 'setStories', payload: data.data });
     }
-    dispatch(setLoading(isLoading));
+    dispatch({ type: 'setLoading', payload: isLoading });
     if (error) {
-      dispatch(setError(error.message));
+      dispatch({ type: 'setError', payload: error.message });
     }
   }, [data, isLoading, error, dispatch]);
 
@@ -33,7 +32,7 @@ function Story() {
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      dispatch(setLoading(true));
+      dispatch({ type: 'setLoading', payload: true });
       try {
         const formData = new FormData();
         formData.append('media', file);
@@ -41,13 +40,13 @@ function Story() {
         // Story ekleme API'sini çağır
         const response = await createStory(formData);
         if (response.data) {
-          dispatch(setStories([...stories, response.data]));
+          dispatch({ type: 'setStories', payload: [...stories, response.data] });
         }
       } catch (error) {
         console.error('Story yüklenirken hata oluştu:', error);
-        dispatch(setError('Story yüklenirken bir hata oluştu. Lütfen tekrar deneyin.'));
+        dispatch({ type: 'setError', payload: 'Story yüklenirken bir hata oluştu. Lütfen tekrar deneyin.' });
       } finally {
-        dispatch(setLoading(false));
+        dispatch({ type: 'setLoading', payload: false });
       }
     }
   };
