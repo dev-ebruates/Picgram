@@ -5,6 +5,8 @@ import { useState } from "react";
 import Modal from "../modal/modal";
 import PostForm from "../postForm/PostForm";
 import { useDispatch } from "react-redux";
+import { logout } from "../../features/authFeatures/authSlice";
+import { clearUserData } from "../../features/userFeatures/userSlice";
 import { resetApiState } from "../../features/baseApi/baseApi";
 import SearchSideBar from "../search/searchSideBar.jsx";
 import { useSelector } from "react-redux";
@@ -36,8 +38,8 @@ function Header() {
 
   const handleLogout = () => {
     // Tüm state'leri temizle
-    dispatch({ type: 'logout' });
-    dispatch({ type: 'RESET_STATE' });
+    dispatch(logout());
+    dispatch(clearUserData());
     dispatch(resetApiState());
 
     // Login sayfasına yönlendir
@@ -70,15 +72,17 @@ function Header() {
             <NavButton buttonIcon="fas fa-home" buttonTitle="Home" linkTo="/" />
           </li>
           <li>
-            <button
-              onClick={toggleSearch}
-              className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
-            >
-              <i className="fas fa-search  text-2xl"></i>
-              <span className="px-2 py-2 mt-1  text-l  text-white ">
-                Search
-              </span>
-            </button>
+            <li>
+              <button
+                onClick={toggleSearch}
+                className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
+              >
+                <i className="fas fa-search  text-2xl"></i>
+                <span className="px-2 py-2 mt-1  text-l  text-white ">
+                  Search
+                </span>
+              </button>
+            </li>
           </li>
           <li>
             <NavButton

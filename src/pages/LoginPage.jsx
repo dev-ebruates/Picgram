@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthMutation } from "../features/authFeatures/authApi.js";
 import { useDispatch } from "react-redux";
+import { setCredentials } from "../features/authFeatures/authSlice.js";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ const LoginPage = () => {
           user: result.data.data.user,
           token: result.data.data.token
         };
-        dispatch({ type: 'setCredentials', payload: userData });
+        dispatch(setCredentials(userData));
         navigate("/");
       }
     } catch (err) {
