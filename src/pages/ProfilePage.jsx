@@ -18,16 +18,11 @@ import {
   selectUserLoading,
   setLoading,
 } from "../features/userFeatures/userSlice";
-import {
-  setUserPosts,
-  selectUserPosts as selectPostsFromPostSlice,
-} from "../features/postFeatures/postSlice";
 import { useParams } from "react-router-dom";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const profile = useSelector(selectUserProfile);
-  const posts = useSelector(selectPostsFromPostSlice);
   const loading = useSelector(selectUserLoading);
   
   const params = useParams(); // URL'den parametreleri al
@@ -54,7 +49,7 @@ const ProfilePage = () => {
     ? myProfileQuery.isLoading
     : userProfileQuery.isLoading;
     
-  const { data: userPosts = [], isLoading: postsLoading } =
+  const { data: posts = [], isLoading: postsLoading } =
     useGetAllByUsernameQuery(username || currentUser?.username);
 
   // Profil verilerini güncelle
@@ -66,10 +61,8 @@ const ProfilePage = () => {
 
   // Kullanıcı gönderilerini güncelle
   useEffect(() => {
-    if (userPosts?.data) {
-      dispatch(setUserPosts(userPosts.data));
-    }
-  }, [userPosts, dispatch]);
+
+  }, [posts, dispatch]);
 
   // Loading durumunu güncelle
   useEffect(() => {

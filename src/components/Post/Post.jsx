@@ -3,7 +3,6 @@ import { enUS } from "date-fns/locale";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updatePost, deletePost } from "../../features/postFeatures/postSlice";
 import {
   useUpdatePostMutation,
   useDeletePostMutation,
@@ -25,8 +24,6 @@ function Post({ post }) {
         id: post.id,
         caption: editedCaption,
       }).unwrap();
-
-      dispatch(updatePost(response.data));
       setIsEditing(false);
     } catch (error) {
       console.error("Post güncelleme hatası:", error);
@@ -36,7 +33,6 @@ function Post({ post }) {
   const handleDeletePost = async () => {
     try {
       await deletePostMutation(post.id).unwrap();
-      dispatch(deletePost(post.id));
     } catch (error) {
       console.error("Post silme hatası:", error);
     }
