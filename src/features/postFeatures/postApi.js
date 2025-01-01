@@ -8,12 +8,7 @@ export const postApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => {
-        console.log("response", response);
         return Array.isArray(response.data) ? response.data : [];
-        // return {
-        //   data: Array.isArray(response.data) ? response.data : [],
-        //   message: response.message,
-        // };
       },
       providesTags: ["Posts"],
     }),

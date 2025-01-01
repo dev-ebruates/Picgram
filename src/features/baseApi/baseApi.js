@@ -25,7 +25,7 @@ export const baseApiMiddleware = baseApi.middleware;
 
 // Error handling middleware
 export const rtkQueryErrorLogger = (api) => (next) => (action) => {
-  if (action?.error?.status === 401) {
+  if (action?.payload?.status === 401) {
     localStorage.removeItem('authToken');
     window.location.href = '/login';
   }

@@ -8,7 +8,7 @@ import { postApi } from '../features/postFeatures/postApi.js';
 import authReducer from '../features/authFeatures/authSlice.js';
 import userReducer from '../features/userFeatures/userSlice.js';
 import storyReducer from '../features/storyFeatures/storySlice.js';
-import { baseApi, RESET_STATE_ACTION_TYPE } from '../features/baseApi/baseApi.js';
+import { baseApi, RESET_STATE_ACTION_TYPE, rtkQueryErrorLogger } from '../features/baseApi/baseApi.js';
 
 const rootReducer = (state, action) => {
   if (action.type === RESET_STATE_ACTION_TYPE) {
@@ -37,7 +37,8 @@ const store = configureStore({
       userApi.middleware,
       storyApi.middleware,
       postApi.middleware,
-      baseApi.middleware
+      baseApi.middleware,
+      rtkQueryErrorLogger
     ),
 });
 
