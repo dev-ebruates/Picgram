@@ -1,6 +1,20 @@
-import { baseApi } from "../baseApi/baseApi";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const postApi = baseApi.injectEndpoints({
+export const postApi = createApi({
+  reducerPath: "postApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:5148",
+    prepareHeaders: (headers) => {
+      // Auth token'ı ekle
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      // Content type header'ı ekle
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getAllPosts: builder.query({
       query: () => ({
@@ -87,81 +101,99 @@ export const postApi = baseApi.injectEndpoints({
         }
       },
     }),
-    updatePost: builder.mutation({
-      query: ({ id, caption }) => ({
-        url: `/posts/${id}`,
-        method: "PUT",
-        body: { caption },
-      }),
-      async onQueryStarted({ id, caption }, { dispatch, queryFulfilled }) {
-        const patchAllPosts = dispatch(
-          postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-            const post = draft.find((p) => p.id === id);
-            if (post) post.caption = caption; // Geçici güncelleme
-          })
-        );
+    // updatePost: builder.mutation({
+    //   query: ({ id, caption }) => ({
+    //     url: `/posts/${id}`,
+    //     method: "PUT",
+    //     body: { caption },
+    //   }),
+    //   async onQueryStarted({ id, caption }, { dispatch, queryFulfilled }) {
+    //     const patchAllPosts = dispatch(
+    //       postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
+    //         const post = draft.find((p) => p.id === id);
+    //         if (post) post.caption = caption; // Geçici güncelleme
+    //       })
+    //     );
 
-        const patchUserPosts = dispatch(
-          postApi.util.updateQueryData(
-            "getAllByUsername",
-            undefined,
-            (draft) => {
-              const post = draft.find((p) => p.id === id);
-              if (post) post.caption = caption; // Geçici güncelleme
-            }
-          )
-        );
+    //     const patchUserPosts = dispatch(
+    //       postApi.util.updateQueryData(
+    //         "getAllByUsername",
+    //         undefined,
+    //         (draft) => {
+    //           const post = draft.find((p) => p.id === id);
+    //           if (post) post.caption = caption; // Geçici güncelleme
+    //         }
+    //       )
+    //     );
 
-        try {
-          await queryFulfilled; // Güncellemenin başarıyla tamamlanmasını bekle
-        } catch (error) {
-          patchAllPosts.undo();
-          patchUserPosts.undo();
-          console.error("Gönderi güncellenirken hata oluştu:", error);
-        }
-      },
-    }),
-    deletePost: builder.mutation({
-      query: (id) => ({
-        url: `/posts/${id}`,
-        method: "DELETE",
-      }),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const patchAllPosts = dispatch(
-          postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-            draft.data = draft.filter((post) => post.id !== id); // Geçici silme
-          })
-        );
+    //     try {
+    //       await queryFulfilled; // Güncellemenin başarıyla tamamlanmasını bekle
+    //     } catch (error) {
+    //       patchAllPosts.undo();
+    //       patchUserPosts.undo();
+    //       console.error("Gönderi güncellenirken hata oluştu:", error);
+    //     }
+    //   },
+    // }),
+    // deletePost: builder.mutation({
+    //   query: (id) => ({
+    //     url: `/posts/${id}`,
+    //     method: "DELETE",
+    //   }),
+    //   async onQueryStarted(id, { dispatch, queryFulfilled }) {
+    //     const patchAllPosts = dispatch(
+    //       postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
+    //         draft.data = draft.filter((post) => post.id !== id); // Geçici silme
+    //       })
+    //     );
 
-        const patchUserPosts = dispatch(
-          postApi.util.updateQueryData(
-            "getAllByUsername",
-            undefined,
-            (draft) => {
-              draft.data = draft.filter((post) => post.id !== id); // Geçici silme
-            }
-          )
-        );
+    //     const patchUserPosts = dispatch(
+    //       postApi.util.updateQueryData(
+    //         "getAllByUsername",
+    //         undefined,
+    //         (draft) => {
+    //           draft.data = draft.filter((post) => post.id !== id); // Geçici silme
+    //         }
+    //       )
+    //     );
 
-        try {
-          await queryFulfilled; // Silmenin başarıyla tamamlanmasını bekle
-        } catch (error) {
-          patchAllPosts.undo();
-          patchUserPosts.undo();
-          console.error("Gönderi silinirken hata oluştu:", error);
-        }
-      },
-    }),
+    //     try {
+    //       await queryFulfilled; // Silmenin başarıyla tamamlanmasını bekle
+    //     } catch (error) {
+    //       patchAllPosts.undo();
+    //       patchUserPosts.undo();
+    //       console.error("Gönderi silinirken hata oluştu:", error);
+    //     }
+    //   },
+    // }),
     likedPost: builder.mutation({
       query: (id) => ({
         url: `/posts/${id}/like`,
         method: "PUT",
       }),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+      async onQueryStarted(id, { dispatch,
+        getState,
+        extra,
+        requestId,
+        queryFulfilled,
+        getCacheEntry,
+        updateCachedData,}) {
+          
+          console.log("getState",getState())
+          console.log("extra",extra)
+          console.log("requestId",requestId)
+          console.log("queryFulfilled",queryFulfilled)
+          console.log("getCacheEntry",getCacheEntry)
+          console.log("updateCachedData",updateCachedData)
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
             const post = draft.find((p) => p.id === id);
-            if (post) post.likes = (post.likes || 0) + 1; // Beğeni sayısını geçici olarak artır
+            if (post) {
+              console.log("post", post);
+              console.log("post.likes", post.likeCount);
+              post.isLiked = !post.isLiked;
+              post.likeCount = (post.likeCount || 0) + 1;
+            }
           })
         );
 
@@ -171,13 +203,18 @@ export const postApi = baseApi.injectEndpoints({
             undefined,
             (draft) => {
               const post = draft.find((p) => p.id === id);
-              if (post) post.likes = (post.likes || 0) + 1; // Beğeni sayısını geçici olarak artır
+              if (post) {
+                console.log("post", post);
+                console.log("post.likes", post.likeCount);
+                post.isLiked = !post.isLiked;
+                post.likeCount = (post.likeCount || 0) + 1;
+              }
             }
           )
         );
 
         try {
-          await queryFulfilled; // Beğeninin başarıyla tamamlanmasını bekle
+          await queryFulfilled;
         } catch (error) {
           patchAllPosts.undo();
           patchUserPosts.undo();
@@ -192,7 +229,7 @@ export const {
   useGetAllPostsQuery,
   useCreatePostMutation,
   useGetAllByUsernameQuery,
-  useUpdatePostMutation,
-  useDeletePostMutation,
+  // useUpdatePostMutation,
+  // useDeletePostMutation,
   useLikedPostMutation,
 } = postApi;

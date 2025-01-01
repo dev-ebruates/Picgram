@@ -2,41 +2,13 @@ import { formatDistanceToNow } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  useUpdatePostMutation,
-  useDeletePostMutation,
-  useLikedPostMutation,
-} from "../../features/postFeatures/postApi";
+import { useLikedPostMutation } from "../../features/postFeatures/postApi";
 
 function Post({ post }) {
-  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedCaption, setEditedCaption] = useState(post.caption);
 
-  const [updatePostMutation] = useUpdatePostMutation();
-  const [deletePostMutation] = useDeletePostMutation();
   const [likedPostMutation] = useLikedPostMutation();
-
-  const handleUpdatePost = async () => {
-    try {
-      const response = await updatePostMutation({
-        id: post.id,
-        caption: editedCaption,
-      }).unwrap();
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Post güncelleme hatası:", error);
-    }
-  };
-
-  const handleDeletePost = async () => {
-    try {
-      await deletePostMutation(post.id).unwrap();
-    } catch (error) {
-      console.error("Post silme hatası:", error);
-    }
-  };
 
   const handleLikePost = async () => {
     try {
@@ -116,12 +88,6 @@ function Post({ post }) {
               onChange={(e) => setEditedCaption(e.target.value)}
               className="flex-1 bg-gray-800 text-white p-2 rounded"
             />
-            <button
-              onClick={handleUpdatePost}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Kaydet
-            </button>
           </div>
         ) : (
           <p>
@@ -137,12 +103,6 @@ function Post({ post }) {
               className="text-gray-400 hover:text-white"
             >
               <i className="far fa-edit text-xl"></i>
-            </button>
-            <button
-              onClick={handleDeletePost}
-              className="text-gray-400 hover:text-white"
-            >
-              <i className="far fa-trash-alt text-xl"></i>
             </button>
           </div>
         )}
