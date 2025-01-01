@@ -35,7 +35,6 @@ export const postApi = baseApi.injectEndpoints({
       async onQueryStarted(post, { dispatch, queryFulfilled }) {
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-            console.log("post", post);
             var oldPost = draft.find((p) => p.id === post.id);
             if (oldPost) {
               oldPost = { ...oldPost, ...post };
@@ -62,7 +61,6 @@ export const postApi = baseApi.injectEndpoints({
 
         try {
           const { data: createdPost } = await queryFulfilled;
-          console.log("createdPost", createdPost);
           // Gerçek API yanıtı ile güncelle
           dispatch(
             postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {

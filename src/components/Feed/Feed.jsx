@@ -10,8 +10,8 @@ const Feed = () => {
   
   return (
     <div className="feed">
-      {posts?.map((post, i) => (
-        <Post key={i} post={post} />
+      {posts?.map((post) => (
+        <Post key={post.id} post={post} />
       ))}
     </div>
   );
