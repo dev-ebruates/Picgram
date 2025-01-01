@@ -33,20 +33,26 @@ export const postApi = baseApi.injectEndpoints({
         body: post,
       }),
       async onQueryStarted(post, { dispatch, queryFulfilled }) {
-        console.log("onQueryStarted", post);
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-            console.log("patchAllPosts", draft);
-            draft.unshift(post); // Yeni gönderiyi listenin başına ekle
-            console.log("patchAllPosts", draft);
+            console.log("post", post);
+            var oldPost = draft.find((p) => p.id === post.id);
+            if (oldPost) {
+              oldPost = { ...oldPost, ...post };
+            } else {
+              draft.unshift(post); // Tüm gönderilerine de geçici olarak ekle
+            }
           })
         );
 
         const patchUserPosts = dispatch(
           postApi.util.updateQueryData("getAllByUsername", post.username, (draft) => {
-            console.log("patchUserPosts", draft);
-            draft.unshift(post); // Kullanıcı gönderilerine de geçici olarak ekle
-            console.log("patchUserPosts", draft);
+            var oldPost = draft.find((p) => p.id === post.id);
+            if (oldPost) {
+              oldPost = { ...oldPost, ...post };
+            } else {
+              draft.unshift(post); // Tüm gönderilerine de geçici olarak ekle
+            }
           })
         );
 
@@ -56,17 +62,15 @@ export const postApi = baseApi.injectEndpoints({
           // Gerçek API yanıtı ile güncelle
           dispatch(
             postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-              console.log("patchAllPostsApi", draft);
-              const index = draft.findIndex((p) => p === post);
-              if (index !== -1) draft[index] = createdPost;
+              const index = draft.findIndex((p) => p.id === post.id);
+              if (index !== -1) draft[index] = createdPost.data;
             })
           );
 
           dispatch(
             postApi.util.updateQueryData("getAllByUsername", post.username, (draft) => {
-              console.log("patchUserPostsApi", draft);
-              const index = draft.findIndex((p) => p === post);
-              if (index !== -1) draft[index] = createdPost;
+              const index = draft.findIndex((p) => p.id === post.id);
+              if (index !== -1) draft[index] = createdPost.data;
             })
           );
         } catch (error) {

@@ -32,10 +32,6 @@ function Header() {
     setIsModalOpen(false);
   };
 
-  const handlePostSubmit = (newPost) => {
-    handleCloseModal();
-  };
-
   const handleLogout = () => {
     // Tüm state'leri temizle
     dispatch(logout());
@@ -133,7 +129,7 @@ function Header() {
 
       {/* Modal Bileşeni */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <PostForm onSubmit={handlePostSubmit} />
+        <PostForm handleCloseModal={handleCloseModal} />
       </Modal>
     </header>
   );

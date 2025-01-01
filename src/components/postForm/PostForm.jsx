@@ -1,20 +1,19 @@
 import { useState } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
 import { useCreatePostMutation } from "../../features/postFeatures/postApi";
-import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
-const PostForm = ({ onSubmit }) => {
+const PostForm = ({ handleCloseModal }) => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [caption, setCaption] = useState("");
 
-  const dispatch = useDispatch();
   const [createPost, { isLoading }] = useCreatePostMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createPost({ mediaUrl, caption }).unwrap();
-      onSubmit && onSubmit({ mediaUrl, caption });
+      await createPost({ mediaUrl, caption, id: uuidv4() }).unwrap();
+      handleCloseModal();
       setMediaUrl("");
       setCaption("");
     } catch (error) {
