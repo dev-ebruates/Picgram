@@ -46,14 +46,18 @@ export const postApi = baseApi.injectEndpoints({
         );
 
         const patchUserPosts = dispatch(
-          postApi.util.updateQueryData("getAllByUsername", post.username, (draft) => {
-            var oldPost = draft.find((p) => p.id === post.id);
-            if (oldPost) {
-              oldPost = { ...oldPost, ...post };
-            } else {
-              draft.unshift(post); // Tüm gönderilerine de geçici olarak ekle
+          postApi.util.updateQueryData(
+            "getAllByUsername",
+            post.username,
+            (draft) => {
+              var oldPost = draft.find((p) => p.id === post.id);
+              if (oldPost) {
+                oldPost = { ...oldPost, ...post };
+              } else {
+                draft.unshift(post); // Tüm gönderilerine de geçici olarak ekle
+              }
             }
-          })
+          )
         );
 
         try {
@@ -68,10 +72,14 @@ export const postApi = baseApi.injectEndpoints({
           );
 
           dispatch(
-            postApi.util.updateQueryData("getAllByUsername", post.username, (draft) => {
-              const index = draft.findIndex((p) => p.id === post.id);
-              if (index !== -1) draft[index] = createdPost.data;
-            })
+            postApi.util.updateQueryData(
+              "getAllByUsername",
+              post.username,
+              (draft) => {
+                const index = draft.findIndex((p) => p.id === post.id);
+                if (index !== -1) draft[index] = createdPost.data;
+              }
+            )
           );
         } catch (error) {
           console.log("error", error);
@@ -86,7 +94,8 @@ export const postApi = baseApi.injectEndpoints({
         url: `/posts/${id}`,
         method: "PUT",
         body: { caption },
-      }),async onQueryStarted({ id, caption }, { dispatch, queryFulfilled }) {
+      }),
+      async onQueryStarted({ id, caption }, { dispatch, queryFulfilled }) {
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
             const post = draft.find((p) => p.id === id);
@@ -95,10 +104,14 @@ export const postApi = baseApi.injectEndpoints({
         );
 
         const patchUserPosts = dispatch(
-          postApi.util.updateQueryData("getAllByUsername", undefined, (draft) => {
-            const post = draft.find((p) => p.id === id);
-            if (post) post.caption = caption; // Geçici güncelleme
-          })
+          postApi.util.updateQueryData(
+            "getAllByUsername",
+            undefined,
+            (draft) => {
+              const post = draft.find((p) => p.id === id);
+              if (post) post.caption = caption; // Geçici güncelleme
+            }
+          )
         );
 
         try {
@@ -114,7 +127,8 @@ export const postApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/posts/${id}`,
         method: "DELETE",
-      }),async onQueryStarted(id, { dispatch, queryFulfilled }) {
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
             draft.data = draft.filter((post) => post.id !== id); // Geçici silme
@@ -122,9 +136,13 @@ export const postApi = baseApi.injectEndpoints({
         );
 
         const patchUserPosts = dispatch(
-          postApi.util.updateQueryData("getAllByUsername", undefined, (draft) => {
-            draft.data = draft.filter((post) => post.id !== id); // Geçici silme
-          })
+          postApi.util.updateQueryData(
+            "getAllByUsername",
+            undefined,
+            (draft) => {
+              draft.data = draft.filter((post) => post.id !== id); // Geçici silme
+            }
+          )
         );
 
         try {
@@ -150,10 +168,14 @@ export const postApi = baseApi.injectEndpoints({
         );
 
         const patchUserPosts = dispatch(
-          postApi.util.updateQueryData("getAllByUsername", undefined, (draft) => {
-            const post = draft.find((p) => p.id === id);
-            if (post) post.likes = (post.likes || 0) + 1; // Beğeni sayısını geçici olarak artır
-          })
+          postApi.util.updateQueryData(
+            "getAllByUsername",
+            undefined,
+            (draft) => {
+              const post = draft.find((p) => p.id === id);
+              if (post) post.likes = (post.likes || 0) + 1; // Beğeni sayısını geçici olarak artır
+            }
+          )
         );
 
         try {
