@@ -6,12 +6,12 @@ export const postApi = createApi({
     baseUrl: "http://localhost:5148",
     prepareHeaders: (headers) => {
       // Auth token'ı ekle
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       // Content type header'ı ekle
-      headers.set('Content-Type', 'application/json');
+      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
@@ -171,28 +171,17 @@ export const postApi = createApi({
         url: `/posts/${id}/like`,
         method: "PUT",
       }),
-      async onQueryStarted(id, { dispatch,
-        getState,
-        extra,
-        requestId,
-        queryFulfilled,
-        getCacheEntry,
-        updateCachedData,}) {
-          
-          console.log("getState",getState())
-          console.log("extra",extra)
-          console.log("requestId",requestId)
-          console.log("queryFulfilled",queryFulfilled)
-          console.log("getCacheEntry",getCacheEntry)
-          console.log("updateCachedData",updateCachedData)
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
             const post = draft.find((p) => p.id === id);
             if (post) {
-              console.log("post", post);
-              console.log("post.likes", post.likeCount);
               post.isLiked = !post.isLiked;
-              post.likeCount = (post.likeCount || 0) + 1;
+              if (post.isLiked) {
+                post.likeCount = (post.likeCount || 0) + 1;
+              } else {
+                post.likeCount = (post.likeCount || 1) - 1;
+              }
             }
           })
         );
