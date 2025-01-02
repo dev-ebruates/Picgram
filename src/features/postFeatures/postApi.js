@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { selectCurrentToken } from "../authFeatures/authSlice";
+import { selectCurrentToken, selectCurrentUsername } from "../authFeatures/authSlice";
 
 export const postApi = createApi({
   reducerPath: "postApi",
@@ -47,29 +47,23 @@ export const postApi = createApi({
         method: "POST",
         body: post,
       }),
-      async onQueryStarted(post, { dispatch, queryFulfilled }) {
+      async onQueryStarted(post, { dispatch, queryFulfilled, getState }) {
+
+        console.log("state", getState());
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-            var oldPost = draft.find((p) => p.id === post.id);
-            if (oldPost) {
-              oldPost = { ...oldPost, ...post };
-            } else {
-              draft.unshift(post); // Tüm gönderilerine de geçici olarak ekle
-            }
+            console.log("getAllPosts", post);
+            draft.unshift(post);
           })
         );
 
         const patchUserPosts = dispatch(
           postApi.util.updateQueryData(
             "getAllByUsername",
-            post.username,
+            selectCurrentUsername(getState()),
             (draft) => {
-              var oldPost = draft.find((p) => p.id === post.id);
-              if (oldPost) {
-                oldPost = { ...oldPost, ...post };
-              } else {
-                draft.unshift(post); // Tüm gönderilerine de geçici olarak ekle
-              }
+              console.log("getAllByUsername", post);
+              draft.unshift(post);
             }
           )
         );
@@ -79,6 +73,7 @@ export const postApi = createApi({
           // Gerçek API yanıtı ile güncelle
           dispatch(
             postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
+              console.log("getAllPosts api", post);
               const index = draft.findIndex((p) => p.id === post.id);
               if (index !== -1) draft[index] = createdPost.data;
             })
@@ -87,8 +82,9 @@ export const postApi = createApi({
           dispatch(
             postApi.util.updateQueryData(
               "getAllByUsername",
-              post.username,
+              selectCurrentUsername(getState()),
               (draft) => {
+                console.log("getAllByUsername api", post);
                 const index = draft.findIndex((p) => p.id === post.id);
                 if (index !== -1) draft[index] = createdPost.data;
               }

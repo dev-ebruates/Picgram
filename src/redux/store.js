@@ -16,7 +16,7 @@ const rootReducer = (state, action) => {
   return {
     // feature: featureReducer(state?.feature, action),
     auth: authReducer(state?.auth, action),
-    [featureApi.reducerPath]: featureApi.reducer(state?.[featureApi.reducerPath], action),
+    // [featureApi.reducerPath]: featureApi.reducer(state?.[featureApi.reducerPath], action),
     [authApi.reducerPath]: authApi.reducer(state?.[authApi.reducerPath], action),
     [userApi.reducerPath]: userApi.reducer(state?.[userApi.reducerPath], action),
     [storyApi.reducerPath]: storyApi.reducer(state?.[storyApi.reducerPath], action),

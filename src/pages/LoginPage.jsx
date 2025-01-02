@@ -33,7 +33,7 @@ const LoginPage = () => {
       const result = await authMutation(formData);
       if (result.data.success === true) {
         const userData = {
-          user: result.data.data.user,
+          username: result.data.data.username,
           token: result.data.data.token
         };
         dispatch(setCredentials(userData));

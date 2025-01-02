@@ -33,10 +33,15 @@ const ProfilePage = () => {
     ? myProfileQuery.isLoading
     : userProfileQuery.isLoading;
   const [newBio, setNewBio] = useState(profile?.data?.bio);
-  console.log("profile", profile?.data?.bio);
 
-  const { data: posts = [], isLoading: postsLoading } =
-    useGetAllByUsernameQuery(username || currentUser?.username);
+  const {
+    data: posts,
+    isLoading: postsLoading,
+    error: postsError,
+  } = useGetAllByUsernameQuery(username || currentUser?.username);
+
+  if (postsLoading) return <div>Yükleniyor...</div>;
+  if (postsError) return <div>Hata: {postsError}</div>;
 
   const handleBioUpdate = async () => {
     try {
@@ -77,7 +82,9 @@ const ProfilePage = () => {
                 className="w-24 h-24 rounded-full border-4 border-gray-600"
               />
               <div>
-                <h2 className="text-3xl font-semibold ">{profile?.data?.username}</h2>
+                <h2 className="text-3xl font-semibold ">
+                  {profile?.data?.username}
+                </h2>
                 <p className="text-sm">{profile?.data?.fullname}</p>
                 <div className="flex items-center space-x-2">
                   {isEditing ? (
@@ -100,7 +107,9 @@ const ProfilePage = () => {
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2 ml-auto">
-                      <p className="text-sm max-w-[700px]">{profile?.data?.bio}</p>
+                      <p className="text-sm max-w-[700px]">
+                        {profile?.data?.bio}
+                      </p>
                       {isOwnProfile && (
                         <button
                           className="text-gray-400 hover:text-white"
@@ -167,7 +176,7 @@ const ProfilePage = () => {
       </div>
       {isOwnProfile && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <PostForm onSubmit={() => setIsModalOpen(false)} />
+          <PostForm handleCloseModal={() => setIsModalOpen(false)} />
         </Modal>
       )}
     </div>
