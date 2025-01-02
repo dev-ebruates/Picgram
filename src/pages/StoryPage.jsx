@@ -41,17 +41,15 @@ const StoryPage = () => {
   useEffect(() => {
     if (allStories.length > 0) {
       const allUsernames = [...new Set(allStories.map(story => story.username))];
-      const initialUsername = location.state?.username || allUsernames[0];
-      const initialUserIndex = allUsernames.indexOf(initialUsername);
       
       setStoryState(prev => ({
         ...prev,
-        username: initialUsername,
+        username: allUsernames[0],
         allUsers: allUsernames,
-        currentUserIndex: initialUserIndex
+        currentUserIndex: 0
       }));
     }
-  }, [allStories, location.state?.username]);
+  }, [allStories]);
 
   // Profil resmini çek
   useEffect(() => {
@@ -178,12 +176,6 @@ const StoryPage = () => {
   const currentStory = useMemo(() => {
     return currentStories[storyState.currentUserImageIndex];
   }, [currentStories, storyState.currentUserImageIndex]);
-
-  useEffect(() => {
-    console.log('Current Story:', currentStory);
-    console.log('Current Stories:', currentStories);
-    console.log('Story State:', storyState);
-  }, [currentStory, currentStories, storyState]);
 
   // Yükleme ve hata durumları
   if (isLoading) {
