@@ -1,61 +1,164 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useGetAllStoriesByUsernameQuery } from "../features/storyFeatures/storyApi.js";
-import { useDispatch, useSelector } from "react-redux";
-import { setStories, setLoading, setError } from "../features/storyFeatures/storySlice.js";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useGetAllStoriesQuery, useGetAllStoriesByUsernameQuery } from "../features/storyFeatures/storyApi.js";
 
 const StoryPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { stories, isLoading, error } = useSelector((state) => state.story);
-  const [username, setUsername] = useState(location.state?.username);
-  const [currentUserImageIndex, setCurrentUserImageIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [allUsers, setAllUsers] = useState(location.state?.allUsers || []);
-  const [currentUserIndex, setCurrentUserIndex] = useState(
-    allUsers.findIndex(user => user === username) || 0
-  );
   const STORY_DURATION = 5000; // 5 saniye
 
-  const { data } = useGetAllStoriesByUsernameQuery(username);
+  // Refs kullanarak bazı değişkenleri sabit tut
+  const navigateRef = useRef(navigate);
+  const storyDurationRef = useRef(STORY_DURATION);
 
-  // Story'leri yükleme
+  // Varsayılan state ve fallback mekanizması
+  const [storyState, setStoryState] = useState({
+    username: location.state?.username || '',
+    currentUserImageIndex: 0,
+    progress: 0,
+    allUsers: location.state?.allUsers || [],
+    currentUserIndex: 0,
+    userProfilePicture: ''
+  });
+
+  // Tüm hikayeleri çek
+  const { 
+    data: allStories = [], 
+    isLoading: allStoriesLoading, 
+    error: allStoriesError 
+  } = useGetAllStoriesQuery();
+
+  // Username varsa kullanıcı hikayelerini çek
+  const { 
+    data: userStories = [], 
+    isLoading: userStoriesLoading, 
+    error: userStoriesError 
+  } = useGetAllStoriesByUsernameQuery(storyState.username, {
+    skip: !storyState.username
+  });
+
+  // Kullanıcıları ve hikayeleri belirle
   useEffect(() => {
-    if (data) {
-      dispatch(setStories(data.data));
+    if (allStories.length > 0) {
+      const allUsernames = [...new Set(allStories.map(story => story.username))];
+      const initialUsername = location.state?.username || allUsernames[0];
+      const initialUserIndex = allUsernames.indexOf(initialUsername);
+      
+      setStoryState(prev => ({
+        ...prev,
+        username: initialUsername,
+        allUsers: allUsernames,
+        currentUserIndex: initialUserIndex
+      }));
     }
-    dispatch(setLoading(false));
-    if (error) {
-      dispatch(setError(error.message));
-    }
-  }, [data, error, dispatch]);
+  }, [allStories, location.state?.username]);
 
-  // Otomatik story geçişi ve progress bar kontrolü
+  // Profil resmini çek
   useEffect(() => {
-    if (stories.length === 0) return;
+    if (allStories.length > 0) {
+      const currentStoryWithProfilePicture = allStories.find(
+        story => story.username === storyState.username
+      );
 
-    setProgress(0); // Her story değişiminde progress'i sıfırla
-    
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
+      if (currentStoryWithProfilePicture) {
+        // Eğer mevcut kullanıcının profil resmi varsa, state'i güncelle
+        setStoryState(prevState => ({
+          ...prevState,
+          userProfilePicture: currentStoryWithProfilePicture.userProfilePicture
+        }));
+      }
+    }
+  }, [allStories, storyState.username]);
+
+  // Yükleme ve hata durumlarını kontrol et
+  const isLoading = allStoriesLoading || userStoriesLoading;
+  const error = allStoriesError || userStoriesError;
+
+  // Geçerli hikayeleri belirle
+  const currentStories = userStories.length > 0 ? userStories : allStories;
+
+  // Fonksiyonları memoize et
+  const handleNextStory = useCallback(() => {
+    setStoryState(prev => {
+      const stories = currentStories;
+      const allUsers = prev.allUsers.length > 0 
+        ? prev.allUsers 
+        : [...new Set(stories.map(story => story.username))];
+
+      if (prev.currentUserImageIndex === stories.length - 1) {
+        // Son story'de ise diğer kullanıcıya geç
+        if (prev.currentUserIndex < allUsers.length - 1) {
+          const nextUser = allUsers[prev.currentUserIndex + 1];
+          return {
+            ...prev,
+            currentUserIndex: prev.currentUserIndex + 1,
+            username: nextUser,
+            currentUserImageIndex: 0,
+            allUsers
+          };
+        } else {
+          // Tüm kullanıcıların storyleri bitti, ana sayfaya dön
+          navigateRef.current(-1);
+          return prev;
         }
-        return prev + (100 / (STORY_DURATION / 100));
-      });
-    }, 100);
+      } else {
+        // Aynı kullanıcının diğer story'sine geç
+        return {
+          ...prev,
+          currentUserImageIndex: prev.currentUserImageIndex + 1
+        };
+      }
+    });
+  }, [currentStories]);
 
-    const timer = setTimeout(() => {
-      handleNextStory();
-    }, STORY_DURATION);
+  const handlePrevStory = useCallback(() => {
+    setStoryState(prev => {
+      const stories = currentStories;
+      const allUsers = prev.allUsers.length > 0 
+        ? prev.allUsers 
+        : [...new Set(stories.map(story => story.username))];
 
-    return () => {
-      clearTimeout(timer);
-      clearInterval(progressInterval);
-    };
-  }, [currentUserImageIndex, stories]);
+      if (prev.currentUserImageIndex === 0) {
+        // İlk story'de ise önceki kullanıcıya geç
+        if (prev.currentUserIndex > 0) {
+          const prevUser = allUsers[prev.currentUserIndex - 1];
+          return {
+            ...prev,
+            currentUserIndex: prev.currentUserIndex - 1,
+            username: prevUser,
+            currentUserImageIndex: 0,
+            allUsers
+          };
+        }
+        return prev;
+      } else {
+        // Aynı kullanıcının önceki story'sine geç
+        return {
+          ...prev,
+          currentUserImageIndex: prev.currentUserImageIndex - 1
+        };
+      }
+    });
+  }, [currentStories]);
+
+  // Progress ve otomatik geçiş için useEffect
+  useEffect(() => {
+    if (currentStories.length > 0) {
+      const progressInterval = setInterval(() => {
+        setStoryState(prev => ({
+          ...prev,
+          progress: prev.progress >= 100 ? 100 : prev.progress + (100 / (storyDurationRef.current / 100))
+        }));
+      }, 100);
+
+      const timer = setTimeout(handleNextStory, storyDurationRef.current);
+
+      return () => {
+        clearTimeout(timer);
+        clearInterval(progressInterval);
+      };
+    }
+  }, [storyState.currentUserImageIndex, currentStories, handleNextStory]);
 
   // Klavye olaylarını dinleme
   useEffect(() => {
@@ -64,59 +167,69 @@ const StoryPage = () => {
         handlePrevStory();
       } else if (e.key === "ArrowRight") {
         handleNextStory();
-      } else if (e.key === "Escape") {
-        navigate(-1);
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [currentUserImageIndex, stories.length]);
+  }, [handlePrevStory, handleNextStory]);
 
-  const handlePrevStory = () => {
-    if (currentUserImageIndex === 0) {
-      // İlk story'de ise önceki kullanıcıya geç
-      if (currentUserIndex > 0) {
-        // Önceki kullanıcıya geç
-        const prevUser = allUsers[currentUserIndex - 1];
-        setCurrentUserIndex(prev => prev - 1);
-        setUsername(prevUser);
-        setCurrentUserImageIndex(0);
-      }
-    } else {
-      // Aynı kullanıcının önceki story'sine geç
-      setCurrentUserImageIndex(prev => prev - 1);
-    }
-  };
+  // Geçerli story'yi hesapla
+  const currentStory = useMemo(() => {
+    return currentStories[storyState.currentUserImageIndex];
+  }, [currentStories, storyState.currentUserImageIndex]);
 
-  const handleNextStory = () => {
-    if (currentUserImageIndex === stories.length - 1) {
-      // Son story'de ise diğer kullanıcıya geç
-      if (currentUserIndex < allUsers.length - 1) {
-        // Sonraki kullanıcıya geç
-        const nextUser = allUsers[currentUserIndex + 1];
-        setCurrentUserIndex(prev => prev + 1);
-        setUsername(nextUser);
-        setCurrentUserImageIndex(0);
-      } else {
-        // Tüm kullanıcıların storyleri bitti, ana sayfaya dön
-        navigate(-1);
-      }
-    } else {
-      // Aynı kullanıcının diğer story'sine geç
-      setCurrentUserImageIndex(prev => prev + 1);
-    }
-  };
+  useEffect(() => {
+    console.log('Current Story:', currentStory);
+    console.log('Current Stories:', currentStories);
+    console.log('Story State:', storyState);
+  }, [currentStory, currentStories, storyState]);
 
-  if (isLoading) return <div className="text-center mt-10">Yükleniyor...</div>;
-  if (error) return <div className="text-center mt-10">{error}</div>;
-  if (!stories.length) return <div className="text-center mt-10">Hikaye bulunamadı</div>;
+  // Yükleme ve hata durumları
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen text-center">
+        <h2 className="text-2xl font-bold text-red-500 mb-4">Hikayeler Yüklenemedi</h2>
+        <p className="text-gray-600">{error.message || 'Bilinmeyen bir hata oluştu'}</p>
+        <button 
+          onClick={() => navigate(-1)} 
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Geri Dön
+        </button>
+      </div>
+    );
+  }
+
+  // Hikayeler yoksa
+  if (!currentStories || currentStories.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen text-center">
+        <h2 className="text-2xl font-bold text-gray-500 mb-4">Hikaye Bulunamadı</h2>
+        <p className="text-gray-600">Henüz hikaye yok.</p>
+        <button 
+          onClick={() => navigate(-1)} 
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Geri Dön
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="story-page flex flex-col h-screen">
       <div className="logo absolute top-4 left-4 z-50">
         <button
-         onClick={() => navigate(-1)}
+          onClick={() => navigate(-1)}
           className="italic font-serif text-4xl tracking-tight text-white hover:text-gray-300 transition-colors duration-300 bg-transparent border-none cursor-pointer outline-none"
         >
           Picgram
@@ -137,16 +250,16 @@ const StoryPage = () => {
             {/* Kullanıcı Bilgisi */}
             <div className="absolute top-4 left-4 flex items-center z-10">
               <img
-                src={stories[currentUserImageIndex]?.userProfilePicture}
-                alt={username}
+                src={storyState.userProfilePicture}
+                alt={storyState.username}
                 className="w-10 h-10 rounded-full border-2 border-white"
               />
-              <span className="ml-2 text-white font-semibold">{username}</span>
+              <span className="ml-2 text-white font-semibold">{storyState.username}</span>
             </div>
 
             {/* Progress Bar */}
             <div className="absolute top-0 left-0 right-0 flex gap-1 p-2">
-              {stories.map((_, index) => (
+              {currentStories.map((_, index) => (
                 <div
                   key={index}
                   className="flex-1 h-1 rounded-full bg-gray-400 overflow-hidden"
@@ -154,8 +267,8 @@ const StoryPage = () => {
                   <div
                     className="h-full bg-white"
                     style={{
-                      width: index < currentUserImageIndex ? "100%" : 
-                             index === currentUserImageIndex ? `${progress}%` : "0%",
+                      width: index < storyState.currentUserImageIndex ? "100%" : 
+                             index === storyState.currentUserImageIndex ? `${storyState.progress}%` : "0%",
                       transition: "width 100ms linear"
                     }}
                   />
@@ -165,8 +278,8 @@ const StoryPage = () => {
 
             {/* Story Görseli */}
             <img
-              src={stories[currentUserImageIndex]?.mediaUrl}
-              alt={`Story ${currentUserImageIndex + 1}`}
+              src={currentStory?.mediaUrl}
+              alt={`Story ${storyState.currentUserImageIndex + 1}`}
               className="w-full h-[80vh] object-contain"
             />
           </div>

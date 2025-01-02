@@ -19,6 +19,9 @@ export const storyApi = createApi({
   endpoints: (builder) => ({
     getAllStories: builder.query({
       query: () => "/stories/latest",
+      transformResponse: (response) => {
+        return Array.isArray(response.data) ? response.data : [];
+      },
     }),
     createStory: builder.mutation({
       query: (credentials) => ({
@@ -32,6 +35,9 @@ export const storyApi = createApi({
     }),
     getAllStoriesByUsername: builder.query({
       query: (username) => `/stories/${username}`,
+      transformResponse: (response) => {
+        return Array.isArray(response.data) ? response.data : [];
+      },
     }),
   }),
 });
