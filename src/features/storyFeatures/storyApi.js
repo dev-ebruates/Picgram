@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { selectCurrentToken } from "../authFeatures/authSlice";
 
 export const storyApi = createApi({
   reducerPath: "storyApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5148",
-    prepareHeaders: (headers) => {
-      // Auth token'ı ekle
-      const token = localStorage.getItem('authToken');
+    prepareHeaders: (headers, { getState }) => {
+      // Redux store'dan token'ı al
+      const token = selectCurrentToken(getState());
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
