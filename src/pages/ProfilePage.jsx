@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Header from "../components/header/Header";
 import { useState, useEffect } from "react";
 import Modal from "../components/modal/modal.jsx";
@@ -10,21 +9,9 @@ import {
 } from "../features/userFeatures/userApi.js";
 import { useGetAllByUsernameQuery } from "../features/postFeatures/postApi";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setProfile,
-  setPosts,
-  selectUserProfile,
-  selectUserPosts,
-  selectUserLoading,
-  setLoading,
-} from "../features/userFeatures/userSlice";
 import { useParams } from "react-router-dom";
 
 const ProfilePage = () => {
-  const dispatch = useDispatch();
-  const profile = useSelector(selectUserProfile);
-  const loading = useSelector(selectUserLoading);
-  
   const params = useParams(); // URL'den parametreleri al
   const username = params.username; // URL'den kullanıcı adını al
   const { data: myProfile } = useGetMyProfileQuery();
@@ -34,43 +21,22 @@ const ProfilePage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [newBio, setNewBio] = useState("");
 
   const [updateUserBioMutation] = useUpdateUserBioMutation();
 
   const myProfileQuery = useGetMyProfileQuery();
   const userProfileQuery = useGetProfileQuery(username);
 
-  const getProfileData = isOwnProfile
-    ? myProfileQuery.data
-    : userProfileQuery.data;
+  const profile = isOwnProfile ? myProfileQuery.data : userProfileQuery.data;
 
   const getProfileLoading = isOwnProfile
     ? myProfileQuery.isLoading
     : userProfileQuery.isLoading;
-    
+  const [newBio, setNewBio] = useState(profile?.data?.bio);
+  console.log("profile", profile?.data?.bio);
+
   const { data: posts = [], isLoading: postsLoading } =
     useGetAllByUsernameQuery(username || currentUser?.username);
-
-  // Profil verilerini güncelle
-  useEffect(() => {
-    if (getProfileData?.data && (!profile || username)) {
-      dispatch(setProfile(getProfileData.data));
-    }
-  }, [getProfileData, dispatch, profile, username]);
-
-  // Kullanıcı gönderilerini güncelle
-  useEffect(() => {
-
-  }, [posts, dispatch]);
-
-  // Loading durumunu güncelle
-  useEffect(() => {
-    const isLoading = getProfileLoading || postsLoading;
-    if (loading !== isLoading) {
-      dispatch(setLoading(isLoading));
-    }
-  }, [getProfileLoading, postsLoading, dispatch, loading]);
 
   const handleBioUpdate = async () => {
     try {
@@ -83,7 +49,7 @@ const ProfilePage = () => {
   };
 
   if (getProfileLoading) return <div>Yükleniyor...</div>;
-  if (!getProfileData?.data) return <div>Profil bulunamadı</div>;
+  if (!profile?.data) return <div>Profil bulunamadı</div>;
 
   return (
     <div className="flex h-screen ">
@@ -103,16 +69,16 @@ const ProfilePage = () => {
             <div className="flex items-center space-x-8 mt-6">
               <img
                 src={
-                  profile?.userProfilePicture
-                    ? profile?.userProfilePicture
+                  profile?.data?.userProfilePicture
+                    ? profile?.data?.userProfilePicture
                     : "https://via.placeholder.com/150"
                 }
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-gray-600"
               />
               <div>
-                <h2 className="text-3xl font-semibold ">{profile?.username}</h2>
-                <p className="text-sm">{profile?.fullname}</p>
+                <h2 className="text-3xl font-semibold ">{profile?.data?.username}</h2>
+                <p className="text-sm">{profile?.data?.fullname}</p>
                 <div className="flex items-center space-x-2">
                   {isEditing ? (
                     <div className="flex items-center space-x-2">
@@ -134,12 +100,12 @@ const ProfilePage = () => {
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2 ml-auto">
-                      <p className="text-sm max-w-[700px]">{profile?.bio}</p>
+                      <p className="text-sm max-w-[700px]">{profile?.data?.bio}</p>
                       {isOwnProfile && (
                         <button
                           className="text-gray-400 hover:text-white"
                           onClick={() => {
-                            setNewBio(profile?.bio);
+                            setNewBio(profile?.data?.bio);
                             setIsEditing(true);
                           }}
                         >
@@ -160,13 +126,13 @@ const ProfilePage = () => {
                 </div>
                 <div className="text-center">
                   <p className="text-l font-medium">
-                    {profile?.followers || 0}
+                    {profile?.data?.followers || 0}
                   </p>
                   <p className="text-sm text-gray-400">followers</p>
                 </div>
                 <div className="text-center">
                   <p className="text-l font-medium">
-                    {profile?.following || 0}
+                    {profile?.data?.following || 0}
                   </p>
                   <p className="text-sm text-gray-400">following</p>
                 </div>

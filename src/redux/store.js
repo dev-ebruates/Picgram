@@ -6,7 +6,6 @@ import { userApi } from '../features/userFeatures/userApi.js';
 import { storyApi } from '../features/storyFeatures/storyApi.js';
 import { postApi } from '../features/postFeatures/postApi.js';
 import authReducer from '../features/authFeatures/authSlice.js';
-import userReducer from '../features/userFeatures/userSlice.js';
 import { baseApi, RESET_STATE_ACTION_TYPE, rtkQueryErrorLogger } from '../features/baseApi/baseApi.js';
 import {searchApi} from '../features/searchFeatures/searchApi.js'
 
@@ -17,7 +16,6 @@ const rootReducer = (state, action) => {
   return {
     // feature: featureReducer(state?.feature, action),
     auth: authReducer(state?.auth, action),
-    user: userReducer(state?.user, action),
     [featureApi.reducerPath]: featureApi.reducer(state?.[featureApi.reducerPath], action),
     [authApi.reducerPath]: authApi.reducer(state?.[authApi.reducerPath], action),
     [userApi.reducerPath]: userApi.reducer(state?.[userApi.reducerPath], action),

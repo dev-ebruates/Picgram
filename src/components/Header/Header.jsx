@@ -6,10 +6,8 @@ import Modal from "../modal/modal";
 import PostForm from "../postForm/PostForm";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/authFeatures/authSlice";
-import { clearUserData } from "../../features/userFeatures/userSlice";
 import { resetApiState } from "../../features/baseApi/baseApi";
 import SearchSideBar from "../search/searchSideBar.jsx";
-import { useSelector } from "react-redux";
 import { useGetMyProfileQuery } from "../../features/userFeatures/userApi.js";
 import { Link } from "react-router-dom";
 
@@ -21,8 +19,6 @@ function Header() {
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
-  const profilePicture =
-    myProfile?.data?.userProfilePicture || "https://via.placeholder.com/150";
 
   const handleCreateClick = () => {
     setIsModalOpen(true);
@@ -35,7 +31,6 @@ function Header() {
   const handleLogout = () => {
     // Tüm state'leri temizle
     dispatch(logout());
-    dispatch(clearUserData());
     dispatch(resetApiState());
 
     // Login sayfasına yönlendir
@@ -44,12 +39,6 @@ function Header() {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
-  };
-
-  const goToMyProfile = () => {
-    if (username) {
-      navigate(`/profile/${username}`);
-    }
   };
 
   return (
