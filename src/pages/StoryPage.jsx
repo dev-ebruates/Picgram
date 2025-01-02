@@ -142,18 +142,42 @@ const StoryPage = () => {
   // Progress ve otomatik geçiş için useEffect
   useEffect(() => {
     if (currentStories.length > 0) {
-      const progressInterval = setInterval(() => {
-        setStoryState(prev => ({
-          ...prev,
-          progress: prev.progress >= 100 ? 100 : prev.progress + (100 / (storyDurationRef.current / 100))
-        }));
-      }, 100);
+      let progressTimer;
+      let storyTimer;
 
-      const timer = setTimeout(handleNextStory, storyDurationRef.current);
+      // Progress state'ini sıfırla
+      setStoryState(prev => ({
+        ...prev,
+        progress: 0
+      }));
+
+      const startProgressTracking = () => {
+        const startTime = Date.now();
+        
+        progressTimer = setInterval(() => {
+          const elapsedTime = Date.now() - startTime;
+          const progressPercentage = Math.min(
+            100, 
+            (elapsedTime / storyDurationRef.current) * 100
+          );
+
+          setStoryState(prev => ({
+            ...prev,
+            progress: progressPercentage
+          }));
+
+          // Progress %100'e ulaşınca bir sonraki story'e geç
+          if (progressPercentage >= 100) {
+            clearInterval(progressTimer);
+            handleNextStory();
+          }
+        }, 50);
+      };
+
+      startProgressTracking();
 
       return () => {
-        clearTimeout(timer);
-        clearInterval(progressInterval);
+        clearInterval(progressTimer);
       };
     }
   }, [storyState.currentUserImageIndex, currentStories, handleNextStory]);
@@ -176,6 +200,8 @@ const StoryPage = () => {
   const currentStory = useMemo(() => {
     return currentStories[storyState.currentUserImageIndex];
   }, [currentStories, storyState.currentUserImageIndex]);
+
+ 
 
   // Yükleme ve hata durumları
   if (isLoading) {
