@@ -39,7 +39,6 @@ const RegisterPage = () => {
 
     try {
       var response = await createUserMutation(formData);
-      console.log(response);
       if (response.data.success === false) {
         alert(response.data.data.message);
       } else {

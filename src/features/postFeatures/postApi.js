@@ -48,11 +48,8 @@ export const postApi = createApi({
         body: post,
       }),
       async onQueryStarted(post, { dispatch, queryFulfilled, getState }) {
-
-        console.log("state", getState());
         const patchAllPosts = dispatch(
           postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-            console.log("getAllPosts", post);
             draft.unshift(post);
           })
         );
@@ -62,7 +59,6 @@ export const postApi = createApi({
             "getAllByUsername",
             selectCurrentUsername(getState()),
             (draft) => {
-              console.log("getAllByUsername", post);
               draft.unshift(post);
             }
           )
@@ -73,7 +69,6 @@ export const postApi = createApi({
           // Gerçek API yanıtı ile güncelle
           dispatch(
             postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
-              console.log("getAllPosts api", post);
               const index = draft.findIndex((p) => p.id === post.id);
               if (index !== -1) draft[index] = createdPost.data;
             })
@@ -84,14 +79,12 @@ export const postApi = createApi({
               "getAllByUsername",
               selectCurrentUsername(getState()),
               (draft) => {
-                console.log("getAllByUsername api", post);
                 const index = draft.findIndex((p) => p.id === post.id);
                 if (index !== -1) draft[index] = createdPost.data;
               }
             )
           );
         } catch (error) {
-          console.log("error", error);
           patchAllPosts.undo();
           patchUserPosts.undo();
           console.error("Gönderi oluşturulurken hata oluştu:", error);
@@ -190,8 +183,6 @@ export const postApi = createApi({
             (draft) => {
               const post = draft.find((p) => p.id === id);
               if (post) {
-                console.log("post", post);
-                console.log("post.likes", post.likeCount);
                 post.isLiked = !post.isLiked;
                 post.likeCount = (post.likeCount || 0) + 1;
               }
