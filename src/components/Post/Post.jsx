@@ -3,10 +3,14 @@ import { enUS } from "date-fns/locale";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useLikedPostMutation } from "../../features/postFeatures/postApi";
+import Comments from "./Comments";
 
 function Post({ post }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedCaption, setEditedCaption] = useState(post.caption);
+  const [comments, setComments] = useState(post.comments || []);
+  const [newComment, setNewComment] = useState("");
+  const [isFullCaptionVisible, setIsFullCaptionVisible] = useState(false);
 
   const [likedPostMutation] = useLikedPostMutation();
 
@@ -15,6 +19,22 @@ function Post({ post }) {
       await likedPostMutation(post.id).unwrap();
     } catch (error) {
       console.error("Beğeni hatası:", error);
+    }
+  };
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    if (newComment.trim()) {
+      const commentToAdd = {
+        id: `temp-${Date.now()}`,
+        comment: newComment,
+        username: "currentUser", // Gerçek kullanıcı adı ile değiştirilmeli
+        profilePicture: "https://via.placeholder.com/40", // Gerçek profil resmi ile değiştirilmeli
+        createdAt: new Date().toISOString(),
+      };
+
+      setComments([...comments, commentToAdd]);
+      setNewComment("");
     }
   };
 
@@ -29,6 +49,25 @@ function Post({ post }) {
       console.error("Tarih formatlama hatası:", error);
       return "";
     }
+  };
+
+  // Caption'ı kırp ve "Devamını oku" özelliği ekle
+  const renderCaption = () => {
+    const maxLength = 40;
+    if (post.caption.length <= maxLength || isFullCaptionVisible) {
+      return post.caption;
+    }
+    return (
+      <>
+        {post.caption.slice(0, maxLength)}...{" "}
+        <button
+          onClick={() => setIsFullCaptionVisible(true)}
+          className="text-blue-500 hover:text-blue-400"
+        >
+         read more...
+        </button>
+      </>
+    );
   };
 
   return (
@@ -79,7 +118,7 @@ function Post({ post }) {
       </div>
 
       {/* Açıklama ve Yorum */}
-      <div className="px-4 pb-4">
+      <div className="px-4 pb-4 max-w-md mx-auto">
         {isEditing ? (
           <div className="flex items-center space-x-2">
             <input
@@ -90,9 +129,9 @@ function Post({ post }) {
             />
           </div>
         ) : (
-          <p>
+          <p className="max-w-full overflow-hidden text-ellipsis">
             <span className="font-semibold">{post.username} </span>
-            {post.caption}
+            {renderCaption()}
           </p>
         )}
 
@@ -107,7 +146,28 @@ function Post({ post }) {
           </div>
         )}
 
-        <p className="text-sm text-gray-500 mt-2">View all 10 comments</p>
+        {/* Yorum Ekleme Alanı */}
+        <form
+          onSubmit={handleAddComment}
+          className="mt-2 flex items-center space-x-2"
+        >
+          <input
+            type="text"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="write your comment..."
+            className="flex-1 bg-gray-900 text-white border border-gray-700 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          />
+          <button
+            type="submit"
+            className="bg-gray-600 text-white p-2 rounded-lg hover:bg-gray-700 transition-colors"
+          >
+            <i className="fas fa-paper-plane"></i>
+          </button>
+        </form>
+
+        {/* Yorumları Göster */}
+        <Comments comments={comments} />
       </div>
     </div>
   );
