@@ -1,98 +1,94 @@
 import { useState } from 'react';
-import MessageList from './MessageList';
+import ContactList from './ContactList';
+import { useGetRelatedMessagesQuery, useCreateMessageMutation } from '../../features/messageFeatures/messageApi';
 
 const Message = () => {
   const [selectedContact, setSelectedContact] = useState(null);
-  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const handleSelectContact = (contact) => {
-    setSelectedContact(contact);
-    // Burada gerçek bir uygulamada API çağrısı ile mesajlar çekilecek
-    setMessages([
-      { id: 1, sender: contact.username, text: 'Merhaba!', time: '14:30' },
-      { id: 2, sender: 'ben', text: 'Nasılsın?', time: '14:31' },
-    ]);
+  const { data: relatedMessages, isLoading, isError } = useGetRelatedMessagesQuery(
+    selectedContact?.userId, 
+    { skip: !selectedContact }
+  );
+  const [createMessage] = useCreateMessageMutation();
+
+  const handleSelectContact = async (contact) => {
+    await setSelectedContact(contact);
   };
 
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedContact) {
-      const message = {
-        id: messages.length + 1,
-        sender: 'ben',
-        text: newMessage,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages([...messages, message]);
+      createMessage({receiverUserId: selectedContact.userId, content: newMessage});
       setNewMessage('');
     }
   };
 
   return (
-    <div className="flex w-full h-[calc(100vh-80px)] bg-black text-white border-none rounded-xl overflow-hidden">
-      <MessageList onSelectContact={handleSelectContact} />
+    <div className="flex h-screen bg-black text-white">
+      <ContactList onSelectContact={handleSelectContact} />
       
       {selectedContact ? (
         <div className="flex-grow flex flex-col">
-          {/* Mesaj Başlığı */}
-          <div className="flex items-center p-4 border-b border-gray-800">
+          {/* Mesaj başlığı */}
+          <div className="p-4 border-b border-gray-800 flex items-center">
             <img 
-              src={selectedContact.profilePic} 
-              alt={selectedContact.name} 
+              src={selectedContact.profilePicture || 'https://via.placeholder.com/50'} 
+              alt={selectedContact.username} 
               className="w-10 h-10 rounded-full mr-4"
             />
-            <span>{selectedContact.name}</span>
-      
+            <h2 className="text-xl font-semibold">{selectedContact.username}</h2>
           </div>
-          
-          {/* Mesaj Listesi */}
-          <div className="flex-grow overflow-y-auto p-4 space-y-3 bg-black">
-            {messages.map((msg) => (
-              <div 
-                key={msg.id} 
-                className={`flex ${msg.sender === 'ben' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`
-                  max-w-[70%] p-3 rounded-xl relative
-                  ${msg.sender === 'ben' 
-                    ? 'bg-blue-700 text-white' 
-                    : 'bg-gray-800 text-white'}
-                `}>
-                  {msg.text}
-                  <span className={`
-                    text-[10px] absolute -bottom-4 
-                    ${msg.sender === 'ben' 
-                      ? 'text-blue-300 right-0' 
-                      : 'text-gray-500 left-0'}
-                  `}>
-                    {msg.time}
-                  </span>
+
+          {/* Mesaj listesi */}
+          <div className="flex-grow overflow-y-auto p-4" style={{
+            overscrollBehavior: 'contain',
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#374151 #000000'
+          }}>
+            {isLoading ? (
+              <div className="text-center text-gray-500">Mesajlar yükleniyor...</div>
+            ) : isError ? (
+              <div className="text-center text-red-500">Mesajlar yüklenirken hata oluştu</div>
+            ) : (
+              relatedMessages?.map((message, index) => (
+                <div 
+                  key={index} 
+                  className={`
+                    mb-4 max-w-[70%] 
+                    ${message.senderUsername === selectedContact.username 
+                      ? 'bg-gray-800 text-white self-start' 
+                      : 'bg-blue-600 text-white self-end ml-auto'}
+                    p-3 rounded-lg
+                  `}
+                >
+                  {message.content}
+                  <div className="text-xs text-gray-400 mt-1 text-right">
+                    {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
-          
-          {/* Mesaj Girişi */}
-          <div className="flex p-4 border-t border-gray-800 bg-black">
+
+          {/* Mesaj gönderme alanı */}
+          <div className="p-4 border-t border-gray-800 flex items-center">
             <input 
               type="text" 
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Bir mesaj yazın..."
-              className="flex-grow px-4 py-2 bg-gray-800 text-white rounded-full mr-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Bir mesaj yazın..." 
+              className="flex-grow bg-gray-900 text-white p-2 rounded-l-lg focus:outline-none"
             />
             <button 
               onClick={handleSendMessage}
-              className="bg-blue-700 text-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-blue-600 transition-colors"
+              className="bg-blue-600 text-white p-2 rounded-r-lg hover:bg-blue-700"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
+              Gönder
             </button>
           </div>
         </div>
       ) : (
-        <div className="flex-grow flex items-center justify-center text-gray-500 bg-black">
+        <div className="flex-grow flex items-center justify-center text-gray-500">
           Bir sohbet seçin
         </div>
       )}
