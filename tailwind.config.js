@@ -20,7 +20,7 @@ export default {
       animation: {
         'progress': 'progress 5s linear'
       }
-    },
+    }
   },
-  plugins: [],
-}
+  plugins: []
+};

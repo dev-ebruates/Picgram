@@ -71,7 +71,7 @@ function Header() {
             <NavButton
               buttonIcon="fas fa-comment"
               buttonTitle="Message"
-              linkTo={"/"}
+              linkTo={"/messages"}
             />
           </li>
           <li>

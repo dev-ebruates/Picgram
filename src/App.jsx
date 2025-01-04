@@ -6,6 +6,7 @@ import ProfilePage from "./pages/ProfilePage";
 import StoryPage from "./pages/StoryPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/AdminPage.jsx";
+import MessagePage from "./pages/MessagePage";
 
 function App() {
   return (
@@ -39,7 +40,15 @@ function App() {
           </ProtectedRoute>
         }
       />
-        <Route
+      <Route
+        path="/messages"
+        element={
+          <ProtectedRoute>
+            <MessagePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin"
         element={
           <ProtectedRoute>
