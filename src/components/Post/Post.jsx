@@ -18,22 +18,6 @@ function Post({ post }) {
     }
   };
 
-  // const handleAddComment = (e) => {
-  //   e.preventDefault();
-  //   if (newComment.trim()) {
-  //     const commentToAdd = {
-  //       id: `temp-${Date.now()}`,
-  //       comment: newComment,
-  //       username: "currentUser", // Gerçek kullanıcı adı ile değiştirilmeli
-  //       profilePicture: "https://via.placeholder.com/40", // Gerçek profil resmi ile değiştirilmeli
-  //       createdAt: new Date().toISOString(),
-  //     };
-
-  //     setComments([...comments, commentToAdd]);
-  //     setNewComment("");
-  //   }
-  // };
-
   // Tarih formatlaması
   const formatDate = (dateString) => {
     try {
@@ -113,34 +97,12 @@ function Post({ post }) {
         </div>
       </div>
 
-      Açıklama ve Yorum
       <div className="px-4 pb-4 max-w-md mx-auto">
-        {/* {isEditing ? (
-          <div className="flex items-center space-x-2">
-            <input
-              type="text"
-              value={editedCaption}
-              onChange={(e) => setEditedCaption(e.target.value)}
-              className="flex-1 bg-gray-800 text-white p-2 rounded"
-            />
-          </div>
-        ) : (
-          <p className="max-w-full overflow-hidden text-ellipsis">
-            <span className="font-semibold">{post.username} </span>
-            {renderCaption()}
-          </p>
-        )}
+        <p className="max-w-full overflow-hidden text-ellipsis">
+          <span className="font-semibold">{post.username} </span>
+          {renderCaption()}
+        </p>
 
-        {post.isOwner && (
-          <div className="flex items-center space-x-2 mt-2">
-            <button
-              onClick={() => setIsEditing(!isEditing)}
-              className="text-gray-400 hover:text-white"
-            >
-              <i className="far fa-edit text-xl"></i>
-            </button>
-          </div>
-        )} */}
         {/* Yorumları Göster */}
         <Comments comments={post?.comments} postId={post?.id} />
       </div>
