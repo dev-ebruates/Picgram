@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { selectCurrentToken, selectCurrentUsername } from "../authFeatures/authSlice";
+import {
+  selectCurrentToken,
+  selectCurrentUsername,
+} from "../authFeatures/authSlice";
 
 export const postApi = createApi({
   reducerPath: "postApi",
@@ -199,6 +202,41 @@ export const postApi = createApi({
         }
       },
     }),
+    createPostComment: builder.mutation({
+      query: (comment) => ({
+        url: "/posts/comment",
+        method: "POST",
+        body: comment,
+      }),
+      async onQueryStarted(comment, { dispatch, queryFulfilled }) {
+        const patchAllPosts = dispatch(
+          postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
+            const post = draft.find((p) => p.id === comment.postId);
+            if (post) post.comments.unshift(comment);
+          })
+        );
+
+        try {
+          const { data: createPostComment } = await queryFulfilled;
+          // Gerçek API yanıtı ile güncelle
+          dispatch(
+            postApi.util.updateQueryData("getAllPosts", undefined, (draft) => {
+              const index = draft.findIndex((p) => p.id === comment.postId);
+              if (index !== -1) {
+                const commentIndex = draft[index].comments.findIndex(
+                  (c) => c.id === comment.id
+                );
+                if (commentIndex !== -1)
+                  draft[index].comments[commentIndex] = createPostComment.data;
+              }
+            })
+          );
+        } catch (error) {
+          patchAllPosts.undo();
+          console.error("Gönderi oluşturulurken hata oluştu:", error);
+        }
+      },
+    }),
   }),
 });
 
@@ -206,6 +244,7 @@ export const {
   useGetAllPostsQuery,
   useCreatePostMutation,
   useGetAllByUsernameQuery,
+  useCreatePostCommentMutation,
   // useUpdatePostMutation,
   // useDeletePostMutation,
   useLikedPostMutation,
