@@ -41,7 +41,7 @@ const SearchSideBar = ({ isOpen, onClose }) => {
         />
 
         <div className="search-results">
-          {data?.data?.map((user) => (
+          {data?.map((user) => (
             <div
               key={user.id}
               className="flex items-center p-2 hover:bg-gray-500 cursor-pointer search-result-item"
