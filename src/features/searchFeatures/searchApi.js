@@ -25,6 +25,10 @@ export const searchApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      transformResponse: (response) => {
+        if (!response || !response.data) return [];
+        return Array.isArray(response.data) ? response.data : [];
+      },
     }),
   }),
 });

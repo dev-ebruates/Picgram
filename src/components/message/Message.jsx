@@ -24,23 +24,23 @@ const Message = () => {
   };
 
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="min-h-[calc(100vh-64px)] max-h-[calc(100vh-64px)] flex bg-black text-white overflow-hidden">
       <ContactList onSelectContact={handleSelectContact} />
       
       {selectedContact ? (
-        <div className="flex-grow flex flex-col">
+        <div className="flex-grow flex flex-col min-h-full max-h-full">
           {/* Mesaj başlığı */}
-          <div className="p-4 border-b border-gray-800 flex items-center">
+          <div className="min-h-[64px] p-4 border-b border-gray-800 flex items-center">
             <img 
               src={selectedContact.profilePicture || 'https://via.placeholder.com/50'} 
               alt={selectedContact.username} 
               className="w-10 h-10 rounded-full mr-4"
             />
-            <h2 className="text-xl font-semibold">{selectedContact.username}</h2>
+            <h2 className="text-xl font-semibold truncate">{selectedContact.username}</h2>
           </div>
 
           {/* Mesaj listesi */}
-          <div className="flex-grow overflow-y-auto p-4" style={{
+          <div className="flex-grow overflow-y-auto p-4 min-h-0" style={{
             overscrollBehavior: 'contain',
             scrollbarWidth: 'thin',
             scrollbarColor: '#374151 #000000'
@@ -71,7 +71,7 @@ const Message = () => {
           </div>
 
           {/* Mesaj gönderme alanı */}
-          <div className="p-4 border-t border-gray-800 flex items-center">
+          <div className="min-h-[64px] p-4 border-t border-gray-800 flex items-center">
             <input 
               type="text" 
               value={newMessage}
