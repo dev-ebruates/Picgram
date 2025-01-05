@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const NavButton = ({ buttonIcon, buttonTitle, onClick, linkTo }) => {
+const NavButton = ({ buttonIcon, buttonTitle, onClick, linkTo ,profilePicture }) => {
   return (
     <Link to={`${linkTo} `}>
       <button
@@ -10,7 +10,7 @@ const NavButton = ({ buttonIcon, buttonTitle, onClick, linkTo }) => {
       >
         {buttonTitle === "Profile" ? (
           <img
-            src="https://picsum.photos/210"
+            src={profilePicture}
             alt="Profile"
             className="w-6 h-6 rounded-full border-2 border-gray-300 cursor-pointer text-white"
           />

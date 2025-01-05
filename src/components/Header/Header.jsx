@@ -19,7 +19,7 @@ function Header() {
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
-
+  
   const handleCreateClick = () => {
     setIsModalOpen(true);
   };
@@ -98,6 +98,7 @@ function Header() {
               buttonIcon="fas fa-user"
               buttonTitle="Profile"
               linkTo={`/${username}`}
+              profilePicture={myProfile?.data?.userProfilePicture}
             />
           </li>
           <li className="mt-auto">
