@@ -78,8 +78,8 @@ function Post({ post }) {
 
       {/* Etkileşim Butonları */}
       <div className="flex justify-between items-center px-4 py-2">
-        <div className="flex flex-col space-y-1">
-          <div className="flex space-x-4">
+        <div className="flex space-x-4">
+          <div className="flex items-center">
             <button onClick={handleLikePost}>
               <i
                 className={`${post?.isLiked ? "fas" : "far"} fa-heart text-2xl ${
@@ -87,13 +87,10 @@ function Post({ post }) {
                 }`}
               ></i>
             </button>
-            <button>
-              <i className="far fa-comment text-2xl"></i>
-            </button>
+            {post?.likeCount > 0 && (
+              <span className="text-white text-sm ml-2">{post?.likeCount} {post?.likeCount > 1 ? "likes" : "like"}</span>
+            )}
           </div>
-          {post?.likeCount > 0 && (
-            <p className="text-white text-sm">{post?.likeCount} likes</p>
-          )}
         </div>
       </div>
 
