@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../features/authFeatures/authSlice";
 import { resetApiState } from "../../features/baseApi/baseApi";
 import SearchSideBar from "../search/searchSideBar.jsx";
+import NotificationsSideBar from "../notifications/notificationsSideBar.jsx";
 import { useGetMyProfileQuery } from "../../features/userFeatures/userApi.js";
 import { Link } from "react-router-dom";
 
@@ -16,6 +17,7 @@ function Header() {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
@@ -39,6 +41,10 @@ function Header() {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
+  };
+
+  const toggleNotifications = () => {
+    setIsNotificationsOpen(!isNotificationsOpen);
   };
 
   return (
@@ -75,11 +81,15 @@ function Header() {
             />
           </li>
           <li>
-            <NavButton
-              buttonIcon="fas fa-heart"
-              buttonTitle="Notifications"
-              linkTo={"/"}
-            />
+            <button
+              onClick={toggleNotifications}
+              className="flex items-center space-x-2 p-2 rounded-md transition hover:bg-gray-900 w-12 h-12"
+            >
+              <i className="fas fa-heart text-2xl"></i>
+              <span className="px-2 py-2 mt-1 text-l text-white">
+                Notifications
+              </span>
+            </button>
           </li>
           <li>
             <button
@@ -115,6 +125,11 @@ function Header() {
       <SearchSideBar
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
+      />
+
+      <NotificationsSideBar
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
       />
 
       {/* Modal Bileşeni */}

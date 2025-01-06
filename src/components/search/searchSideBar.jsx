@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useSearchQuery } from "../../features/searchFeatures/searchApi";
+import { useSearchQuery } from "../../features/searchFeatures/searchApi.js";
 import { Link } from "react-router-dom";
 
 const SearchSideBar = ({ isOpen, onClose }) => {
@@ -19,14 +19,14 @@ const SearchSideBar = ({ isOpen, onClose }) => {
       initial={{ x: "-100%" }}
       animate={{ x: isOpen ? 0 : "-100%" }}
       transition={{ type: "tween" }}
-      className="fixed top-0 left-0 w-[250px] h-full bg-black shadow-lg z-50 overflow-y-auto search-sidebar"
+      className="fixed top-0 left-0 w-[270px] h-full bg-black shadow-lg z-50 overflow-y-auto search-sidebar"
     >
       <div className="p-4 search-sidebar-content">
         <div className="flex justify-between items-center mb-4 search-sidebar-header">
           <h2 className="text-xl font-bold mt-4 ml-2">Search</h2>
           <button
             onClick={onClose}
-            className="text-gray-700 hover:text-gray-700 search-sidebar-close"
+            className="text-gray-500 hover:text-gray-700 search-sidebar-close"
           >
             ✕
           </button>

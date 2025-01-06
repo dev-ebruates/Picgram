@@ -8,6 +8,7 @@ import authReducer from '../features/authFeatures/authSlice.js';
 import { baseApi, RESET_STATE_ACTION_TYPE, rtkQueryErrorLogger } from '../features/baseApi/baseApi.js';
 import {searchApi} from '../features/searchFeatures/searchApi.js'
 import {messageApi} from '../features/messageFeatures/messageApi.js'
+import {notificationsApi} from '../features/notifications/notificationsApi.js'
 
 const rootReducer = (state, action) => {
   if (action.type === RESET_STATE_ACTION_TYPE) {
@@ -24,6 +25,7 @@ const rootReducer = (state, action) => {
     [baseApi.reducerPath]: baseApi.reducer(state?.[baseApi.reducerPath], action),
     [searchApi.reducerPath]: searchApi.reducer(state?.[searchApi.reducerPath], action),
     [messageApi.reducerPath]: messageApi.reducer(state?.[messageApi.reducerPath], action),
+    [notificationsApi.reducerPath]: notificationsApi.reducer(state?.[notificationsApi.reducerPath], action),
   };
 };
 
@@ -39,6 +41,7 @@ const store = configureStore({
       baseApi.middleware,
       searchApi.middleware,
       messageApi.middleware,
+      notificationsApi.middleware,
       rtkQueryErrorLogger
     ),
 });
