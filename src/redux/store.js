@@ -9,6 +9,24 @@ import { baseApi, RESET_STATE_ACTION_TYPE, rtkQueryErrorLogger } from '../featur
 import {searchApi} from '../features/searchFeatures/searchApi.js'
 import {messageApi} from '../features/messageFeatures/messageApi.js'
 import {notificationsApi} from '../features/notifications/notificationsApi.js'
+import { HubConnectionBuilder } from "@microsoft/signalr";
+
+const connection = new HubConnectionBuilder()
+    .withUrl("http://localhost:5148/notificationHub", {
+      accessTokenFactory: () => {
+        return localStorage.getItem("authToken"); // JWT token'ınızı buradan alın
+      },
+    })
+    .build();
+  connection.start().catch((error) => console.error(error));
+  connection.on("ReceiveNotification", (methodName) => {
+    if (methodName === "LikePost") {
+      store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+    }
+    if (methodName === "CommentPost") {
+      store.dispatch(postApi.util.invalidateTags(["Posts"]));
+    }
+  });
 
 const rootReducer = (state, action) => {
   if (action.type === RESET_STATE_ACTION_TYPE) {
@@ -45,5 +63,7 @@ const store = configureStore({
       rtkQueryErrorLogger
     ),
 });
+
+
 
 export default store;
