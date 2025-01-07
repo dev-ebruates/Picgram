@@ -17,6 +17,7 @@ const connection = new HubConnectionBuilder()
         return localStorage.getItem("authToken"); // JWT token'ınızı buradan alın
       },
     })
+    .withAutomaticReconnect()
     .build();
   connection.start().catch((error) => console.error(error));
   connection.on("ReceiveNotification", (methodName) => {
