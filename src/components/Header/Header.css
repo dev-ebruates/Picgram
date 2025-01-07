@@ -11,7 +11,7 @@ body {
   display: flex;
   flex-direction: column; /* Elemanları dikey hizalar */
   align-items: center; /* Dikeyde ortalanır */
-  width: 210px; /* Yan çubuğun genişliği */
+  width: 250px; /* Yan çubuğun genişliği */
   height: 100vh; /* Tam ekran yüksekliği */
   background-color: black; /* Yan çubuğun rengi */
   position: fixed; /* Sayfanın soluna sabitlenir */

@@ -21,7 +21,8 @@ function Header() {
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
-  
+  console.log("myProfile", myProfile?.data);
+
   const handleCreateClick = () => {
     setIsModalOpen(true);
   };
@@ -96,13 +97,12 @@ function Header() {
               onClick={handleCreateClick}
               className="flex items-center space-x-2 p-2 rounded-md  transition  hover:bg-gray-900 w-12 h-12"
             >
-              <i className="fas fa-plus  text-2xl"></i>
+              <i className="fas fa-plus  text-3xl"></i>
               <span className="px-2 py-2 mt-1  text-l  text-white ">
                 Create
               </span>
             </button>
           </li>
-
           <li className="ml-auto flex items-center">
             <NavButton
               buttonIcon="fas fa-user"
@@ -111,6 +111,15 @@ function Header() {
               profilePicture={myProfile?.data?.userProfilePicture}
             />
           </li>
+          {myProfile?.data?.role === 1 && (
+            <li>
+              <NavButton
+                buttonIcon="fas fa-crown"
+                buttonTitle="Administrator"
+                linkTo="/admin"
+              />
+            </li>
+          )}
           <li className="mt-auto">
             <NavButton
               buttonIcon="fas fa-sign-out-alt"

@@ -47,6 +47,11 @@ function AdminPage() {
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-black text-white p-6">
+      <Link to="/">
+          <h2 className=" italic font-serif text-4xl tracking-tight text-white ">
+            Picgram
+          </h2>
+        </Link>
         <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
         <nav className="space-y-4">
           {Object.entries(menuItems).map(([key, menu]) => (
@@ -124,140 +129,153 @@ function AdminPage() {
 // Placeholder components for sub-menus
 function UserList() {
   const [users, setUsers] = useState([
-    { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
     },
-    { 
-      id: 2, 
-      name: 'Ayşe Demir', 
-      email: 'ayse@example.com', 
-      role: 'Moderatör', 
-      status: 'Aktif',
-      joinDate: '2022-11-20',
-      profileImage: 'https://randomuser.me/api/portraits/women/2.jpg'
+    {
+      id: 2,
+      name: "Ayşe Demir",
+      email: "ayse@example.com",
+      role: "Moderatör",
+      status: "Aktif",
+      joinDate: "2022-11-20",
+      profileImage: "https://randomuser.me/api/portraits/women/2.jpg",
     },
-    { 
-      id: 3, 
-      name: 'Mehmet Kaya', 
-      email: 'mehmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Askıda',
-      joinDate: '2024-01-10',
-      profileImage: 'https://randomuser.me/api/portraits/men/3.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
-    }, { 
-      id: 1, 
-      name: 'Ahmet Yılmaz', 
-      email: 'ahmet@example.com', 
-      role: 'Kullanıcı', 
-      status: 'Aktif',
-      joinDate: '2023-05-15',
-      profileImage: 'https://randomuser.me/api/portraits/men/1.jpg'
+    {
+      id: 3,
+      name: "Mehmet Kaya",
+      email: "mehmet@example.com",
+      role: "Kullanıcı",
+      status: "Askıda",
+      joinDate: "2024-01-10",
+      profileImage: "https://randomuser.me/api/portraits/men/3.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      id: 1,
+      name: "Ahmet Yılmaz",
+      email: "ahmet@example.com",
+      role: "Kullanıcı",
+      status: "Aktif",
+      joinDate: "2023-05-15",
+      profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
     },
   ]);
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const deleteUser = (userId) => {
-    setUsers(prev => prev.filter(user => user.id !== userId));
+    setUsers((prev) => prev.filter((user) => user.id !== userId));
   };
 
   return (
@@ -266,16 +284,16 @@ function UserList() {
         <h2 className="text-2xl font-bold text-gray-800">Kullanıcı Listesi</h2>
         <div className="flex items-center space-x-4">
           <div className="relative">
-            <input 
-              type="text" 
-              placeholder="Kullanıcı ara..." 
+            <input
+              type="text"
+              placeholder="Kullanıcı ara..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black w-64"
             />
             {searchTerm && (
-              <button 
-                onClick={() => setSearchTerm('')}
+              <button
+                onClick={() => setSearchTerm("")}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
                 ✕
@@ -298,31 +316,37 @@ function UserList() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map(user => (
-              <tr 
-                key={user.id} 
+            {filteredUsers.map((user) => (
+              <tr
+                key={user.id}
                 className="border-b border-gray-200 hover:bg-gray-50"
               >
                 <td className="p-3">
-                  <img 
-                    src={user.profileImage} 
-                    alt={user.name} 
+                  <img
+                    src={user.profileImage}
+                    alt={user.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
                 </td>
                 <td className="p-3 font-medium text-black">{user.name}</td>
                 <td className="p-3 text-black">{user.email}</td>
                 <td className="p-3">
-                  <span className={`
+                  <span
+                    className={`
                     px-3 py-1 rounded-full text-xs font-semibold
-                    ${user.role === 'Moderatör' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}
-                  `}>
+                    ${
+                      user.role === "Moderatör"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-blue-100 text-blue-800"
+                    }
+                  `}
+                  >
                     {user.role}
                   </span>
                 </td>
                 <td className="p-3 text-gray-600">{user.joinDate}</td>
                 <td className="p-3">
-                  <button 
+                  <button
                     onClick={() => deleteUser(user.id)}
                     className="text-red-600 hover:text-red-800"
                     title="Sil"

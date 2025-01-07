@@ -7,6 +7,16 @@ import StoryPage from "./pages/StoryPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/AdminPage.jsx";
 import MessagePage from "./pages/MessagePage";
+import { HubConnectionBuilder } from "@microsoft/signalr";
+
+const connection = new HubConnectionBuilder()
+  .withUrl("http://localhost:5148/notificationHub")
+  .build();
+connection.start().catch((error) => console.error(error));
+connection.on("ReceiveNotification", (message) => {
+  console.log(`Received notification: ${message}`);
+  // Update your component state or perform any other action
+});
 
 function App() {
   return (
