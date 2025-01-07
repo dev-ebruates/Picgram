@@ -41,15 +41,18 @@ const StoryPage = () => {
   useEffect(() => {
     if (allStories.length > 0) {
       const allUsernames = [...new Set(allStories.map(story => story.username))];
+      const selectedUserIndex = location.state?.username 
+        ? allUsernames.indexOf(location.state.username)
+        : 0;
       
       setStoryState(prev => ({
         ...prev,
-        username: allUsernames[0],
+        username: location.state?.username || allUsernames[0],
         allUsers: allUsernames,
-        currentUserIndex: 0
+        currentUserIndex: selectedUserIndex >= 0 ? selectedUserIndex : 0
       }));
     }
-  }, [allStories]);
+  }, [allStories, location.state?.username]);
 
   // Profil resmini çek
   useEffect(() => {
@@ -276,7 +279,7 @@ const StoryPage = () => {
             </div>
 
             {/* Progress Bar */}
-            <div className="absolute top-0 left-0 right-0 flex gap-1 p-2">
+            <div className="absolute top-0 left-0 right-0 flex gap-1 p-2  border-t border-gray-900">  
               {currentStories.map((_, index) => (
                 <div
                   key={index}
