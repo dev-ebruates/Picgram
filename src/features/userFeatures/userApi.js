@@ -37,6 +37,16 @@ export const userApi = createApi({
         body: credentials,
       }),
     }),
+    updateUserProfilePicture: builder.mutation({
+      query: (credentials) => ({
+        url: "/user-profilePicture",
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: credentials,
+      }),
+    }),
     getProfile: builder.query({
       query: (username) => `/profile/${username}`,
     }),
@@ -58,4 +68,4 @@ export const userApi = createApi({
   }),
 });
 
-export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery,useGetAllUserQuery,useDeleteUserMutation } = userApi;
+export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery,useGetAllUserQuery,useDeleteUserMutation,useUpdateUserProfilePictureMutation } = userApi;

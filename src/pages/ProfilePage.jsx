@@ -1,15 +1,16 @@
 import Header from "../components/header/Header";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
-import { useUpdateUserBioMutation } from "../features/userFeatures/userApi.js";
+import { useUpdateUserBioMutation, useUpdateUserProfilePictureMutation } from "../features/userFeatures/userApi.js";
 import {
   useGetProfileQuery,
   useGetMyProfileQuery,
 } from "../features/userFeatures/userApi.js";
 import { useGetAllByUsernameQuery } from "../features/postFeatures/postApi";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import profilePicture from "../images/profilePicture.jpg"
+
 
 const ProfilePage = () => {
   const params = useParams(); // URL'den parametreleri al
@@ -21,11 +22,14 @@ const ProfilePage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const [updateUserBioMutation] = useUpdateUserBioMutation();
+  const [updateUserProfilePictureMutation] = useUpdateUserProfilePictureMutation();
 
   const myProfileQuery = useGetMyProfileQuery();
   const userProfileQuery = useGetProfileQuery(username);
+  const [mediaUrl, setMediaUrl] = useState("");
 
   const profile = isOwnProfile ? myProfileQuery.data : userProfileQuery.data;
 
@@ -51,6 +55,24 @@ const ProfilePage = () => {
     } catch (error) {
       console.error("Biyografi güncellenirken hata oluştu:", error);
     }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const ProfilePictureData = {
+        profilePicture: mediaUrl
+      };
+      await updateUserProfilePictureMutation(ProfilePictureData).unwrap();
+      myProfileQuery.refetch(); // Profili yeniden yükle
+      setIsProfileModalOpen(false);
+      setMediaUrl("");
+    } catch (error) {
+      console.error('Profil resmi eklenirken hata oluştu:', error);
+    }
+  };
+  const handleCancel = () => {
+    setIsProfileModalOpen(false);
+    setMediaUrl("");
   };
 
   if (getProfileLoading) return <div>Yükleniyor...</div>;
@@ -80,6 +102,7 @@ const ProfilePage = () => {
                 }
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-gray-600"
+                onClick={() => setIsProfileModalOpen(true)}
               />
               <div>
                 <h2 className="text-3xl font-semibold ">
@@ -174,6 +197,60 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+        {/* Modal */}
+        {isProfileModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
+            <h2 className="text-xl font-bold mb-4 text-white">Story Add</h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="w-full flex justify-center mb-6">
+                <img
+                  src={mediaUrl || profilePicture}
+                  alt="Create Post"
+                  className={`w-full h-full object-cover ${mediaUrl ? '' : 'rounded-full'} overflow-hidden border-4 border-gray-800`}
+                  style={{
+                    width: "250px",
+                    height: "250px",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="media"
+                  className="block text-sm font-medium text-gray-300 mb-1"
+                >
+                  Media URL:
+                </label>
+                <input
+                  type="text"
+                  id="media"
+                  value={mediaUrl}
+                  onChange={(e) => setMediaUrl(e.target.value)}
+                  placeholder="Media URL'ini girin"
+                  className="mt-2 block w-full rounded-md bg-gray-500 border-gray-600 text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm py-2 px-3 border border-transparent"
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors duration-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 transition-colors duration-300"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {isOwnProfile && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <PostForm handleCloseModal={() => setIsModalOpen(false)} />
