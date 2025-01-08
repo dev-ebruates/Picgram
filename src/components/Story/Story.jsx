@@ -10,8 +10,7 @@ function Story() {
   const [createStory] = useCreateStoryMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mediaUrl, setMediaUrl] = useState("");
-  console.log("stories",stories);
-
+ 
   if (storiesLoading) return <div>Yükleniyor...</div>;
   if (storiesError) return <div>Hata: {storiesError}</div>;
 

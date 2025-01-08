@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 
 const notificationsSideBar = ({ isOpen, onClose }) => {
   const { data, error, isLoading } = useGetAllNotificationByUserIdQuery();
-  console.log("Notifications Data:", data);
-  console.log("Notifications Data:", data);
-
+  
   const getNotificationText = (type, username) => {
     switch (type) {
       case 1:

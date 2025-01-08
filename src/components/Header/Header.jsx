@@ -21,8 +21,7 @@ function Header() {
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
-  console.log("myProfile", myProfile?.data);
-
+ 
   const handleCreateClick = () => {
     setIsModalOpen(true);
   };
