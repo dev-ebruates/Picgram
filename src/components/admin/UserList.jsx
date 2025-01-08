@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useGetAllUserQuery } from "../../features/userFeatures/userApi.js";
 import { useEffect } from "react";
+import { useDeleteUserMutation } from "../../features/userFeatures/userApi.js";
+
+
 const UserList = () => {
   const  { data, isLoading } = useGetAllUserQuery();
   console.log(data);
   const [users, setUsers] = useState(data);
 
+  const[deleteUserMutation]= useDeleteUserMutation();
 
   const [searchTerm, setSearchTerm] = useState("");
   console.log("users", users);
@@ -23,8 +27,11 @@ const UserList = () => {
   );
   console.log("filteredUsers", filteredUsers);
 
-  const deleteUser = (userId) => {
-    setUsers((prev) => prev.filter((user) => user.id !== userId));
+  const handleDeleteClick = (userId) => {
+    if (window.confirm('Silmek istediğinize emin misiniz?')) {
+      deleteUserMutation(userId);
+      setUsers((prev) => prev.filter((user) => user.id !== userId));
+    }
   };
 
   if(isLoading) return <div>Yukleniyor...</div>
@@ -93,7 +100,7 @@ const UserList = () => {
                 <td className="p-3 text-gray-600">{new Date(user.createdAt).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                 <td className="p-3">
                   <button
-                    onClick={() => deleteUser(user.id)}
+                    onClick={() => handleDeleteClick(user.id)}
                     className="text-red-600 hover:text-red-800"
                     title="Sil"
                   >

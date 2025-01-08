@@ -49,7 +49,13 @@ export const userApi = createApi({
         return Array.isArray(response.data) ? response.data : [];
       },
     }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}/delete`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery,useGetAllUserQuery } = userApi;
+export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery,useGetAllUserQuery,useDeleteUserMutation } = userApi;
