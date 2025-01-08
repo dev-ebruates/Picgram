@@ -24,9 +24,15 @@ const connection = new HubConnectionBuilder()
     if (methodName === "LikePost") {
       store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
     }
-    if (methodName === "CommentPost") {
-      store.dispatch(postApi.util.invalidateTags(["Posts"]));
-    }
+    // if (methodName === "CreatePost") {
+    //   store.dispatch(postApi.util.invalidateTags(["Posts"]));
+    // }
+    // if(methodName === "PostComment"){
+    //   store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+    // }
+    // if(methodName === "CreateMessage"){
+    //   store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+    // }
   });
 
 const rootReducer = (state, action) => {

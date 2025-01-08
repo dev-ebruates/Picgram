@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/AdminPage.jsx";
 import MessagePage from "./pages/MessagePage";
 import { HubConnectionBuilder } from "@microsoft/signalr";
+import { useGetMyProfileQuery } from "./features/userFeatures/userApi.js";
 
 const connection = new HubConnectionBuilder()
   .withUrl("http://localhost:5148/notificationHub")
@@ -19,6 +20,7 @@ connection.on("ReceiveNotification", (message) => {
 });
 
 function App() {
+  const { data: myProfile } = useGetMyProfileQuery();
   return (
     <Routes>
       {/* Public Routes */}
@@ -62,7 +64,11 @@ function App() {
         path="/admin"
         element={
           <ProtectedRoute>
-            <AdminPage />
+            {myProfile?.data?.role !== 1 ? (
+              <Navigate to='/' />
+            ) : (
+              <AdminPage />
+            )}
           </ProtectedRoute>
         }
       />
