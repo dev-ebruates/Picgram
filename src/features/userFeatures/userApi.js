@@ -43,7 +43,13 @@ export const userApi = createApi({
     getMyProfile: builder.query({
       query: () => "/my-profile",
     }),
+    getAllUser: builder.query({
+      query: () => `/users`,
+      transformResponse: (response) => {
+        return Array.isArray(response.data) ? response.data : [];
+      },
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery } = userApi;
+export const { useCreateUserMutation, useUpdateUserBioMutation, useGetProfileQuery, useGetMyProfileQuery,useGetAllUserQuery } = userApi;

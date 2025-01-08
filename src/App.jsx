@@ -21,6 +21,7 @@ connection.on("ReceiveNotification", (message) => {
 
 function App() {
   const { data: myProfile } = useGetMyProfileQuery();
+
   return (
     <Routes>
       {/* Public Routes */}
