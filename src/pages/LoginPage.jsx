@@ -34,7 +34,8 @@ const LoginPage = () => {
       if (result.data.success === true) {
         const userData = {
           username: result.data.data.username,
-          token: result.data.data.token
+          token: result.data.data.token,
+          role: result.data.data.role
         };
         dispatch(setCredentials(userData));
         navigate("/");

@@ -20,7 +20,7 @@ connection.on("ReceiveNotification", (message) => {
 });
 
 function App() {
-  const { data: myProfile } = useGetMyProfileQuery();
+ 
 
   return (
     <Routes>
@@ -64,12 +64,8 @@ function App() {
       <Route
         path="/admin"
         element={
-          <ProtectedRoute>
-            {myProfile?.data?.role !== 1 ? (
-              <Navigate to='/' />
-            ) : (
-              <AdminPage />
-            )}
+          <ProtectedRoute requiredRole={1}>
+            <AdminPage />
           </ProtectedRoute>
         }
       />

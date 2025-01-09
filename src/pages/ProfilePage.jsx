@@ -98,7 +98,7 @@ const ProfilePage = () => {
                 src={
                   profile?.data?.userProfilePicture
                     ? profile?.data?.userProfilePicture
-                    : "https://via.placeholder.com/150"
+                    : profilePicture
                 }
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-gray-600"
