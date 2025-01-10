@@ -130,7 +130,7 @@ function AdminPage() {
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center bg-black">
         {activeMenu && activeSubMenu !== null ? (
-          <div className="w-full bg-white p-12 rounded-xl shadow-2xl">
+          <div className="w-full h-screen bg-white p-12 rounded-xl shadow-2xl">
             {menuItems[activeMenu].subMenus[activeSubMenu].content}
           </div>
         ) : (

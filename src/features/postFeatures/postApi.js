@@ -246,6 +246,12 @@ export const postApi = createApi({
         return Array.isArray(response.data) ? response.data : [];
       },
     }),
+    deletePostComment: builder.mutation({
+      query: ({ postId, commentId }) => ({
+          url: `/posts/${postId}/comments/${commentId}`,
+          method: "PUT",
+      }),
+  }),
   }),
 });
 
@@ -258,4 +264,5 @@ export const {
   // useDeletePostMutation,
   useGetAllCommentsQuery,
   useLikedPostMutation,
+  useDeletePostCommentMutation,
 } = postApi;
