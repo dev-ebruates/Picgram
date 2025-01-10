@@ -237,6 +237,15 @@ export const postApi = createApi({
         }
       },
     }),
+    getAllComments: builder.query({
+      query: () => ({
+        url: "/getAllComments",
+        method: "GET",
+      }),
+      transformResponse: (response) => {
+        return Array.isArray(response.data) ? response.data : [];
+      },
+    }),
   }),
 });
 
@@ -247,5 +256,6 @@ export const {
   useCreatePostCommentMutation,
   // useUpdatePostMutation,
   // useDeletePostMutation,
+  useGetAllCommentsQuery,
   useLikedPostMutation,
 } = postApi;

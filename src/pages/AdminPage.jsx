@@ -9,6 +9,34 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import UserList from "../components/admin/UserList";
+import { Line, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement } from 'chart.js';
+import DailyReport from "../components/admin/DailyReport";
+import CommentModeration from "../components/admin/CommentModeration";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement);
+
+const dailyData = {
+    labels: ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'],
+    datasets: [{
+        label: 'Günlük Kayıtlar',
+        data: [12, 19, 3, 5, 2, 3, 7],
+        fill: false,
+        backgroundColor: 'rgba(75,192,192,1)',
+        borderColor: 'rgba(75,192,192,1)',
+    }],
+};
+
+const monthlyData = {
+    labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+    datasets: [{
+        label: 'Aylık Kayıtlar',
+        data: [30, 40, 35, 50, 49, 60, 70, 80, 90, 100, 110, 120],
+        backgroundColor: 'rgba(255,99,132,0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1,
+    }],
+};
 
 function AdminPage() {
   const [activeMenu, setActiveMenu] = useState(null);
@@ -20,18 +48,25 @@ function AdminPage() {
       label: "Kullanıcı Yönetimi",
       subMenus: [
         { label: "Kullanıcı Listesi", content: <UserList /> },
-        { label: "Yetki Yönetimi", content: <UserPermissions /> },
+
       ],
     },
     posts: {
       icon: FaComments,
       label: "Gönderi Denetimi",
-      subMenus: [{ label: "Aktif Gönderiler", content: <ActivePosts /> }],
+      subMenus: [
+        { label: "Aktif Yorumlar", content: <CommentModeration/> },
+       
+      ],
     },
     activities: {
       icon: FaChartLine,
       label: "Etkinlik İzleme",
-      subMenus: [{ label: "Günlük Rapor", content: <DailyReport /> }],
+      subMenus: [
+        { label: "Günlük Rapor", content: <DailyReport /> },
+        { label: "Aylık Kayıt Grafiği", content: <MonthlyChart /> },
+        { label: "Yorum Grafiği", content: <CommentChart /> },
+      ],
     },
     policies: {
       icon: FaShieldAlt,
@@ -47,7 +82,7 @@ function AdminPage() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-black text-white p-6">
+      <aside className="w-64 bg-black border border-gray-800 text-white p-6">
       <Link to="/">
           <h2 className=" italic font-serif text-4xl tracking-tight text-white ">
             Picgram
@@ -93,13 +128,13 @@ function AdminPage() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center bg-gray-900">
+      <main className="flex-1 flex items-center justify-center bg-black">
         {activeMenu && activeSubMenu !== null ? (
           <div className="w-full bg-white p-12 rounded-xl shadow-2xl">
             {menuItems[activeMenu].subMenus[activeSubMenu].content}
           </div>
         ) : (
-          <div className="w-2/3 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-12 rounded-xl shadow-2xl">
+          <div className="w-2/3 bg-gradient-to-r from-gray-500 to-gray-600 text-white p-12 rounded-xl shadow-2xl">
             <h1 className="text-3xl font-bold mb-6 text-center">
               Yönetici Kontrol Paneli
             </h1>
@@ -128,17 +163,7 @@ function AdminPage() {
 }
 
 // Placeholder components for sub-menus
-function UserPermissions() {
-  return <div>Kullanıcı Yetkilendirme Sayfası</div>;
-}
 
-function ActivePosts() {
-  return <div>Aktif Gönderiler Listesi</div>;
-}
-
-function DailyReport() {
-  return <div>Günlük Rapor Detayları</div>;
-}
 
 function TermsOfService() {
   return <div>Kullanım Koşulları Metni</div>;
@@ -150,6 +175,25 @@ function PrivacyPolicy() {
 
 function CommunityRules() {
   return <div>Topluluk Kuralları Metni</div>;
+}
+
+
+function MonthlyChart() {
+  return (
+    <div>
+      <h2>Aylık Kayıt Grafiği</h2>
+      <Bar data={monthlyData} />
+    </div>
+  );
+}
+
+function CommentChart() {
+  return (
+    <div>
+      <h2>Yorum Grafiği</h2>
+      <Line data={dailyData} />
+    </div>
+  );
 }
 
 export default AdminPage;
