@@ -5,25 +5,25 @@ import { Link } from "react-router-dom";
 
 const notificationsSideBar = ({ isOpen, onClose }) => {
   const { data, error, isLoading } = useGetAllNotificationByUserIdQuery();
-  
+
   const getNotificationText = (type, username) => {
     switch (type) {
       case 1:
         return (
           <>
             <Link to={`/${username}`}>
-              {" "}
               <span className="font-bold text-sm">{username} </span>
             </Link>
-            <Link to={`/${username}`}>
-              <span className="text-gray-300 text-xs">liked your post</span>
-            </Link>
+
+            <span className="text-gray-300 text-xs">liked your post</span>
           </>
         );
       case 2:
         return (
           <>
-            <span className="font-bold text-sm">{username} </span>
+            <Link to={`/${username}`}>
+              <span className="font-bold text-sm">{username} </span>
+            </Link>
             <span className="text-gray-300 text-xs">
               commented on your post
             </span>
