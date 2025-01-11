@@ -11,6 +11,7 @@ function Story() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mediaUrl, setMediaUrl] = useState("");
  
+  const { refetch }  = useGetAllStoriesQuery();
   if (storiesLoading) return <div>Yükleniyor...</div>;
   if (storiesError) return <div>Hata: {storiesError}</div>;
 
@@ -32,6 +33,7 @@ function Story() {
       await createStory(storyData).unwrap();
       setIsModalOpen(false);
       setMediaUrl("");
+      await refetch();
     } catch (error) {
       console.error('Story eklenirken hata oluştu:', error);
     }
