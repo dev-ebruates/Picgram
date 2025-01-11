@@ -7,7 +7,7 @@ import {
   useGetProfileQuery,
   useGetMyProfileQuery,
 } from "../features/userFeatures/userApi.js";
-import { useGetAllByUsernameQuery } from "../features/postFeatures/postApi";
+import { useGetAllByUsernameQuery, useDeletePostMutation } from "../features/postFeatures/postApi";
 import { useParams } from "react-router-dom";
 import profilePicture from "../images/profilePicture.jpg"
 
@@ -23,9 +23,14 @@ const ProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState(null);
 
   const [updateUserBioMutation] = useUpdateUserBioMutation();
   const [updateUserProfilePictureMutation] = useUpdateUserProfilePictureMutation();
+  const [deletePostMutation] = useDeletePostMutation(); // Silme mutation'ı tanımlandı
+  const { refetch } = useGetAllByUsernameQuery(username || currentUser?.username);
+  //refecth fonksiyonunu kullanarak gönderileri yeniden yükle
 
   const myProfileQuery = useGetMyProfileQuery();
   const userProfileQuery = useGetProfileQuery(username);
@@ -56,6 +61,7 @@ const ProfilePage = () => {
       console.error("Biyografi güncellenirken hata oluştu:", error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -70,16 +76,32 @@ const ProfilePage = () => {
       console.error('Profil resmi eklenirken hata oluştu:', error);
     }
   };
+
   const handleCancel = () => {
     setIsProfileModalOpen(false);
     setMediaUrl("");
+  };
+
+  const confirmDelete = async (postId) => {
+    try {
+      await deletePostMutation(postId).unwrap(); // Post silme işlemi
+      await refetch();// Gönderi listesini yeniden yükle
+      setShowDeleteModal(false); // Modalı kapat
+    } catch (error) {
+      console.error("Gönderi silinirken hata oluştu:", error);
+    }
+  };
+
+  const handleDeletePost = (postId) => { // Silme işlemi
+    setPostIdToDelete(postId);
+    setShowDeleteModal(true); // Onay modalını göster
   };
 
   if (getProfileLoading) return <div>Yükleniyor...</div>;
   if (!profile?.data) return <div>Profil bulunamadı</div>;
 
   return (
-    <div className="flex h-screen ">
+    <div className="flex h-screen">
       <div className="w-[190px] bg-white">
         {/* Header İçeriği */}
         <div>
@@ -88,10 +110,10 @@ const ProfilePage = () => {
       </div>
 
       {/* Sağ taraf: Profil */}
-      <div className="flex-1 bg-white ml-20 ">
+      <div className="flex-1 bg-white ml-20">
         {/* Profil İçeriği */}
         <div>
-          <div className="flex flex-col  bg-black text-white min-h-screen">
+          <div className="flex flex-col bg-black text-white min-h-screen">
             {/* Profil Başlığı */}
             <div className="flex items-center space-x-8 mt-6">
               <img
@@ -105,7 +127,7 @@ const ProfilePage = () => {
                 onClick={() => setIsProfileModalOpen(true)}
               />
               <div>
-                <h2 className="text-3xl font-semibold ">
+                <h2 className="text-3xl font-semibold">
                   {profile?.data?.username}
                 </h2>
                 <p className="text-sm">{profile?.data?.fullname}</p>
@@ -149,9 +171,9 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center  px-20">
+            <div className="flex flex-col items-center px-20">
               {/* Takipçi Bilgileri */}
-              <div className="w-full mr-10 flex justify-around p-6 mb-10 border-b border-gray-900 ">
+              <div className="w-full mr-10 flex justify-around p-6 mb-10 border-b border-gray-900">
                 <div className="text-center">
                   <p className="text-l font-medium">{posts?.length || 0}</p>
                   <p className="text-sm text-gray-400">posts</p>
@@ -172,7 +194,7 @@ const ProfilePage = () => {
               {/* Yeni Gönderi Ekle Butonu */}
               {isOwnProfile && (
                 <button
-                  className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500 "
+                  className="text-white px-6 py-2 mt-10 bg-gray-600 rounded-full mb-6 hover:bg-blue-500"
                   onClick={() => setIsModalOpen(true)}
                 >
                   New post
@@ -182,7 +204,7 @@ const ProfilePage = () => {
                 {posts?.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden "
+                    className="relative bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
                     style={{ width: "100%", height: "300px" }}
                   >
                     <img
@@ -190,6 +212,14 @@ const ProfilePage = () => {
                       alt="UserPost"
                       className="w-full h-full object-cover"
                     />
+                    {isOwnProfile && (
+                      <button
+                        className="absolute top-2 right-2  text-white rounded-full p-2 bg-gray-700"
+                        onClick={() => handleDeletePost(item.id)}
+                      >
+                        <i className="fas fa-trash-alt "></i>
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -197,8 +227,9 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-        {/* Modal */}
-        {isProfileModalOpen && (
+
+      {/* Modal */}
+      {isProfileModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
             <h2 className="text-xl font-bold mb-4 text-white">Story Add</h2>
@@ -251,10 +282,38 @@ const ProfilePage = () => {
           </div>
         </div>
       )}
+
       {isOwnProfile && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <PostForm handleCloseModal={() => setIsModalOpen(false)} />
         </Modal>
+      )}
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
+            <h2 className="text-xl font-bold mb-4 text-white">Are you sure you want to delete?</h2>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors duration-300"
+              >
+                No
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  confirmDelete(postIdToDelete);
+                  setShowDeleteModal(false);
+                }}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors duration-300"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

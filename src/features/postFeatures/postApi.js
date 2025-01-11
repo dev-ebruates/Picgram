@@ -248,10 +248,16 @@ export const postApi = createApi({
     }),
     deletePostComment: builder.mutation({
       query: ({ postId, commentId }) => ({
-          url: `/posts/${postId}/comments/${commentId}`,
-          method: "PUT",
+        url: `/posts/${postId}/comments/${commentId}`,
+        method: "PUT",
       }),
-  }),
+    }),
+    deletePost: builder.mutation({
+      query: (postId) => ({
+        url: `/posts/${postId}/delete`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -260,9 +266,8 @@ export const {
   useCreatePostMutation,
   useGetAllByUsernameQuery,
   useCreatePostCommentMutation,
-  // useUpdatePostMutation,
-  // useDeletePostMutation,
   useGetAllCommentsQuery,
   useLikedPostMutation,
   useDeletePostCommentMutation,
+  useDeletePostMutation,
 } = postApi;
