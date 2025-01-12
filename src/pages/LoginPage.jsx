@@ -1,11 +1,13 @@
 import picgramLogin from "../images/picgram-login-left.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthMutation } from "../features/authFeatures/authApi.js";
+import {
+  useAuthMutation,
+  useGoogleAuthMutation,
+} from "../features/authFeatures/authApi.js";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/authFeatures/authSlice.js";
 import { GoogleLogin } from "@react-oauth/google";
-import {jwtDecode} from "jwt-decode";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -14,8 +16,8 @@ const LoginPage = () => {
   });
 
   const dispatch = useDispatch();
-  const [authMutation, { error: authError, isLoading: authLoading }] =
-    useAuthMutation();
+  const [authMutation] = useAuthMutation();
+  const [googleAuthMutation] = useGoogleAuthMutation();
 
   const navigate = useNavigate();
 
@@ -90,23 +92,28 @@ const LoginPage = () => {
           </form>
           <div className="flex items-center justify-between my-4">
             <hr className="w-1/4 border-gray-300" />
-            <span className="text-gray-500 text-sm">YA DA</span>
+            <span className="text-gray-500 text-sm">Or</span>
             <hr className="w-1/4 border-gray-300" />
           </div>
           <div className="flex justify-center space-x-4">
             <span>
               <GoogleLogin
-                onSuccess={(credentialResponse) => {
+                onSuccess={async (credentialResponse) => {
                   console.log(credentialResponse);
-                  const decoded = jwtDecode(credentialResponse.credential);
-                  console.log(decoded);
-                  // const userData = {
-                  //   username: decoded.name,
-                  //   token: credentialResponse.credential,
-                  //   role: "user",
-                  // };
-                  // dispatch(setCredentials(userData));
-                  // navigate("/");
+                  try {
+                    const result = await googleAuthMutation(credentialResponse);
+                    if (result.data.success === true) {
+                      const userData = {
+                        username: result.data.data.username,
+                        token: result.data.data.token,
+                        role: result.data.data.role,
+                      };
+                      dispatch(setCredentials(userData));
+                      navigate("/");
+                    }
+                  } catch (err) {
+                    console.error("Login failed:", err);
+                  }
                 }}
                 onError={() => {
                   console.log("Login Failed");
@@ -115,11 +122,11 @@ const LoginPage = () => {
             </span>
           </div>
 
-          <div className="text-center text-sm text-gray-500 mt-4">
+          {/* <div className="text-center text-sm text-gray-500 mt-4">
             <a href="#" className="text-gray-600 hover:underline">
               you forgot your password?
             </a>
-          </div>
+          </div> */}
           <div className="flex items-center justify-between my-4">
             <hr className="w-full border-gray-300" />
             <span className="text-gray-500 text-sm"></span>
@@ -128,7 +135,7 @@ const LoginPage = () => {
           <div className="flex items-center justify-between">
             <Link to="/register" className="w-full">
               <div className="text-center text-sm text-gray-500 mb-4">
-                Don't have an account?
+                Don&apos; t have an account?
               </div>
               <button className="text-center text-sm bg-gray-400 border border-gray-400 rounded-md p-2 hover:bg-gray-600 w-full">
                 Sign up
