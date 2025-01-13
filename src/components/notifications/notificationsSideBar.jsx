@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const notificationsSideBar = ({ isOpen, onClose }) => {
   const { data, error, isLoading } = useGetAllNotificationByUserIdQuery();
+  console.log(data);
 
   const getNotificationText = (type, username) => {
     switch (type) {
@@ -14,7 +15,6 @@ const notificationsSideBar = ({ isOpen, onClose }) => {
             <Link to={`/${username}`}>
               <span className="font-bold text-sm">{username} </span>
             </Link>
-
             <span className="text-gray-300 text-xs">liked your post</span>
           </>
         );
@@ -63,7 +63,7 @@ const notificationsSideBar = ({ isOpen, onClose }) => {
 
         <div className="space-y-4">
           {data &&
-            data.map((notification) => (
+            data.slice().reverse().map((notification) => (
               <div
                 key={notification.id}
                 className="flex items-center justify-between p-3 bg-gray-800 rounded-lg"
