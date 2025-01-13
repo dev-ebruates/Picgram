@@ -1,8 +1,7 @@
 import Feed from "../components/feed/Feed";
 import Header from "../components/Header/Header";
-import Story from "../components/Story/Story";
-import ReduxExample from "../components/reduxExample/ReduxExample.jsx";
-import ReduxApiExample from "../components/reduxApiExample/ReduxApiExample.jsx";
+import Story from "../components/story/Story";
+
 
 const HomePage = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
