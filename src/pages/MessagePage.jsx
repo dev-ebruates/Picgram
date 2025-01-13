@@ -1,6 +1,5 @@
-import React from 'react';
+import Header from '../components/Header/Header';
 import Message from '../components/message/Message';
-import Header from '../components/header/Header';
 
 const MessagePage = () => {
   return (
