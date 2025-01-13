@@ -1,4 +1,4 @@
-import Post from "../post/Post";
+import Post from "../Post/Post.jsx";
 import { useGetAllPostsQuery } from "../../features/postFeatures/postApi";
 import "./Feed.css";
 
