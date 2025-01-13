@@ -14,7 +14,7 @@ const CommentModeration = () => {
 
     const handleDelete = (postId, commentId) => {
         // Burada silme işlemini gerçekleştirin. Örneğin, bir API çağrısı yapabilirsiniz.
-        console.log(`Comment with ID: ${commentId} deleted from post ID: ${postId}.`);
+      
         deletePostCommentMutation({postId, commentId});
         const updatedPosts = posts.map(post => {
             if (post.id === postId) {

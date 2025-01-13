@@ -101,7 +101,7 @@ function Post({ post }) {
         </p>
 
         {/* Yorumları Göster */}
-        <Comments comments={post?.comments} postId={post?.id} />
+        <Comments comments={post?.comments} postId={post?.id} postUsername={post?.username} />
       </div>
     </div>
   );

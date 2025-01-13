@@ -6,13 +6,11 @@ import { useDeleteUserMutation } from "../../features/userFeatures/userApi.js";
 
 const UserList = () => {
   const  { data, isLoading } = useGetAllUserQuery();
-  console.log(data);
   const [users, setUsers] = useState(data);
 
   const[deleteUserMutation]= useDeleteUserMutation();
 
   const [searchTerm, setSearchTerm] = useState("");
-  console.log("users", users);
     // data değiştiğinde users state'ini güncelle
     useEffect(() => {
       if (data) {
@@ -25,8 +23,6 @@ const UserList = () => {
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log("filteredUsers", filteredUsers);
-
   const handleDeleteClick = (userId) => {
     if (window.confirm('Silmek istediğinize emin misiniz?')) {
       deleteUserMutation(userId);

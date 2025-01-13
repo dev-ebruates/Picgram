@@ -99,7 +99,6 @@ const LoginPage = () => {
             <span>
               <GoogleLogin
                 onSuccess={async (credentialResponse) => {
-                  console.log(credentialResponse);
                   try {
                     const result = await googleAuthMutation(credentialResponse);
                     if (result.data.success === true) {
@@ -116,7 +115,6 @@ const LoginPage = () => {
                   }
                 }}
                 onError={() => {
-                  console.log("Login Failed");
                 }}
               />
             </span>

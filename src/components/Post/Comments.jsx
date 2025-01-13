@@ -1,17 +1,22 @@
-import { useState } from 'react';
-import {useCreatePostCommentMutation} from '../../features/postFeatures/postApi.js'
+import { useState, useCallback } from 'react';
+import {useCreatePostCommentMutation, useDeletePostCommentMutation,useGetAllPostsQuery} from '../../features/postFeatures/postApi.js'
 import { v4 as uuidv4 } from 'uuid';
 
-const Comments = ({ comments, postId}) => {
-  const [newComment, setNewComment] = useState('');
-   
+const Comments = ({ comments, postId,postUsername}) => {
+  const [newComment, setNewComment] = useState('');const { refetch } = useGetAllPostsQuery();
+  const memoizedRefetch = useCallback(() => refetch(), [refetch]);
   const [createPostComment] = useCreatePostCommentMutation();
+  const [deletePostCommentMutation] = useDeletePostCommentMutation();
   const handleSubmitComment = (e) => {
     e.preventDefault();
     if (newComment.trim()) {
       createPostComment({postId:postId,comment:newComment, id: uuidv4()});
       setNewComment('');
     }
+  };
+  const handleDeleteComment = (postId,commentId) => { deletePostCommentMutation({postId, commentId})
+  memoizedRefetch();
+  
   };
 
   return (<div>
@@ -61,6 +66,14 @@ const Comments = ({ comments, postId}) => {
                   minute: '2-digit'
                 })}
               </span>
+              {comment.username === postUsername  && (
+                <button 
+                  onClick={() => handleDeleteComment(postId,comment.id)} 
+                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  <i className="fas fa-trash-alt "></i>
+                </button>
+              )}
             </div>
             <p className="text-gray-300 mt-1">{comment?.comment}</p>
           </div>

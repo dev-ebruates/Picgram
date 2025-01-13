@@ -14,8 +14,7 @@ const connection = new HubConnectionBuilder()
   .withUrl("http://localhost:5148/notificationHub")
   .build();
 connection.start().catch((error) => console.error(error));
-connection.on("ReceiveNotification", (message) => {
-  console.log(`Received notification: ${message}`);
+connection.on("ReceiveNotification", () => {
   // Update your component state or perform any other action
 });
 
