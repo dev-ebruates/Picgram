@@ -4,9 +4,6 @@ import Story from "../components/Story/Story.jsx";
 
 
 const HomePage = () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  console.log("API URL:", apiUrl);
-
   return (
     <div className="flex flex-row justify-between ">
       <Header />
