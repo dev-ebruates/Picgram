@@ -12,7 +12,7 @@ import {notificationsApi} from '../features/notifications/notificationsApi.js'
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
 const connection = new HubConnectionBuilder()
-    .withUrl("http://localhost:5148/notificationHub", {
+    .withUrl(import.meta.env.VITE_SIGNALR_URL, {
       accessTokenFactory: () => {
         return localStorage.getItem("authToken"); // JWT token'ınızı buradan alın
       },

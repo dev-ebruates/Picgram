@@ -4,7 +4,7 @@ import { selectCurrentToken } from "./authSlice";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5148",
+    baseUrl: import.meta.env.VITE_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       // Redux store'dan token'ı al
       const token = selectCurrentToken(getState());

@@ -4,10 +4,9 @@ import Story from "../components/Story/Story";
 import ReduxExample from "../components/reduxExample/ReduxExample.jsx";
 import ReduxApiExample from "../components/reduxApiExample/ReduxApiExample.jsx";
 
-
 const HomePage = () => {
-
-
+  const apiUrl = import.meta.env.VITE_API_URL;
+  console.log("API URL:", apiUrl);
 
   return (
     <div className="flex flex-row justify-between ">
