@@ -1,4 +1,4 @@
-import Header from "../components/header/Header";
+import Header from "../components/Header/Header";
 import { useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
