@@ -16,7 +16,7 @@ const CommentModeration = () => {
         // Burada silme işlemini gerçekleştirin. Örneğin, bir API çağrısı yapabilirsiniz.
       
         deletePostCommentMutation({postId, commentId});
-        const updatedPosts = posts.map(post => {
+        const updatedPosts = posts?.map(post => {
             if (post.id === postId) {
                 return {
                     ...post,
