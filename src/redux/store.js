@@ -10,15 +10,12 @@ import {searchApi} from '../features/searchFeatures/searchApi.js'
 import {messageApi} from '../features/messageFeatures/messageApi.js'
 import {notificationsApi} from '../features/notifications/notificationsApi.js'
 import { HubConnectionBuilder } from "@microsoft/signalr";
-import * as signalR from "@microsoft/signalr";
 
 const connection = new HubConnectionBuilder()
     .withUrl(import.meta.env.BASE_URL + "/notificationHub", {
       accessTokenFactory: () => {
         return localStorage.getItem("authToken"); // JWT token'ınızı buradan alın
-      },
-      skipNegotiation: true, // Negotiation'ı atla
-      transport: signalR.HttpTransportType.WebSockets,
+      }
     })
     .withAutomaticReconnect()
     .build();
