@@ -28,6 +28,7 @@ const connection = new HubConnectionBuilder()
       store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
     }
     if(methodName === "CreateMessage"){
+      console.log("mesaj geldi");
       store.dispatch(messageApi.util.invalidateTags(["RelatedMessages","Conversations"]));
     }
   });
