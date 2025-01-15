@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ContactList from "./ContactList";
 import {
   useGetRelatedMessagesQuery,
@@ -8,6 +8,7 @@ import {
 const Message = () => {
   const [selectedContact, setSelectedContact] = useState(null);
   const [newMessage, setNewMessage] = useState("");
+  const messageEndRef = useRef(null);
 
   const {
     data: relatedMessages,
@@ -31,6 +32,19 @@ const Message = () => {
       setNewMessage("");
     }
   };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && newMessage.trim()) {
+      handleSendMessage();
+      setNewMessage('');
+    }
+  };
+
+  useEffect(() => {
+    if (relatedMessages && relatedMessages.length > 0) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [relatedMessages]);
 
   return (
     <div className="min-h-[calc(100vh-64px)] max-h-[calc(100vh-64px)] flex bg-black text-white overflow-hidden">
@@ -94,6 +108,7 @@ const Message = () => {
                 </div>
               ))
             )}
+            <div ref={messageEndRef} />
           </div>
 
           {/* Mesaj gönderme alanı */}
@@ -102,6 +117,7 @@ const Message = () => {
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Bir mesaj yazın..."
               className="flex-grow bg-gray-900 text-white p-2 rounded-l-lg focus:outline-none"
             />

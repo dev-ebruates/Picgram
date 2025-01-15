@@ -28,8 +28,11 @@ const connection = new HubConnectionBuilder()
       store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
     }
     if(methodName === "CreateMessage"){
-      store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+      // store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
       store.dispatch(messageApi.util.invalidateTags(["RelatedMessages"]));
+    }
+    if(methodName === "CreateMessage"){
+      store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
     }
   });
 
