@@ -14,6 +14,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import DailyReport from "../components/admin/DailyReport";
 import CommentModeration from "../components/admin/CommentModeration";
 
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement);
 
 const dailyData = {
@@ -66,15 +67,6 @@ function AdminPage() {
         { label: "Günlük Rapor", content: <DailyReport /> },
         { label: "Aylık Kayıt Grafiği", content: <MonthlyChart /> },
         { label: "Yorum Grafiği", content: <CommentChart /> },
-      ],
-    },
-    policies: {
-      icon: FaShieldAlt,
-      label: "Platform Politikaları",
-      subMenus: [
-        { label: "Kullanım Koşulları", content: <TermsOfService /> },
-        { label: "Gizlilik Politikası", content: <PrivacyPolicy /> },
-        { label: "Topluluk Kuralları", content: <CommunityRules /> },
       ],
     },
   };
@@ -165,17 +157,6 @@ function AdminPage() {
 // Placeholder components for sub-menus
 
 
-function TermsOfService() {
-  return <div>Kullanım Koşulları Metni</div>;
-}
-
-function PrivacyPolicy() {
-  return <div>Gizlilik Politikası Metni</div>;
-}
-
-function CommunityRules() {
-  return <div>Topluluk Kuralları Metni</div>;
-}
 
 
 function MonthlyChart() {

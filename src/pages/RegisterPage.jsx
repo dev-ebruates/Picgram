@@ -32,6 +32,11 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const checkbox = document.querySelector('input[type="checkbox"]');
+    if (!checkbox.checked) {
+      alert("Kullanım koşullarını, gizlilik politikasını ve topluluk kurallarını kabul etmelisiniz.");
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       alert("Şifreler eşleşmiyor!");
       return;
@@ -151,6 +156,16 @@ const RegisterPage = () => {
               required
             />
           </div>
+          <div className="flex flex-col items-center mt-4">
+            <label>
+              <input type="checkbox" required />
+              I have read and accept the usage data and community.
+              <Link to="/terms" className="text-blue-500">
+              Terms of Use | Community Rules
+              </Link>
+            </label>
+          
+          </div> 
           <button
             type="submit"
             className="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300"

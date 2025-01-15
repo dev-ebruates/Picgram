@@ -7,17 +7,15 @@ import StoryPage from "./pages/StoryPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/AdminPage.jsx";
 import MessagePage from "./pages/MessagePage";
-
-
+import TermsAndCommunityPage from "./pages/TermsAndCommunityPage.jsx";
 
 function App() {
- 
-
   return (
     <Routes>
       {/* Public Routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/terms" element={<TermsAndCommunityPage />} />
 
       {/* Protected Routes */}
       <Route
