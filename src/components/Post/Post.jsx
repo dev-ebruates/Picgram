@@ -3,12 +3,15 @@ import { enUS } from "date-fns/locale";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useLikedPostMutation } from "../../features/postFeatures/postApi";
-import Comments from "./Comments";
+import Modal from "../modal/modal";
+import CommentsPage from "../../pages/CommentsPage";
 
 function Post({ post }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFullCaptionVisible, setIsFullCaptionVisible] = useState(false);
 
   const [likedPostMutation] = useLikedPostMutation();
+  // const navigate = useNavigate();
 
   const handleLikePost = async () => {
     try {
@@ -17,6 +20,17 @@ function Post({ post }) {
       console.error("Beğeni hatası:", error);
     }
   };
+  const handleCommentClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // const handleCommentClick = () => {
+  //   navigate(`/comments?mediaUrl=${post.mediaUrl}`); // Yorum sayfasına yönlendirme
+  // };
 
   // Tarih formatlaması
   const formatDate = (dateString) => {
@@ -44,7 +58,7 @@ function Post({ post }) {
           onClick={() => setIsFullCaptionVisible(true)}
           className="text-blue-500 hover:text-blue-400"
         >
-         read more...
+          read more...
         </button>
       </>
     );
@@ -57,7 +71,10 @@ function Post({ post }) {
         <Link to={`/${post?.username}`}>
           {" "}
           <img
-            src={post?.userProfilePicture || "https://www.androidsis.com/wp-content/uploads/2024/01/Sin-foto-de-perfil-de-WhatsApp.jpg"}
+            src={
+              post?.userProfilePicture ||
+              "https://www.androidsis.com/wp-content/uploads/2024/01/Sin-foto-de-perfil-de-WhatsApp.jpg"
+            }
             alt="Profil Resmi"
             className="w-16 h-16 rounded-full"
           />
@@ -82,13 +99,28 @@ function Post({ post }) {
           <div className="flex items-center">
             <button onClick={handleLikePost}>
               <i
-                className={`${post?.isLiked ? "fas" : "far"} fa-heart text-2xl ${
+                className={`${
+                  post?.isLiked ? "fas" : "far"
+                } fa-heart text-2xl ${
                   post?.isLiked ? "text-red-500" : "text-white"
                 }`}
               ></i>
             </button>
             {post?.likeCount > 0 && (
-              <span className="text-white text-sm ml-2">{post?.likeCount} {post?.likeCount > 1 ? "likes" : "like"}</span>
+              <span className="text-white text-sm ml-2">
+                {post?.likeCount} {post?.likeCount > 1 ? "likes" : "like"}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center">
+            <button onClick={handleCommentClick}>
+              <i className="far fa-comment text-2xl text-white"></i>
+            </button>
+            {post?.comments?.length > 0 && (
+              <span className="text-white text-sm ml-2">
+                {post?.comments?.length}{" "}
+                {post?.comments?.length > 1 ? "comments" : "comment"}
+              </span>
             )}
           </div>
         </div>
@@ -99,9 +131,9 @@ function Post({ post }) {
           <span className="font-semibold">{post.username} </span>
           {renderCaption()}
         </p>
-
-        {/* Yorumları Göster */}
-        <Comments comments={post?.comments} postId={post?.id}  />
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <CommentsPage handleCloseModal={handleCloseModal} post={post} />
+        </Modal>
       </div>
     </div>
   );

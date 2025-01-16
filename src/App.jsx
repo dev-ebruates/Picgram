@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/AdminPage.jsx";
 import MessagePage from "./pages/MessagePage";
 import TermsAndCommunityPage from "./pages/TermsAndCommunityPage.jsx";
+import CommentsPage from "./pages/CommentsPage.jsx";
 
 function App() {
   return (
@@ -47,6 +48,14 @@ function App() {
         element={
           <ProtectedRoute>
             <MessagePage />
+          </ProtectedRoute>
+        }
+      />
+       <Route
+        path="/comments"
+        element={
+          <ProtectedRoute>
+            <CommentsPage />
           </ProtectedRoute>
         }
       />
