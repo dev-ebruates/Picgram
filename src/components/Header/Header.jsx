@@ -144,6 +144,10 @@ function Header() {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <PostForm handleCloseModal={handleCloseModal} />
       </Modal>
+
+      <div className="story" style={{ zIndex: -10, position: 'relative' }}> 
+        {/* Story içeriği burada */}
+      </div>
     </header>
   );
 }
