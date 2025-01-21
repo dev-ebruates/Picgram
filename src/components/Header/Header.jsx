@@ -21,7 +21,7 @@ function Header() {
 
   const { data: myProfile } = useGetMyProfileQuery();
   const username = myProfile?.data?.username;
- 
+
   const handleCreateClick = () => {
     setIsModalOpen(true);
   };
@@ -145,7 +145,7 @@ function Header() {
         <PostForm handleCloseModal={handleCloseModal} />
       </Modal>
 
-      <div className="story" style={{ overflowX: "auto", zIndex: "50" }}> 
+      <div className="story" style={{ overflowX: "auto", zIndex: "20" }}>
         {/* Story içeriği burada */}
       </div>
     </header>
