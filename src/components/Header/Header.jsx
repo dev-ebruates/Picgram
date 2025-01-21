@@ -145,7 +145,7 @@ function Header() {
         <PostForm handleCloseModal={handleCloseModal} />
       </Modal>
 
-      <div className="story" style={{ zIndex: -10, position: 'relative' }}> 
+      <div className="story" style={{ zIndex: 10, position: 'relative' }}> 
         {/* Story içeriği burada */}
       </div>
     </header>
