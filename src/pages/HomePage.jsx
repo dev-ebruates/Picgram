@@ -8,7 +8,7 @@ const HomePage = () => {
     <div className="flex flex-row justify-between ">
       <Header />
       <div className="flex-1 mr-[380px] ml-[250px]">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center " style={{ zIndex: -10 }}>
           <Story />
           <div className="my-4" /> {/* Story ve Feed arasında boşluk */}
           <Feed />
