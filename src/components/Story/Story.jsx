@@ -26,6 +26,7 @@ function Story() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("story basıldı");
     try {
       const storyData = {
         mediaUrl: mediaUrl
