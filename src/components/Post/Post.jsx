@@ -67,9 +67,8 @@ function Post({ post }) {
   return (
     <div className="max-w-md mx-auto my-5 border border-black rounded-lg shadow-md bg-black border-b-gray-900">
       {/* Profil Bilgileri */}
-      <div className="flex items-center px-4 py-3 ">
+      <div className="flex items-center px-4 py-3">
         <Link to={`/${post?.username}`}>
-          {" "}
           <img
             src={
               post?.userProfilePicture ||
@@ -79,7 +78,6 @@ function Post({ post }) {
             className="w-16 h-16 rounded-full"
           />
         </Link>
-
         <div className="ml-3">
           <p className="font-semibold">{post?.username}</p>
           <p className="text-sm text-gray-500">{formatDate(post?.createdAt)}</p>
@@ -87,11 +85,13 @@ function Post({ post }) {
       </div>
 
       {/* Gönderi Resmi */}
-      <img
-        src={post?.mediaUrl}
-        alt="Gönderi Resmi"
-        className="w-full h-max object-cover"
-      />
+      <div className="w-full h-80 overflow-hidden">
+        <img
+          src={post?.mediaUrl}
+          alt="Gönderi Resmi"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
       {/* Etkileşim Butonları */}
       <div className="flex justify-between items-center px-4 py-2">
