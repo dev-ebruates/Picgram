@@ -19,7 +19,7 @@ const SearchSideBar = ({ isOpen, onClose }) => {
       initial={{ x: "-100%" }}
       animate={{ x: isOpen ? 0 : "-100%" }}
       transition={{ type: "tween" }}
-      className="fixed top-0 left-0 w-[270px] h-full bg-black shadow-lg z-50 overflow-y-auto search-sidebar"
+      className="fixed top-0 left-0 w-[270px] h-full bg-black shadow-lg overflow-y-auto search-sidebar"
     >
       <div className="p-4 search-sidebar-content">
         <div className="flex justify-between items-center mb-4 search-sidebar-header">

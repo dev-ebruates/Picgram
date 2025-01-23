@@ -48,7 +48,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
   }, [post.comments]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
       <div className="bg-black rounded-lg shadow-lg w-3/4 h-3/4 p-6 relative flex flex-col space-y-6">
         {/* Close Button */}
         <button

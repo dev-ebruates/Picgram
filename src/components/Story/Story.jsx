@@ -26,7 +26,6 @@ function Story() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("story basıldı");
     try {
       const storyData = {
         mediaUrl: mediaUrl
@@ -42,8 +41,8 @@ function Story() {
 
   return (
     <>
-      <div className="story-bar overflow-x-scroll border-t border-gray-900">  {/* Kaydırma çubuğu eklendi */}
-        <div className="flex relative gap-4 z-10">
+      <div className="sticky left-0 top-0 story-bar overflow-x-scroll border-t border-gray-900">  {/* Kaydırma çubuğu eklendi */}
+        <div className="flex relative gap-4 ">
           {/* Story Ekleme Butonu */}
           <div className="story flex-none ">
             <div 
@@ -86,7 +85,7 @@ function Story() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
             <h2 className="text-xl font-bold mb-4 text-white">Story Add</h2>
             <form onSubmit={handleSubmit} className="space-y-6">

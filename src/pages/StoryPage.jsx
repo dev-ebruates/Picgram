@@ -248,7 +248,7 @@ const StoryPage = () => {
 
   return (
     <div className="story-page flex flex-col h-screen">
-      <div className="logo absolute top-4 left-4 z-50">
+      <div className="logo absolute top-4 left-4 ">
         <button
           onClick={() => navigate(-1)}
           className="italic font-serif text-4xl tracking-tight text-white hover:text-gray-300 transition-colors duration-300 bg-transparent border-none cursor-pointer outline-none"
@@ -261,7 +261,7 @@ const StoryPage = () => {
           {/* Sol Ok */}
           <button
             onClick={handlePrevStory}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-gray-300 focus:outline-none z-10"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-gray-300 focus:outline-none "
           >
             ←
           </button>
@@ -269,7 +269,7 @@ const StoryPage = () => {
           {/* Story İçeriği */}
           <div className="relative">
             {/* Kullanıcı Bilgisi */}
-            <div className="absolute top-4 left-4 flex items-center z-10">
+            <div className="absolute top-4 left-4 flex items-center">
               <img
                 src={storyState.userProfilePicture}
                 alt={storyState.username}
@@ -308,7 +308,7 @@ const StoryPage = () => {
           {/* Sağ Ok */}
           <button
             onClick={handleNextStory}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-gray-300 focus:outline-none z-10"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-gray-300 focus:outline-none "
           >
             →
           </button>
@@ -316,7 +316,7 @@ const StoryPage = () => {
           {/* Kapatma Butonu */}
           <button
             onClick={() => navigate(-1)}
-            className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 focus:outline-none z-10"
+            className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 focus:outline-none "
           >
             ×
           </button>

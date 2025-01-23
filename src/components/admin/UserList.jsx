@@ -34,12 +34,12 @@ const UserList = () => {
   return (
     <div className="p-6 bg-white h-screen w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Kullanıcı Listesi</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Users</h2>
         <div className="flex items-center space-x-4">
           <div className="relative">
             <input
               type="text"
-              placeholder="Kullanıcı ara..."
+              placeholder="User search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black w-64"
@@ -58,7 +58,7 @@ const UserList = () => {
 
       <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
         <table className="w-full border-collapse">
-          <thead className="sticky top-0 bg-gray-100 z-10">
+          <thead className="sticky top-0 bg-gray-100 ">
             <tr className="text-gray-600">
               <th className="p-3 text-left">Profil</th>
               <th className="p-3 text-left">Ad Soyad</th>

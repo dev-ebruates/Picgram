@@ -22,7 +22,7 @@ const PostForm = ({ handleCloseModal }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-85 w-full bg-gray-900  p-6 rounded-lg z-50" >
+    <div className="flex flex-col justify-center items-center h-85 w-full bg-gray-900  p-6 rounded-lg " >
       {/* Resim Önizlemesi */}
       <div className="w-full flex justify-center mb-6">
         <img
