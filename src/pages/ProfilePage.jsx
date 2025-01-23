@@ -102,12 +102,6 @@ const ProfilePage = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="w-[190px] bg-white">
-        {/* Header İçeriği */}
-        <div>
-        </div>
-      </div>
-
       {/* Sağ taraf: Profil */}
       <div className="flex-1 bg-white ml-20">
         {/* Profil İçeriği */}

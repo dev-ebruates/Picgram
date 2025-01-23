@@ -35,9 +35,14 @@ createRoot(document.getElementById("root")).render(
           <Route
             path="/*"
             element={
-              <>
-                <Header /> <App />
-              </>
+              <div className="grid grid-cols-[250px_1fr] min-h-screen">
+                <div className="border-r border-gray-200">
+                  <Header />
+                </div>
+                <div className="px-8 py-4">
+                  <App />
+                </div>
+              </div>
             }
           />
         </Routes>
