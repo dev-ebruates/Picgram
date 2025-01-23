@@ -1,4 +1,3 @@
-import Header from "../components/Header/Header";
 import { useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
@@ -197,7 +196,7 @@ const ProfilePage = () => {
                 {posts?.map((item, index) => (
                   <div
                     key={index}
-                    className="relative bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
+                    className=" bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
                     style={{ width: "100%", height: "300px" }}
                   >
                     <img

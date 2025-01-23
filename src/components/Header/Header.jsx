@@ -129,6 +129,9 @@ function Header() {
           </li>
         </ul>
       </nav>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <PostForm handleCloseModal={() => setIsModalOpen(false)} />
+        </Modal>
 
       <SearchSideBar
         isOpen={isSearchOpen}
@@ -139,15 +142,6 @@ function Header() {
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}
       />
-
-      {/* Modal Bileşeni */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <PostForm handleCloseModal={handleCloseModal} />
-      </Modal>
-
-      <div className="story" >
-        {/* Story içeriği burada */}
-      </div>
     </header>
   );
 }

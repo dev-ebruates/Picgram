@@ -41,13 +41,13 @@ function Story() {
 
   return (
     <>
-      <div className="left-0 top-0 story-bar overflow-x-scroll border-t border-gray-900">  {/* Kaydırma çubuğu eklendi */}
-        <div className="flex relative gap-4 ">
+      <div className="left-0 top-0 story-bar overflow-x-scroll border-b border-gray-900">  {/* Kaydırma çubuğu eklendi */}
+        <div className="flex  gap-4 ">
           {/* Story Ekleme Butonu */}
           <div className="story flex-none ">
             <div 
               onClick={handleAddStory} 
-              className={`relative w-16 h-16 rounded-full border-2 border-gray-700  cursor-pointer hover:border-gray-300 flex items-center justify-center bg-gray-500 ${storiesLoading ? 'opacity-50' : ''}`}
+              className={` w-16 h-16 rounded-full border-2 border-gray-700  cursor-pointer hover:border-gray-300 flex items-center justify-center bg-gray-500 ${storiesLoading ? 'opacity-50' : ''}`}
             >
               {storiesLoading ? (
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-500" />
