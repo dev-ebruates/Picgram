@@ -10,6 +10,7 @@ import {searchApi} from '../features/searchFeatures/searchApi.js'
 import {messageApi} from '../features/messageFeatures/messageApi.js'
 import {notificationsApi} from '../features/notifications/notificationsApi.js'
 import { HubConnectionBuilder } from "@microsoft/signalr";
+import {reportsApi} from '../features/reportsFeatures/reportsApi.js'
 
 const connection = new HubConnectionBuilder()
     .withUrl(import.meta.env.VITE_BASE_URL + "/notificationHub", {
@@ -52,6 +53,8 @@ const rootReducer = (state, action) => {
     [searchApi.reducerPath]: searchApi.reducer(state?.[searchApi.reducerPath], action),
     [messageApi.reducerPath]: messageApi.reducer(state?.[messageApi.reducerPath], action),
     [notificationsApi.reducerPath]: notificationsApi.reducer(state?.[notificationsApi.reducerPath], action),
+    [reportsApi.reducerPath]: reportsApi.reducer(state?.[reportsApi.reducerPath], action),
+
   };
 };
 
@@ -68,6 +71,7 @@ const store = configureStore({
       searchApi.middleware,
       messageApi.middleware,
       notificationsApi.middleware,
+      reportsApi.middleware,
       rtkQueryErrorLogger
     ),
 });

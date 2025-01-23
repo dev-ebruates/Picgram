@@ -4,69 +4,111 @@ import {
   FaComments,
   FaChartLine,
   FaFileAlt,
-  FaShieldAlt,
   FaChevronDown,
 } from "react-icons/fa";
 import { useState } from "react";
 import UserList from "../components/admin/UserList";
-import { Line, Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement } from 'chart.js';
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+} from "chart.js";
 import DailyReport from "../components/admin/DailyReport";
 import CommentModeration from "../components/admin/CommentModeration";
+import { useGetAllReportsQuery } from "../features/reportsFeatures/reportsApi.js";
 
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement);
-
-const dailyData = {
-    labels: ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'],
-    datasets: [{
-        label: 'Günlük Kayıtlar',
-        data: [12, 19, 3, 5, 2, 3, 7],
-        fill: false,
-        backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(75,192,192,1)',
-    }],
-};
-
-const monthlyData = {
-    labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
-    datasets: [{
-        label: 'Aylık Kayıtlar',
-        data: [30, 40, 35, 50, 49, 60, 70, 80, 90, 100, 110, 120],
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
-        borderWidth: 1,
-    }],
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement
+);
 
 function AdminPage() {
   const [activeMenu, setActiveMenu] = useState(null);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const { data, isLoading, error } = useGetAllReportsQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data!</div>;
+  }
+
+  const dailyData = {
+    labels: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    datasets: [
+      {
+        label: "Daily User Count",
+        data: data?.data?.weeklyUserData || [],
+        fill: false,
+        backgroundColor: "rgba(75,192,192,1)",
+        borderColor: "rgba(75,192,192,1)",
+      },
+    ],
+  };
+  const postsData = {
+    labels: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    datasets: [
+      {
+        label: "Daily Post Count",
+        data: data?.data?.weeklyPostData || [], // API'den gelen veriyi bağladık
+        fill: false,
+        backgroundColor: "rgba(75,192,192,1)",
+        borderColor: "rgba(75,192,192,1)",
+      },
+    ],
+  };
 
   const menuItems = {
     users: {
       icon: FaUsers,
-      label: "Kullanıcı Yönetimi",
-      subMenus: [
-        { label: "Kullanıcı Listesi", content: <UserList /> },
-
-      ],
+      label: "User Management",
+      subMenus: [{ label: "User List", content: <UserList /> }],
     },
     posts: {
       icon: FaComments,
-      label: "Gönderi Denetimi",
-      subMenus: [
-        { label: "Aktif Yorumlar", content: <CommentModeration/> },
-       
-      ],
+      label: "Shipment Inspection",
+      subMenus: [{ label: "Active Comments", content: <CommentModeration /> }],
     },
     activities: {
       icon: FaChartLine,
-      label: "Etkinlik İzleme",
+      label: "Activity Tracking",
       subMenus: [
-        { label: "Günlük Rapor", content: <DailyReport /> },
-        { label: "Aylık Kayıt Grafiği", content: <MonthlyChart /> },
-        { label: "Yorum Grafiği", content: <CommentChart /> },
+        { label: "Daily Report", content: <DailyReport /> },
+        {
+          label: "Daily User-Post Chart",
+          content: <DailyChart dailyData={dailyData} postsData={postsData} />,
+        },
       ],
     },
   };
@@ -75,8 +117,8 @@ function AdminPage() {
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-black border border-gray-800 text-white p-6">
-      <Link to="/">
-          <h2 className=" italic font-serif text-4xl tracking-tight text-white ">
+        <Link to="/">
+          <h2 className="italic font-serif text-4xl tracking-tight text-white">
             Picgram
           </h2>
         </Link>
@@ -128,23 +170,27 @@ function AdminPage() {
         ) : (
           <div className="w-2/3 bg-gradient-to-r from-gray-500 to-gray-600 text-white p-12 rounded-xl shadow-2xl">
             <h1 className="text-3xl font-bold mb-6 text-center">
-              Yönetici Kontrol Paneli
+              Admin Control Panel
             </h1>
             <div className="grid grid-cols-3 gap-6">
               <div className="bg-white/20 p-6 rounded-lg text-center">
                 <FaUsers className="mx-auto text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">Toplam Kullanıcı</h3>
-                <p className="text-3xl font-bold">1,234</p>
+                <h3 className="text-xl font-semibold">Total Users</h3>
+                <p className="text-3xl font-bold">
+                  {data?.data?.totalUserCount}
+                </p>
               </div>
               <div className="bg-white/20 p-6 rounded-lg text-center">
                 <FaComments className="mx-auto text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">Aktif Gönderi</h3>
-                <p className="text-3xl font-bold">456</p>
+                <h3 className="text-xl font-semibold">Active Post</h3>
+                <p className="text-3xl font-bold">
+                  {data?.data?.totalPostCount}
+                </p>
               </div>
               <div className="bg-white/20 p-6 rounded-lg text-center">
                 <FaFileAlt className="mx-auto text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">Rapor Edilen İçerik</h3>
-                <p className="text-3xl font-bold">12</p>
+                <h3 className="text-xl font-semibold">Reported</h3>
+                <p className="text-3xl font-bold">1</p>
               </div>
             </div>
           </div>
@@ -155,24 +201,49 @@ function AdminPage() {
 }
 
 // Placeholder components for sub-menus
-
-
-
-
-function MonthlyChart() {
+function DailyChart({ dailyData, postsData }) {
   return (
     <div>
-      <h2>Aylık Kayıt Grafiği</h2>
-      <Bar data={monthlyData} />
-    </div>
-  );
-}
-
-function CommentChart() {
-  return (
-    <div>
-      <h2>Yorum Grafiği</h2>
-      <Line data={dailyData} />
+      <div style={{ width: "400px", height: "300px" , backgroundColor: "white"}}>
+        <Line
+          data={dailyData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true, // Y ekseni sıfırdan başlar
+                ticks: {
+                  stepSize: 1, // Her adım 1 artar
+                  callback: function (value) {
+                    return value; // 0, 1, 2, 3... şeklinde yazdırır
+                  },
+                },
+              },
+            },
+          }}
+        />
+      </div>{" "}
+      <div style={{ width: "400px", height: "300px",  backgroundColor: "white"}}>
+        <Line
+          data={postsData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true, // Y ekseni sıfırdan başlar
+                ticks: {
+                  stepSize: 1, // Her adım 1 artar
+                  callback: function (value) {
+                    return value; // 0, 1, 2, 3... şeklinde yazdırır
+                  },
+                },
+              },
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }
