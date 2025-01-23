@@ -6,7 +6,6 @@ const HomePage = () => {
     <div className="flex flex-row justify-between ">
         <div className="flex flex-col items-center ">
           <Story />
-          <div className="my-4" /> {/* Story ve Feed arasında boşluk */}
           <Feed />
         </div>
       </div>

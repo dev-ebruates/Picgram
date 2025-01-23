@@ -41,7 +41,7 @@ function Story() {
 
   return (
     <>
-      <div className="sticky left-0 top-0 story-bar overflow-x-scroll border-t border-gray-900">  {/* Kaydırma çubuğu eklendi */}
+      <div className="left-0 top-0 story-bar overflow-x-scroll border-t border-gray-900">  {/* Kaydırma çubuğu eklendi */}
         <div className="flex relative gap-4 ">
           {/* Story Ekleme Butonu */}
           <div className="story flex-none ">
