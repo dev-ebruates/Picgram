@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
 import {
@@ -13,10 +13,11 @@ import {
   useGetAllByUsernameQuery,
   useDeletePostMutation,
 } from "../features/postFeatures/postApi";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import profilePicture from "../images/profilePicture.jpg";
 
 const ProfilePage = () => {
+  const location = useLocation();
   const params = useParams(); // URL'den parametreleri al
   const username = params.username; // URL'den kullanıcı adını al
   const { data: myProfile } = useGetMyProfileQuery();
@@ -55,6 +56,14 @@ const ProfilePage = () => {
     isLoading: postsLoading,
     error: postsError,
   } = useGetAllByUsernameQuery(username || currentUser?.username);
+
+  useEffect(() => {
+    if (location.state?.openNewPost) {
+      setIsModalOpen(true);
+      // state'i temizleyelim ki sayfa yenilendiğinde modal tekrar açılmasın
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   if (postsLoading) return <div>Yükleniyor...</div>;
   if (postsError) return <div>Hata: {postsError}</div>;

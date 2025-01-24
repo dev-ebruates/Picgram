@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import NavButton from "../navButton/NavButton";
 import "./Header.css";
 import { useState } from "react";
@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -23,7 +24,11 @@ function Header() {
   const username = myProfile?.data?.username;
 
   const handleCreateClick = () => {
-    setIsModalOpen(true);
+    if (location.pathname === `/${username}`) {
+      navigate(`/${username}`, { state: { openNewPost: true } });
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
 
