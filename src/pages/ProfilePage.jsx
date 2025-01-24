@@ -1,15 +1,20 @@
 import { useState } from "react";
 import Modal from "../components/modal/modal.jsx";
 import PostForm from "../components/postForm/PostForm.jsx";
-import { useUpdateUserBioMutation, useUpdateUserProfilePictureMutation } from "../features/userFeatures/userApi.js";
+import {
+  useUpdateUserBioMutation,
+  useUpdateUserProfilePictureMutation,
+} from "../features/userFeatures/userApi.js";
 import {
   useGetProfileQuery,
   useGetMyProfileQuery,
 } from "../features/userFeatures/userApi.js";
-import { useGetAllByUsernameQuery, useDeletePostMutation } from "../features/postFeatures/postApi";
+import {
+  useGetAllByUsernameQuery,
+  useDeletePostMutation,
+} from "../features/postFeatures/postApi";
 import { useParams } from "react-router-dom";
-import profilePicture from "../images/profilePicture.jpg"
-
+import profilePicture from "../images/profilePicture.jpg";
 
 const ProfilePage = () => {
   const params = useParams(); // URL'den parametreleri al
@@ -26,9 +31,12 @@ const ProfilePage = () => {
   const [postIdToDelete, setPostIdToDelete] = useState(null);
 
   const [updateUserBioMutation] = useUpdateUserBioMutation();
-  const [updateUserProfilePictureMutation] = useUpdateUserProfilePictureMutation();
+  const [updateUserProfilePictureMutation] =
+    useUpdateUserProfilePictureMutation();
   const [deletePostMutation] = useDeletePostMutation(); // Silme mutation'ı tanımlandı
-  const { refetch } = useGetAllByUsernameQuery(username || currentUser?.username);
+  const { refetch } = useGetAllByUsernameQuery(
+    username || currentUser?.username
+  );
   //refecth fonksiyonunu kullanarak gönderileri yeniden yükle
 
   const myProfileQuery = useGetMyProfileQuery();
@@ -65,14 +73,14 @@ const ProfilePage = () => {
     e.preventDefault();
     try {
       const ProfilePictureData = {
-        profilePicture: mediaUrl
+        profilePicture: mediaUrl,
       };
       await updateUserProfilePictureMutation(ProfilePictureData).unwrap();
       myProfileQuery.refetch(); // Profili yeniden yükle
       setIsProfileModalOpen(false);
       setMediaUrl("");
     } catch (error) {
-      console.error('Profil resmi eklenirken hata oluştu:', error);
+      console.error("Profil resmi eklenirken hata oluştu:", error);
     }
   };
 
@@ -84,14 +92,15 @@ const ProfilePage = () => {
   const confirmDelete = async (postId) => {
     try {
       await deletePostMutation(postId).unwrap(); // Post silme işlemi
-      await refetch();// Gönderi listesini yeniden yükle
+      await refetch(); // Gönderi listesini yeniden yükle
       setShowDeleteModal(false); // Modalı kapat
     } catch (error) {
       console.error("Gönderi silinirken hata oluştu:", error);
     }
   };
 
-  const handleDeletePost = (postId) => { // Silme işlemi
+  const handleDeletePost = (postId) => {
+    // Silme işlemi
     setPostIdToDelete(postId);
     setShowDeleteModal(true); // Onay modalını göster
   };
@@ -116,7 +125,9 @@ const ProfilePage = () => {
                 }
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-gray-600"
-                onClick={isOwnProfile ? () => setIsProfileModalOpen(true) : undefined}
+                onClick={
+                  isOwnProfile ? () => setIsProfileModalOpen(true) : undefined
+                }
               />
               <div>
                 <h2 className="text-3xl font-semibold">
@@ -196,7 +207,7 @@ const ProfilePage = () => {
                 {posts?.map((item, index) => (
                   <div
                     key={index}
-                    className=" bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
+                    className="relative bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
                     style={{ width: "100%", height: "300px" }}
                   >
                     <img
@@ -206,7 +217,7 @@ const ProfilePage = () => {
                     />
                     {isOwnProfile && (
                       <button
-                        className="absolute top-2 right-2  text-white rounded-full p-2 bg-gray-700"
+                        className="absolute z-10 top-2 right-2  text-white rounded-full p-2 bg-gray-700"
                         onClick={() => handleDeletePost(item.id)}
                       >
                         <i className="fas fa-trash-alt "></i>
@@ -222,52 +233,61 @@ const ProfilePage = () => {
 
       {/* Modal */}
       {isProfileModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-          <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
-            <h2 className="text-xl font-bold mb-4 text-white">Profile Picture Add</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="w-full flex justify-center mb-6">
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-start justify-center pt-20 z-[9999]">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 w-[400px] shadow-2xl border border-gray-700/50">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                Profil Picture
+              </h2>
+              <button
+                onClick={handleCancel}
+                className="text-gray-400 hover:text-white transition-colors duration-300"
+              >
+                <i className="fas fa-times text-lg"></i>
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="w-full flex justify-center mb-4 relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
                 <img
                   src={mediaUrl || profilePicture}
                   alt="Create Post"
-                  className={`w-full h-full object-cover ${mediaUrl ? '' : 'rounded-full'} overflow-hidden border-4 border-gray-800`}
-                  style={{
-                    width: "250px",
-                    height: "250px",
-                    objectFit: "cover",
-                  }}
+                  className="relative w-[180px] h-[180px] object-cover rounded-full border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
                 />
               </div>
-              <div>
+
+              <div className="space-y-1.5">
                 <label
                   htmlFor="media"
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-300"
                 >
-                  Media URL:
+                  Media URL
                 </label>
                 <input
                   type="text"
                   id="media"
                   value={mediaUrl}
                   onChange={(e) => setMediaUrl(e.target.value)}
-                  placeholder="Media URL'ini girin"
-                  className="mt-2 block w-full rounded-md bg-gray-500 border-gray-600 text-white shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm py-2 px-3 border border-transparent"
+                  placeholder="Enter media URL"
+                  className="w-full px-3 py-2 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 text-sm"
                   required
                 />
               </div>
-              <div className="flex justify-end gap-2">
+
+              <div className="flex justify-end gap-2 pt-4">
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors duration-300"
+                  className="px-4 py-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-300 text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 transition-colors duration-300"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 text-sm"
                 >
-                  Save
+                  Save Changes
                 </button>
               </div>
             </form>
@@ -276,15 +296,21 @@ const ProfilePage = () => {
       )}
 
       {isOwnProfile && (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          style={{ zIndex: 1000 }}
+        >
           <PostForm handleCloseModal={() => setIsModalOpen(false)} />
         </Modal>
       )}
 
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-1000">
           <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
-            <h2 className="text-xl font-bold mb-4 text-white">Are you sure you want to delete?</h2>
+            <h2 className="text-xl font-bold mb-4 text-white">
+              Are you sure you want to delete?
+            </h2>
             <div className="flex justify-end gap-2">
               <button
                 type="button"

@@ -22,7 +22,7 @@ const PostForm = ({ handleCloseModal }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-85 w-full bg-gray-900  p-6 rounded-lg " style={{position: "relative", zIndex: 50}} >
+    <div className="flex flex-col justify-center items-center h-85 w-full bg-gray-900 p-6 rounded-lg " style={{position: "relative", zIndex: 2000}} >
       {/* Resim Önizlemesi */}
       <div className="w-full flex justify-center mb-6">
         <img
@@ -38,7 +38,7 @@ const PostForm = ({ handleCloseModal }) => {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 text-white w-full max-w-xl"
+        className=" space-y-6 text-white w-full max-w-xl"
       >
         <div>
           <label
