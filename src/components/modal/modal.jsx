@@ -14,19 +14,13 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-black bg-opacity-80 flex justify-center items-center z-[999999]"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[999999]"
       onClick={onClose}
     >
       <div
-        className="bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md border-gray-700 border-2 z-[999999] transform translate-y-0"
+        className="bg-black rounded-lg shadow-lg w-3/4 h-3/4 p-6 relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-200"
-          onClick={onClose}
-        >
-          ✖
-        </button>
         {children}
       </div>
     </div>
