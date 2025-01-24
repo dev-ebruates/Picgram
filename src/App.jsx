@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:username" element={<ProfilePage />} />
-        <Route path="/story" element={<StoryPage />} />
+        
         <Route path="/messages" element={<MessagePage />} />
         <Route path="/comments" element={<CommentsPage />} />
 

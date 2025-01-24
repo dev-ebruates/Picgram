@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import TermsAndCommunityPage from "./pages/TermsAndCommunityPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import StoryPage from "./pages/StoryPage.jsx";
 
 const clientId =
   "1050319585875-1ujql7a4palt2csnbm2ohf1ufbcr1mio.apps.googleusercontent.com";
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Provider store={store}>
         <Routes>
+        <Route path="/story" element={<StoryPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/terms" element={<TermsAndCommunityPage />} />
