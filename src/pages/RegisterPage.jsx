@@ -39,12 +39,11 @@ const RegisterPage = () => {
 
     try {
       var response = await createUserMutation(formData);
-      console.log(formData);
-      console.log(response);
-      if (response.data.success === false) {
-        toast.error(response.data.data.message);
+      console.log(response.data.success)
+      if (response.data.success=== false) {
+       return  toast.warning(response.data.message);
       } else {
-        toast.success('Kayıt işleminiz başarıyla tamamlandı!', {
+        toast.success('Registration Successful', {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -52,12 +51,13 @@ const RegisterPage = () => {
           pauseOnHover: true,
           draggable: true,
         });
+        console.log(response);
         setTimeout(() => {
           navigate("/login");
         }, 3000);
       }
     } catch (error) {
-      toast.error('Bir hata oluştu: ' + error.message);
+      toast.error('An error occurred: ' + error.message);
     }
     // Burada API isteği gönderebilirsiniz
   };

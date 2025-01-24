@@ -8,6 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/authFeatures/authSlice.js";
 import { GoogleLogin } from "@react-oauth/google";
+import { ToastContainer, toast } from 'react-toastify';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -40,14 +41,22 @@ const LoginPage = () => {
           role: result.data.data.role,
         };
         dispatch(setCredentials(userData));
-        navigate("/");
+        toast.success("Welcome back " + " " + result.data.data.username);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       }
+      if(result.data.success === false) {
+        toast.error(result.data.message);
+      }
+
     } catch (err) {
-      console.error("Login failed:", err);
+      toast.error("Login failed:", err);
     }
   };
   return (
     <div className="h-screen flex">
+      <ToastContainer position="top-center" />
       {/* Sol Taraf - Arka Plan Resmi */}
       <div
         className="w-1/2 bg-cover bg-center"
