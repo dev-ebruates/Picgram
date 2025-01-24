@@ -203,7 +203,7 @@ const ProfilePage = () => {
                   New post
                 </button>
               )}
-              <div className="grid grid-cols-3 gap-4 w-full mr-10">
+              <div className="grid grid-cols-3 gap-4 w-full mr-10 relative z-0">
                 {posts?.map((item, index) => (
                   <div
                     key={index}

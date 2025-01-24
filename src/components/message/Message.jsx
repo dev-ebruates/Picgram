@@ -84,7 +84,7 @@ const Message = () => {
                 <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                Mesajlar yüklenirken hata oluştu
+                An error occurred while loading messages
               </div>
             ) : (
               relatedMessages?.map((message, index) => (
@@ -100,7 +100,7 @@ const Message = () => {
                       ${
                         message.senderUsername === selectedContact.username
                         ? "bg-zinc-800/80 text-zinc-100"
-                        : "bg-blue-600 text-white"
+                        : "bg-purple-600 text-white"
                       }
                       ${message.senderUsername === selectedContact.username ? 'rounded-tl-sm' : 'rounded-tr-sm'}
                     `}
@@ -123,7 +123,7 @@ const Message = () => {
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Mesajınızı yazın..."
-                  className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 "
+                  className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/50 "
                 />
               </div>
               <button
@@ -132,7 +132,7 @@ const Message = () => {
                 className={`
                   p-3 rounded-xl transition-all
                   ${newMessage.trim()
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                    ? 'bg-purple-600 hover:bg-purple-700 text-white'
                     : 'bg-zinc-800/50 text-zinc-600 cursor-not-allowed'}
                 `}
               >
@@ -149,7 +149,8 @@ const Message = () => {
             <svg className="w-16 h-16 mx-auto mb-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <p className="text-lg">Mesajlaşmak için bir kişi seçin</p>
+            <p className="text-lg">
+            Select a contact to message</p>
           </div>
         </div>
       )}

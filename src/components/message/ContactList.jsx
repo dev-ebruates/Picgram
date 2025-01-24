@@ -83,7 +83,7 @@ const ContactList = ({ onSelectContact }) => {
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Users search..."
-            className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 pl-10 pr-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+            className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 pl-10 pr-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
           />
         
           {isLoadingSearch && searchTerm.length >= 2 && (
@@ -146,7 +146,7 @@ const ContactList = ({ onSelectContact }) => {
                       w-12 h-12 rounded-full mr-4
                       ${
                         selectedContactId === (contact.userId || contact.id)
-                          ? "border-2 border-blue-500"
+                          ? "border-2 border-purple-500"
                           : "border border-zinc-700"
                       }
                     `}

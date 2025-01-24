@@ -14,11 +14,11 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-[9999]"
+      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-black bg-opacity-80 flex justify-center items-center z-[999999]"
       onClick={onClose}
     >
       <div
-        className="bg-gray-900 p-6 rounded-lg shadow-lg relative w-full max-w-md border-gray-700 border-2"
+        className="bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md border-gray-700 border-2 z-[999999] transform translate-y-0"
         onClick={(e) => e.stopPropagation()}
       >
         <button
