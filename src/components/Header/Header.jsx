@@ -26,9 +26,6 @@ function Header() {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
 
   const handleLogout = () => {
     // Tüm state'leri temizle

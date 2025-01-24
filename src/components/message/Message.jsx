@@ -53,8 +53,8 @@ const Message = () => {
       {selectedContact ? (
         <div className="flex-1 flex flex-col bg-gradient-to-b from-zinc-900 to-zinc-950">
           {/* Mesaj başlığı */}
-          <div className="min-h-[64px] px-6 py-4 border-b border-zinc-800/50 flex items-center bg-zinc-900/50 backdrop-blur-sm">
-            <div className="relative">
+          <div className="min-h-[64px] px-6 py-4 border-b border-zinc-800/50 flex items-center bg-zinc-900/50 ">
+            <div className="">
               <img
                 src={selectedContact.profilePicture || "https://via.placeholder.com/40"}
                 alt={selectedContact.username}
@@ -106,12 +106,6 @@ const Message = () => {
                     `}
                   >
                     {message.content}
-                    <div className="mt-1 text-xs text-zinc-400/60 text-right">
-                      {new Date(message.createdAt).toLocaleTimeString('tr-TR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </div>
                   </div>
                 </div>
               ))
@@ -120,16 +114,16 @@ const Message = () => {
           </div>
 
           {/* Mesaj gönderme alanı */}
-          <div className="p-4 border-t border-zinc-800/50 bg-zinc-900/50 backdrop-blur-sm">
+          <div className="p-4 border-t border-zinc-800/50 bg-zinc-900/50 ">
             <div className="flex items-center space-x-4">
-              <div className="flex-grow relative">
+              <div className="flex-grow ">
                 <input
                   type="text"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Mesajınızı yazın..."
-                  className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                  className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 "
                 />
               </div>
               <button
