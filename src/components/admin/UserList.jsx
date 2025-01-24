@@ -32,7 +32,7 @@ const UserList = () => {
 
   if(isLoading) return <div>Yukleniyor...</div>
   return (
-    <div className="p-6 bg-white h-screen w-full">
+    <div className="p-6 bg-white">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Users</h2>
         <div className="flex items-center space-x-4">
@@ -56,10 +56,10 @@ const UserList = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+      <div className="overflow-x-auto" style={{ maxHeight: 'calc(100vh - 180px)' }}>
         <table className="w-full border-collapse">
-          <thead className="sticky top-0 bg-gray-100 ">
-            <tr className="text-gray-600">
+          <thead className="sticky top-0 bg-gray-900 ">
+            <tr className="text-white">
               <th className="p-3 text-left">Profil</th>
               <th className="p-3 text-left">Ad Soyad</th>
               <th className="p-3 text-left">E-posta</th>
