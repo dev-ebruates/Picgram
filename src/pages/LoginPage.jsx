@@ -117,7 +117,10 @@ const LoginPage = () => {
                         role: result.data.data.role,
                       };
                       dispatch(setCredentials(userData));
-                      navigate("/");
+                      toast.success("Welcome back " + " " + result.data.data.username);
+                      setTimeout(() => {
+                        navigate("/");
+                      }, 1000);
                     }
                   } catch (err) {
                     console.error("Login failed:", err);
