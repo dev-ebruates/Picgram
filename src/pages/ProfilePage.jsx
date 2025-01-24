@@ -203,12 +203,11 @@ const ProfilePage = () => {
                   New post
                 </button>
               )}
-              <div className="grid grid-cols-3 gap-2 w-full mr-10">
+              <div className="grid grid-cols-3 gap-4 w-full mr-10">
                 {posts?.map((item, index) => (
                   <div
                     key={index}
-                    className="relative bg-black border border-gray-900 rounded-lg shadow-md overflow-hidden"
-                    style={{ width: "100%", height: "300px" }}
+                    className="relative group aspect-square bg-black border border-gray-800/50 rounded-lg overflow-hidden"
                   >
                     <img
                       src={item.mediaUrl}
@@ -216,12 +215,15 @@ const ProfilePage = () => {
                       className="w-full h-full object-cover"
                     />
                     {isOwnProfile && (
-                      <button
-                        className="absolute z-10 top-2 right-2  text-white rounded-full p-2 bg-gray-700"
-                        onClick={() => handleDeletePost(item.id)}
-                      >
-                        <i className="fas fa-trash-alt "></i>
-                      </button>
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button
+                          className="absolute top-3 right-3 text-white p-2 rounded-lg bg-gray-500/80 
+                          hover:bg-gray-600/80 transition-colors duration-300"
+                          onClick={() => handleDeletePost(item.id)}
+                        >
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                      </div>
                     )}
                   </div>
                 ))}
@@ -306,28 +308,27 @@ const ProfilePage = () => {
       )}
 
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-1000">
-          <div className="bg-gray-900 rounded-lg p-6 w-[500px]">
-            <h2 className="text-xl font-bold mb-4 text-white">
-              Are you sure you want to delete?
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-gray-900/90 rounded-lg p-6 w-[400px] border border-gray-800/50 shadow-xl">
+            <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+              Delete Post
             </h2>
-            <div className="flex justify-end gap-2">
+            <p className="text-gray-300 mb-6">Are you sure you want to delete this post?</p>
+            <div className="flex justify-end gap-3">
               <button
-                type="button"
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors duration-300"
+                className="px-4 py-2 bg-gray-800/80 text-white rounded-lg border border-gray-700/50
+                hover:bg-gray-700/80 transition-all duration-300 text-sm"
               >
-                No
+                Cancel
               </button>
               <button
-                type="button"
-                onClick={() => {
-                  confirmDelete(postIdToDelete);
-                  setShowDeleteModal(false);
-                }}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors duration-300"
+                onClick={() => confirmDelete(postIdToDelete)}
+                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white 
+                font-medium hover:from-blue-600 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/20 
+                transition-all duration-300 text-sm"
               >
-                Yes
+                Delete
               </button>
             </div>
           </div>
