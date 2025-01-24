@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import "./Story.css";
-import propTypes from "prop-types";
 import { useGetAllStoriesQuery, useCreateStoryMutation } from "../../features/storyFeatures/storyApi.js";
 import {useState } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
@@ -74,7 +73,7 @@ function Story() {
                 <img
                   src={story.userProfilePicture}
                   alt={story.username}
-                  className="w-16 h-16 rounded-full border-2 story-img border-pink-400 hover:border-pink-800 cursor-pointer"
+                  className="w-16 h-16 rounded-full border-2 story-img border-purple-400  hover:border-purple-800 cursor-pointer"
                 />
                 <span className="text-sm font-bold text-center mt-1">{story.username}</span>
               </Link>

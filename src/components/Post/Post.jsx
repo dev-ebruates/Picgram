@@ -71,8 +71,7 @@ function Post({ post }) {
         <Link to={`/${post?.username}`}>
           <img
             src={
-              post?.userProfilePicture ||
-              "https://www.androidsis.com/wp-content/uploads/2024/01/Sin-foto-de-perfil-de-WhatsApp.jpg"
+              post?.userProfilePicture
             }
             alt="Profil Resmi"
             className="w-16 h-16 rounded-full"

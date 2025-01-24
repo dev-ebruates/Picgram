@@ -72,7 +72,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
           <div className="w-full md:w-1/2 flex flex-col space-y-4 h-full">
             <div className="flex items-center space-x-3">
               <img
-                src={post.userProfilePicture || "https://via.placeholder.com/50"}
+                src={post.userProfilePicture }
                 alt={`${post.username} profile`}
                 className="w-10 h-10 rounded-full object-cover"
               />
