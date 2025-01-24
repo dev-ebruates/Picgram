@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../features/userFeatures/userApi.js";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -27,13 +29,11 @@ const RegisterPage = () => {
     e.preventDefault();
     const checkbox = document.querySelector('input[type="checkbox"]');
     if (!checkbox.checked) {
-      alert(
-        "Kullanım koşullarını, gizlilik politikasını ve topluluk kurallarını kabul etmelisiniz."
-      );
+      toast.error("Kullanım koşullarını, gizlilik politikasını ve topluluk kurallarını kabul etmelisiniz.");
       return;
     }
     if (formData.password !== formData.confirmPassword) {
-      alert("Şifreler eşleşmiyor!");
+      toast.error("Şifreler eşleşmiyor!");
       return;
     }
 
@@ -42,19 +42,29 @@ const RegisterPage = () => {
       console.log(formData);
       console.log(response);
       if (response.data.success === false) {
-        alert(response.data.data.message);
+        toast.error(response.data.data.message);
       } else {
-        alert("Kayıt başarılı");
-        navigate("/login");
+        toast.success('Kayıt işleminiz başarıyla tamamlandı!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       }
     } catch (error) {
-      alert(error);
+      toast.error('Bir hata oluştu: ' + error.message);
     }
     // Burada API isteği gönderebilirsiniz
   };
 
   return (
     <div className="flex items-center  flex-col justify-center min-h-screen bg-gray-100 text-black">
+      <ToastContainer position="top-center" />
       <div>
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-2 mb-10 italic font-script text-center text-6xl font-bold tracking-tight text-gray-800 ">
