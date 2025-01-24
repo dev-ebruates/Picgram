@@ -200,49 +200,142 @@ function AdminPage() {
   );
 }
 
-// Placeholder components for sub-menus
+// Modern DailyChart component
 function DailyChart({ dailyData, postsData }) {
+  const chartOptions = {
+    responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+          color: '#6B7280',
+          font: {
+            size: 12,
+            family: "'Inter', sans-serif"
+          }
+        }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: '#111827',
+        bodyColor: '#374151',
+        bodyFont: {
+          size: 13
+        },
+        titleFont: {
+          size: 13,
+          weight: 'bold'
+        },
+        padding: 12,
+        borderColor: 'rgba(0,0,0,0.1)',
+        borderWidth: 1,
+        displayColors: true,
+        usePointStyle: true,
+        callbacks: {
+          label: function(context) {
+            return ` ${context.dataset.label}: ${context.parsed.y}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          color: '#6B7280',
+          font: {
+            size: 11
+          }
+        }
+      },
+      y: {
+        grid: {
+          borderDash: [4, 4],
+          color: 'rgba(107, 114, 128, 0.1)'
+        },
+        ticks: {
+          color: '#6B7280',
+          font: {
+            size: 11
+          },
+          callback: function(value) {
+            return value;
+          }
+        }
+      }
+    }
+  };
+
+  const enhancedDailyData = {
+    ...dailyData,
+    datasets: [{
+      ...dailyData.datasets[0],
+      label: 'Users',
+      borderColor: 'rgb(59, 130, 246)',
+      backgroundColor: 'rgb(59, 130, 246)',
+      borderWidth: 2,
+      tension: 0.4,
+      pointRadius: 4,
+      pointBackgroundColor: 'rgb(59, 130, 246)',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointHoverRadius: 6,
+      pointHoverBackgroundColor: 'rgb(59, 130, 246)',
+      pointHoverBorderColor: '#fff',
+      pointHoverBorderWidth: 2,
+      fill: {
+        target: 'origin',
+        above: 'rgba(59, 130, 246, 0.1)'
+      }
+    }]
+  };
+
+  const enhancedPostsData = {
+    ...postsData,
+    datasets: [{
+      ...postsData.datasets[0],
+      label: 'Posts',
+      borderColor: 'rgb(139, 92, 246)',
+      backgroundColor: 'rgb(139, 92, 246)',
+      borderWidth: 2,
+      tension: 0.4,
+      pointRadius: 4,
+      pointBackgroundColor: 'rgb(139, 92, 246)',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointHoverRadius: 6,
+      pointHoverBackgroundColor: 'rgb(139, 92, 246)',
+      pointHoverBorderColor: '#fff',
+      pointHoverBorderWidth: 2,
+      fill: {
+        target: 'origin',
+        above: 'rgba(139, 92, 246, 0.1)'
+      }
+    }]
+  };
+
   return (
-    <div>
-      <div style={{ width: "400px", height: "300px" , backgroundColor: "white"}}>
-        <Line
-          data={dailyData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true, // Y ekseni sıfırdan başlar
-                ticks: {
-                  stepSize: 1, // Her adım 1 artar
-                  callback: function (value) {
-                    return value; // 0, 1, 2, 3... şeklinde yazdırır
-                  },
-                },
-              },
-            },
-          }}
-        />
-      </div>{" "}
-      <div style={{ width: "400px", height: "300px",  backgroundColor: "white"}}>
-        <Line
-          data={postsData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true, // Y ekseni sıfırdan başlar
-                ticks: {
-                  stepSize: 1, // Her adım 1 artar
-                  callback: function (value) {
-                    return value; // 0, 1, 2, 3... şeklinde yazdırır
-                  },
-                },
-              },
-            },
-          }}
-        />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-white rounded-xl p-4 shadow-md">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily User Activity</h2>
+        <div className="h-[300px]">
+          <Line data={enhancedDailyData} options={chartOptions} />
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl p-4 shadow-md">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily Post Activity</h2>
+        <div className="h-[300px]">
+          <Line data={enhancedPostsData} options={chartOptions} />
+        </div>
       </div>
     </div>
   );
