@@ -27,7 +27,7 @@ const ContactList = ({ onSelectContact }) => {
       username: contact.username,
       profilePicture: contact.profilePicture || contact.userProfilePicture,
     };
-    
+
     setSelectedContactId(selectedContact.userId);
     onSelectContact(selectedContact);
     setIsSearching(false);
@@ -42,89 +42,137 @@ const ContactList = ({ onSelectContact }) => {
 
   if (isLoadingContacts && !isSearching) {
     return (
-      <div className="min-w-[320px] max-w-[384px] w-1/4 bg-black border-r border-gray-800 text-white flex items-center justify-center">
-        Yükleniyor...
+      <div className="min-w-[320px] max-w-[384px] w-1/4 bg-zinc-950 border-r border-zinc-800/50 text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-500"></div>
       </div>
     );
   }
 
   if (isErrorContacts && !isSearching) {
     return (
-      <div className="min-w-[320px] max-w-[384px] w-1/4 bg-black border-r border-gray-800 text-white flex items-center justify-center">
-        Hata oluştu
+      <div className="min-w-[320px] max-w-[384px] w-1/4 bg-zinc-950 border-r border-zinc-800/50 text-white flex items-center justify-center">
+        <div className="text-red-400 flex items-center">
+          <svg
+            className="w-6 h-6 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          Hata oluştu
+        </div>
       </div>
     );
   }
 
-  const displayList = isSearching ? (searchResults || []) : (contacts || []);
+  const displayList = isSearching ? searchResults || [] : contacts || [];
 
   return (
-    <div className="min-w-[320px] max-w-[384px] w-1/4 bg-black border-r border-gray-800 text-white flex flex-col">
-      <div className="min-h-[116px] p-4 border-b border-gray-800">
-        <h2 className="text-xl font-semibold text-white mb-4">Mesajlar</h2>
+    <div className="min-w-[320px] max-w-[384px] w-1/4 bg-zinc-950 border-r border-zinc-800/50 text-white flex flex-col">
+      <div className=" p-6 border-b border-zinc-800/50 bg-zinc-900/50 backdrop-blur-sm">
+        <h2 className="text-2xl font-bold text-zinc-100 mb-4">Mesajlar</h2>
         <div className="relative">
           <input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="Kullanıcı ara..."
-            className="w-full bg-gray-900 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full bg-zinc-800/50 text-white placeholder-zinc-500 pl-10 pr-4 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
           />
+          <svg
+            className="absolute left-3 top-3 w-4 h-4 text-zinc-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
           {isLoadingSearch && searchTerm.length >= 2 && (
-            <div className="absolute right-3 top-2.5 text-gray-400">
-              Aranıyor...
+            <div className="absolute right-3 top-2.5">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-zinc-500"></div>
             </div>
           )}
         </div>
       </div>
       <div
-        className="flex-grow overflow-y-auto min-h-0"
+        className="flex-grow overflow-y-auto min-h-0 bg-gradient-to-b from-zinc-900 to-zinc-950"
         style={{
           overscrollBehavior: "contain",
           scrollbarWidth: "thin",
-          scrollbarColor: "#374151 #000000",
+          scrollbarColor: "#27272a #09090b",
         }}
       >
-        <div className="divide-y divide-gray-800">
-          {isSearching && searchTerm.length >= 2 && (!searchResults || searchResults.length === 0) ? (
-            <div className="p-4 text-center text-gray-500">
-              Kullanıcı bulunamadı
+        <div className="divide-y divide-zinc-800/50">
+          {isSearching &&
+          searchTerm.length >= 2 &&
+          (!searchResults || searchResults.length === 0) ? (
+            <div className="p-6 text-center">
+              <svg
+                className="w-12 h-12 mx-auto mb-3 text-zinc-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <p className="text-zinc-500">Kullanıcı bulunamadı</p>
             </div>
           ) : (
             displayList.map((contact) => (
               <div
                 key={contact.userId || contact.id}
                 className={`
-                  flex items-center p-4 cursor-pointer hover:bg-gray-900 transition
-                  ${selectedContactId === (contact.userId || contact.id) ? "bg-gray-900" : ""}
+                  flex items-center p-4 cursor-pointer transition-all
+                  hover:bg-zinc-800/40
+                  ${
+                    selectedContactId === (contact.userId || contact.id)
+                      ? "bg-zinc-800/60 hover:bg-zinc-800/60"
+                      : ""
+                  }
                 `}
                 onClick={() => handleContactSelect(contact)}
               >
-                <div className="relative flex-shrink-0">
+                <div className="relative">
                   <img
                     src={
-                      contact.profilePicture || contact.userProfilePicture || "https://via.placeholder.com/50"
+                      contact.profilePicture ||
+                      contact.userProfilePicture ||
+                      "https://via.placeholder.com/50"
                     }
                     alt={contact.username}
-                    className="w-12 h-12 rounded-full mr-4"
+                    className={`
+                      w-12 h-12 rounded-full mr-4
+                      ${
+                        selectedContactId === (contact.userId || contact.id)
+                          ? "border-2 border-blue-500"
+                          : "border border-zinc-700"
+                      }
+                    `}
                   />
                 </div>
                 <div className="flex-grow min-w-0">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-white truncate">
-                      {contact.username}
-                    </h3>
-                    {!isSearching && (
-                      <span className="text-xs text-gray-500 ml-2 flex-shrink-0">
-                        {contact.lastMessageTime}
-                      </span>
-                    )}
-                  </div>
-                  {!isSearching && (
-                    <p className="text-sm text-gray-400 truncate">
-                      {contact.lastMessage}
-                    </p>
-                  )}
+                  <h3 className="font-medium text-zinc-100 truncate">
+                    {contact.username}
+                  </h3>
+                </div>
+                <div className="ml-4 flex flex-col items-end">
+                  {/* <span className="text-xs text-zinc-500">14:30</span> */}
                 </div>
               </div>
             ))

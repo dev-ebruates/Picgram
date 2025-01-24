@@ -39,7 +39,7 @@ createRoot(document.getElementById("root")).render(
                 <div className="border-r border-gray-200">
                   <Header />
                 </div>
-                <div className="px-8 py-4">
+                <div >
                   <App />
                 </div>
               </div>
