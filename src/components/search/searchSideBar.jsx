@@ -16,17 +16,17 @@ const SearchSideBar = ({ isOpen, onClose }) => {
 
   return (
     <motion.div
-      initial={{ x: "-100%" }}
-      animate={{ x: isOpen ? 0 : "-100%" }}
-      transition={{ type: "tween" }}
-      className="fixed top-0 left-0 w-[270px] h-full bg-black shadow-lg overflow-y-auto search-sidebar"
+      initial={{ x: "-100%", opacity: 0 }}
+      animate={{ x: isOpen ? 0 : "-100%", opacity: isOpen ? 1 : 0 }}
+      transition={{ type: "tween", duration: 0.3 }}
+      className="fixed top-0 left-0 w-[270px] h-full bg-gradient-to-br from-black via-black to-gray-900 shadow-2xl overflow-y-auto rounded-r-xl z-50"
     >
-      <div className="p-4 search-sidebar-content">
-        <div className="flex justify-between items-center mb-4 search-sidebar-header">
-          <h2 className="text-xl font-bold mt-4 ml-2">Search</h2>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-200">Search</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 search-sidebar-close"
+            className="text-gray-600 hover:text-gray-300 transition-colors rounded-full p-2 hover:bg-gray-800"
           >
             ✕
           </button>
@@ -37,28 +37,31 @@ const SearchSideBar = ({ isOpen, onClose }) => {
           placeholder="Search user..."
           value={searchQuery}
           onChange={handleSearch}
-          className="w-full p-2 border rounded-md mb-4 search-input bg-gray-800 text-white mt-6 border-gray-600"
+          className="w-full p-3 rounded-xl mb-4 bg-gray-900 text-gray-200 border border-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700 transition-all"
         />
 
-        <div className="search-results">
+        <div className="space-y-2">
           {data?.map((user) => (
-            <div
+            <motion.div
               key={user.id}
-              className="flex items-center p-2 hover:bg-gray-500 cursor-pointer search-result-item"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center p-3 bg-gray-900 rounded-xl hover:bg-gray-800 cursor-pointer transition-colors group"
             >
               <Link to={`/${user.username}`} className="flex items-center w-full">
                 <img
                   src={user.profilePicture}
                   alt={user.username}
-                  className="w-10 h-10 rounded-full mr-3 search-result-avatar"
+                  className="w-12 h-12 rounded-full mr-4 border border-gray-800 group-hover:scale-105 transition-transform"
                 />
                 <div>
-                  <p className="font-semibold search-result-username">
+                  <p className="font-semibold text-gray-200 group-hover:text-white transition-colors">
                     {user.username}
                   </p>
                 </div>
               </Link>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
