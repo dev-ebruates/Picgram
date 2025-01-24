@@ -36,18 +36,12 @@ ChartJS.register(
 );
 
 function AdminPage() {
+  const { data, error, isLoading } = useGetAllReportsQuery();
+
   const [activeMenu, setActiveMenu] = useState(null);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
-  const { data, isLoading, error } = useGetAllReportsQuery();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading data!</div>;
-  }
-
+  // API'den gelen veriyi kullanarak grafik verilerini oluştur
   const dailyData = {
     labels: [
       "Monday",
@@ -68,6 +62,7 @@ function AdminPage() {
       },
     ],
   };
+
   const postsData = {
     labels: [
       "Monday",
@@ -81,13 +76,21 @@ function AdminPage() {
     datasets: [
       {
         label: "Daily Post Count",
-        data: data?.data?.weeklyPostData || [], // API'den gelen veriyi bağladık
+        data: data?.data?.weeklyPostData || [],
         fill: false,
         backgroundColor: "rgba(75,192,192,1)",
         borderColor: "rgba(75,192,192,1)",
       },
     ],
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data!</div>;
+  }
 
   const menuItems = {
     users: {
@@ -162,37 +165,54 @@ function AdminPage() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center bg-black">
+      <main className="flex-1 bg-gray-50 p-8">
         {activeMenu && activeSubMenu !== null ? (
-          <div className="w-full h-screen bg-white p-12 rounded-xl shadow-2xl">
+          <div className="w-full bg-white rounded-xl shadow-sm">
             {menuItems[activeMenu].subMenus[activeSubMenu].content}
           </div>
         ) : (
-          <div className="w-2/3 bg-gradient-to-r from-gray-500 to-gray-600 text-white p-12 rounded-xl shadow-2xl">
-            <h1 className="text-3xl font-bold mb-6 text-center">
-              Admin Control Panel
-            </h1>
-            <div className="grid grid-cols-3 gap-6">
-              <div className="bg-white/20 p-6 rounded-lg text-center">
-                <FaUsers className="mx-auto text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">Total Users</h3>
-                <p className="text-3xl font-bold">
-                  {data?.data?.totalUserCount}
-                </p>
+          <div className="space-y-6">
+            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-gray-500 text-sm mb-1">Total Users</h3>
+                    <p className="text-2xl font-bold text-gray-900">{data?.data?.totalUserCount || 0}</p>
+                  </div>
+                  <div className="text-blue-500">
+                    <FaUsers size={24} />
+                  </div>
+                </div>
               </div>
-              <div className="bg-white/20 p-6 rounded-lg text-center">
-                <FaComments className="mx-auto text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">Active Post</h3>
-                <p className="text-3xl font-bold">
-                  {data?.data?.totalPostCount}
-                </p>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-gray-500 text-sm mb-1">Active Posts</h3>
+                    <p className="text-2xl font-bold text-gray-900">{data?.data?.totalPostCount || 0}</p>
+                  </div>
+                  <div className="text-purple-500">
+                    <FaComments size={24} />
+                  </div>
+                </div>
               </div>
-              <div className="bg-white/20 p-6 rounded-lg text-center">
-                <FaFileAlt className="mx-auto text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">Reported</h3>
-                <p className="text-3xl font-bold">1</p>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-gray-500 text-sm mb-1">Reported Content</h3>
+                    <p className="text-2xl font-bold text-gray-900">1</p>
+                  </div>
+                  <div className="text-rose-500">
+                    <FaFileAlt size={24} />
+                  </div>
+                </div>
               </div>
             </div>
+
+            <DailyChart dailyData={dailyData} postsData={postsData} />
           </div>
         )}
       </main>
@@ -202,6 +222,35 @@ function AdminPage() {
 
 // Modern DailyChart component
 function DailyChart({ dailyData, postsData }) {
+  // Veriler yüklenmediyse veya undefined ise boş bir içerik döndür
+  if (!dailyData || !postsData) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily User Activity</h2>
+          <div className="h-[300px] flex items-center justify-center">
+            <p className="text-gray-500">Loading data...</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily Post Activity</h2>
+          <div className="h-[300px] flex items-center justify-center">
+            <p className="text-gray-500">Loading data...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Varsayılan veri yapısı
+  const defaultChartData = {
+    labels: [],
+    datasets: [{
+      data: []
+    }]
+  };
+
   const chartOptions = {
     responsive: true,
     interaction: {
@@ -275,9 +324,9 @@ function DailyChart({ dailyData, postsData }) {
   };
 
   const enhancedDailyData = {
-    ...dailyData,
+    ...(dailyData || defaultChartData),
     datasets: [{
-      ...dailyData.datasets[0],
+      ...(dailyData?.datasets?.[0] || defaultChartData.datasets[0]),
       label: 'Users',
       borderColor: 'rgb(59, 130, 246)',
       backgroundColor: 'rgb(59, 130, 246)',
@@ -299,9 +348,9 @@ function DailyChart({ dailyData, postsData }) {
   };
 
   const enhancedPostsData = {
-    ...postsData,
+    ...(postsData || defaultChartData),
     datasets: [{
-      ...postsData.datasets[0],
+      ...(postsData?.datasets?.[0] || defaultChartData.datasets[0]),
       label: 'Posts',
       borderColor: 'rgb(139, 92, 246)',
       backgroundColor: 'rgb(139, 92, 246)',
@@ -323,15 +372,15 @@ function DailyChart({ dailyData, postsData }) {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white rounded-xl p-4 shadow-md">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+      <div className="bg-white rounded-xl p-4 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily User Activity</h2>
         <div className="h-[300px]">
           <Line data={enhancedDailyData} options={chartOptions} />
         </div>
       </div>
 
-      <div className="bg-white rounded-xl p-4 shadow-md">
+      <div className="bg-white rounded-xl p-4 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily Post Activity</h2>
         <div className="h-[300px]">
           <Line data={enhancedPostsData} options={chartOptions} />
