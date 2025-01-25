@@ -50,7 +50,6 @@ const RegisterPage = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        console.log(response);
         setTimeout(() => {
           navigate("/login");
         }, 3000);
