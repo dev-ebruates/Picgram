@@ -245,6 +245,7 @@ export const postApi = createApi({
       transformResponse: (response) => {
         return Array.isArray(response.data) ? response.data : [];
       },
+      providesTags: ["Comments"],
     }),
     deletePostComment: builder.mutation({
       query: ({ postId, commentId }) => ({

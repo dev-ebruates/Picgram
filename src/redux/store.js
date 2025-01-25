@@ -35,6 +35,13 @@ const connection = new HubConnectionBuilder()
     if(methodName === "CreateMessage"){
       store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
     }
+    if (methodName === "CommentPost") {
+      // Yorumları güncellemek için ilgili post'u invalidate et
+      store.dispatch(postApi.util.invalidateTags(["Posts"]));
+      store.dispatch(postApi.util.invalidateTags(["Comments"]));
+  
+      // Ayrıca gönderiler listesine özel bir güncelleme yapabilirsiniz
+    }
   });
 
 const rootReducer = (state, action) => {
