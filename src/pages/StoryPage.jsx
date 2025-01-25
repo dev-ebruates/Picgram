@@ -320,13 +320,7 @@ const StoryPage = () => {
               →
             </button>
 
-            {/* Kapatma Butonu */}
-            <button
-              onClick={() => navigate(-1)}
-              className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 focus:outline-none "
-            >
-              ×
-            </button>
+         
           </div>
         </div>
       </div>
