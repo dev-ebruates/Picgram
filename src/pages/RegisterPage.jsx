@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../features/userFeatures/userApi.js";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -29,21 +29,20 @@ const RegisterPage = () => {
     e.preventDefault();
     const checkbox = document.querySelector('input[type="checkbox"]');
     if (!checkbox.checked) {
-      toast.error("Kullanım koşullarını, gizlilik politikasını ve topluluk kurallarını kabul etmelisiniz.");
+      toast.error(
+        "You must accept the terms of use, privacy policy and community guidelines."
+      );
       return;
     }
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Şifreler eşleşmiyor!");
+      toast.error("Passwords do not match!");
       return;
     }
 
     try {
       var response = await createUserMutation(formData);
-      console.log(response.data.success)
-      if (response.data.success=== false) {
-       return  toast.warning(response.data.message);
-      } else {
-        toast.success('Registration Successful', {
+      if (response.data.success === true) {
+        toast.success("Registration Successful", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -56,8 +55,11 @@ const RegisterPage = () => {
           navigate("/login");
         }, 3000);
       }
+      if (response.data.success === false) {
+        toast.error(response.data.message);
+      }
     } catch (error) {
-      toast.error('An error occurred: ' + error.message);
+      toast.error("An error occurred: " + error.message);
     }
     // Burada API isteği gönderebilirsiniz
   };

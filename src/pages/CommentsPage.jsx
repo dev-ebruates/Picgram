@@ -94,8 +94,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
                   >
                     <img
                       src={
-                        comment?.profilePicture ||
-                        "https://via.placeholder.com/50"
+                        comment?.profilePicture
                       }
                       alt="Profile"
                       className="w-8 h-8 rounded-full object-cover"

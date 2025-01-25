@@ -56,7 +56,7 @@ const Message = () => {
           <div className="min-h-[64px] px-6 py-4 border-b border-zinc-800/50 flex items-center bg-zinc-900/50 ">
             <div className="">
               <img
-                src={selectedContact.profilePicture || "https://via.placeholder.com/40"}
+                src={selectedContact.profilePicture}
                 alt={selectedContact.username}
                 className="w-10 h-10 rounded-full border border-zinc-700"
               />
