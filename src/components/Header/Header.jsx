@@ -31,7 +31,6 @@ function Header() {
     }
   };
 
-
   const handleLogout = () => {
     // Tüm state'leri temizle
     dispatch(logout());
@@ -132,8 +131,8 @@ function Header() {
         </ul>
       </nav>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <PostForm handleCloseModal={() => setIsModalOpen(false)} />
-        </Modal>
+        <PostForm handleCloseModal={() => setIsModalOpen(false)} />
+      </Modal>
 
       <SearchSideBar
         isOpen={isSearchOpen}

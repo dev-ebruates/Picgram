@@ -82,6 +82,7 @@ const LoginPage = () => {
               onChange={handleChange}
               placeholder="Username or Email"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
+              required
             />
             <input
               type="password"
@@ -91,6 +92,8 @@ const LoginPage = () => {
               onChange={handleChange}
               placeholder="Password"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
+              required
+
             />
             <button
               type="submit"

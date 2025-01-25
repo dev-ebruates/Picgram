@@ -22,7 +22,10 @@ const PostForm = ({ handleCloseModal }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-85 w-full bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-lg shadow-xl" style={{position: "relative", zIndex: 2000}} >
+    <div
+      className="flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-lg shadow-xl w-[450px] h-[650px] relative"
+      style={{ zIndex: 2000 }}
+    >
       {/* Resim Önizlemesi */}
       <div className="w-full flex justify-center mb-6 relative group">
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
@@ -48,7 +51,7 @@ const PostForm = ({ handleCloseModal }) => {
             id="media"
             value={mediaUrl}
             onChange={(e) => setMediaUrl(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
+            className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
             required
           />
         </div>
@@ -63,7 +66,7 @@ const PostForm = ({ handleCloseModal }) => {
             id="caption"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 min-h-[100px]"
+            className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 min-h-[120px]"
             required
           />
         </div>

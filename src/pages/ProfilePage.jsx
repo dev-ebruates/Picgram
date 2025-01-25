@@ -307,11 +307,7 @@ const ProfilePage = () => {
       )}
 
       {isOwnProfile && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          style={{ zIndex: 1000 }}
-        >
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <PostForm handleCloseModal={() => setIsModalOpen(false)} />
         </Modal>
       )}
@@ -322,7 +318,9 @@ const ProfilePage = () => {
             <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
               Delete Post
             </h2>
-            <p className="text-gray-300 mb-6">Are you sure you want to delete this post?</p>
+            <p className="text-gray-300 mb-6">
+              Are you sure you want to delete this post?
+            </p>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
