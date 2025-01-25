@@ -169,7 +169,12 @@ const RegisterPage = () => {
             <label>
               <input type="checkbox" required />I have read and accept the usage
               data and community.
-              <Link to="/terms" className="text-blue-500">
+              <Link
+                to="/terms"
+                className="text-blue-500"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Terms of Use | Community Rules
               </Link>
             </label>
