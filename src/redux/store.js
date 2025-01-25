@@ -20,29 +20,58 @@ const connection = new HubConnectionBuilder()
     })
     .withAutomaticReconnect()
     .build();
-  connection.start().catch((error) => console.error(error));
-  connection.on("ReceiveNotification", (methodName) => {
-    if (methodName === "LikePost") {
-      store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
-    }
-    if(methodName === "CommentPost"){
-      store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
-    }
-    if(methodName === "CreateMessage"){
-      // store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
-      store.dispatch(messageApi.util.invalidateTags(["RelatedMessages"]));
-    }
-    if(methodName === "CreateMessage"){
-      store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
-    }
-    if (methodName === "CommentPost") {
-      // Yorumları güncellemek için ilgili post'u invalidate et
-      store.dispatch(postApi.util.invalidateTags(["Posts"]));
-      store.dispatch(postApi.util.invalidateTags(["Comments"]));
+
+// Bağlantı durumu yönetimi
+const startConnection = async () => {
+  try {
+    await connection.start();
+    console.log("SignalR bağlantısı başarılı");
+  } catch (err) {
+    console.error("SignalR bağlantı hatası:", err);
+    setTimeout(startConnection, 5000);
+  }
+};
+
+connection.onclose(async () => {
+  console.log("SignalR bağlantısı koptu");
+  await startConnection();
+});
+
+connection.onreconnecting(error => {
+  console.log("SignalR yeniden bağlanıyor...", error);
+});
+
+connection.onreconnected(connectionId => {
+  console.log("SignalR yeniden bağlandı", connectionId);
+  // Yeniden bağlandıktan sonra verileri güncelle
+  store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+  store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+});
+
+startConnection();
+
+connection.on("ReceiveNotification", (methodName) => {
+  if (methodName === "LikePost") {
+    store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+  }
+  if(methodName === "CommentPost"){
+    store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+  }
+  if(methodName === "CreateMessage"){
+    // store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+    store.dispatch(messageApi.util.invalidateTags(["RelatedMessages"]));
+  }
+  if(methodName === "CreateMessage"){
+    store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+  }
+  if (methodName === "CommentPost") {
+    // Yorumları güncellemek için ilgili post'u invalidate et
+    store.dispatch(postApi.util.invalidateTags(["Posts"]));
+    store.dispatch(postApi.util.invalidateTags(["Comments"]));
   
-      // Ayrıca gönderiler listesine özel bir güncelleme yapabilirsiniz
-    }
-  });
+    // Ayrıca gönderiler listesine özel bir güncelleme yapabilirsiniz
+  }
+});
 
 const rootReducer = (state, action) => {
   if (action.type === RESET_STATE_ACTION_TYPE) {
