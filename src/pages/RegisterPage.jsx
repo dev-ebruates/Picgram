@@ -12,13 +12,12 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [createUserMutation] = useCreateUserMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -40,7 +39,7 @@ const RegisterPage = () => {
     }
 
     try {
-      var response = await createUserMutation(formData);
+      const response = await createUserMutation(formData);
       if (response.data.success === true) {
         toast.success("Registration Successful", {
           position: "top-center",
@@ -60,31 +59,22 @@ const RegisterPage = () => {
     } catch (error) {
       toast.error("An error occurred: " + error.message);
     }
-    // Burada API isteği gönderebilirsiniz
   };
 
   return (
-    <div className="flex items-center  flex-col justify-center min-h-screen bg-gray-100 text-black">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-black px-4">
       <ToastContainer position="top-center" />
-      <div>
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-2 mb-10 italic font-script text-center text-6xl font-bold tracking-tight text-gray-800 ">
-            picgram
-          </h2>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-8 shadow-lg rounded-lg w-96"
-        >
-          <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
-            Sign Up
-          </h2>
-          <div className="mb-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 sm:p-8">
+        <h2 className="text-center text-4xl font-bold text-gray-800 italic mb-6">
+          picgram
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label
               htmlFor="username"
               className="block text-sm font-medium text-gray-600"
             >
-              User Name
+              Username
             </label>
             <input
               type="text"
@@ -96,9 +86,9 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div>
             <label
-              htmlFor="fullName"
+              htmlFor="fullname"
               className="block text-sm font-medium text-gray-600"
             >
               Full Name
@@ -113,7 +103,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-600"
@@ -130,7 +120,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div>
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-600"
@@ -147,12 +137,12 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label
               htmlFor="confirmPassword"
               className="block text-sm font-medium text-gray-600"
             >
-              Password
+              Confirm Password
             </label>
             <input
               type="password"
@@ -164,42 +154,40 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="flex flex-col items-center mt-4">
-            <label>
-              <input type="checkbox" required />I have read and accept the usage
-              data and community.
+          <div className="flex items-center space-x-2">
+            <input type="checkbox" required className="h-4 w-4" />
+            <span className="text-sm text-gray-600">
+              I have read and accept the{" "}
               <Link
                 to="/terms"
-                className="text-blue-500"
+                className="text-blue-500 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Terms of Use | Community Rules
-              </Link>
-            </label>
+                Terms of Use
+              </Link>{" "}
+              and community guidelines.
+            </span>
           </div>
           <button
             type="submit"
-            className="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300"
+            className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
           >
             Sign Up
           </button>
         </form>
-      </div>
-
-      <Link to="/login">
-        <div className="flex p-8 w-96 justify-center   ">
-          <div className="flex flex-col justify-center">
-            <h2 className="text-l  mb-4 text-center text-gray-500">
-              If you're not redirected, click
-            </h2>
-
-            <button className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300">
-              LOGIN
-            </button>
-          </div>
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-500 hover:underline font-medium"
+            >
+              Log in
+            </Link>
+          </p>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };
