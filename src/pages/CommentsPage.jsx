@@ -7,6 +7,7 @@ import { useGetMyProfileQuery } from "../features/userFeatures/userApi.js";
 import { useGetAllPostsQuery } from "../features/postFeatures/postApi.js";
 import { v4 as uuidv4 } from "uuid";
 
+
 const CommentsPage = ({ handleCloseModal, post }) => {
   const [newComment, setNewComment] = useState("");
   const commentsEndRef = useRef(null);
@@ -41,15 +42,14 @@ const CommentsPage = ({ handleCloseModal, post }) => {
         console.error("Yorum silinirken hata oluştu:", error);
       });
   };
-  
 
   useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [post.comments]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
-      <div className="bg-black rounded-lg shadow-lg w-3/4 h-3/4 p-6 relative flex flex-col space-y-6">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-black rounded-lg shadow-lg w-full h-full md:w-3/4 md:h-3/4 p-6 relative flex flex-col space-y-6">
         {/* Close Button */}
         <button
           onClick={handleCloseModal}
@@ -60,7 +60,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
 
         <div className="flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-6 h-full">
           {/* Media Preview */}
-          <div className="w-[450px] h-[450px] flex justify-center items-center">
+          <div className="w-full md:w-[450px] h-[450px] flex justify-center items-center">
             <img
               src={post.mediaUrl}
               alt="Post"
@@ -69,10 +69,10 @@ const CommentsPage = ({ handleCloseModal, post }) => {
           </div>
 
           {/* Comments Section */}
-          <div className="w-full md:w-1/2 flex flex-col space-y-4 h-full">
+          <div className="w-full flex flex-col space-y-4 h-full overflow-y-auto">
             <div className="flex items-center space-x-3">
               <img
-                src={post.userProfilePicture }
+                src={post.userProfilePicture}
                 alt={`${post.username} profile`}
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -93,9 +93,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
                     className="flex items-start space-x-3 bg-black border border-gray-900 p-2 rounded-lg text-white"
                   >
                     <img
-                      src={
-                        comment?.profilePicture
-                      }
+                      src={comment?.profilePicture}
                       alt="Profile"
                       className="w-8 h-8 rounded-full object-cover"
                     />
@@ -106,7 +104,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
                         </span>
                         {comment?.username === username && (
                           <button
-                            onClick={() => handleDeleteComment(post.id,comment.id)}
+                            onClick={() => handleDeleteComment(post.id, comment.id)}
                             className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
                           >
                             Sil
@@ -116,16 +114,13 @@ const CommentsPage = ({ handleCloseModal, post }) => {
                       <p className="text-sm text-gray-300">{comment?.comment}</p>
                       <div className="flex justify-end">
                         <span className="text-xs text-gray-500">
-                          {new Date(comment?.createdAt).toLocaleDateString(
-                            "tr-TR",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
+                          {new Date(comment?.createdAt).toLocaleDateString("tr-TR", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </span>
                       </div>
                     </div>
