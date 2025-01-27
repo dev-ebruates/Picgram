@@ -8,7 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/authFeatures/authSlice.js";
 import { GoogleLogin } from "@react-oauth/google";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -46,30 +46,31 @@ const LoginPage = () => {
           navigate("/");
         }, 1000);
       }
-      if(result.data.success === false) {
+      if (result.data.success === false) {
         toast.error(result.data.message);
       }
-
     } catch (err) {
       toast.error("Login failed:", err);
     }
   };
+
   return (
-    <div className="h-screen flex">
+    <div className="flex h-screen">
       <ToastContainer position="top-center" />
+
       {/* Sol Taraf - Arka Plan Resmi */}
       <div
-        className="w-1/2 bg-cover bg-center"
+        className="hidden md:block w-1/2 h-full bg-cover bg-center"
         style={{
           backgroundImage: `url(${picgramLogin})`,
         }}
       ></div>
 
       {/* Sağ Taraf - Login Formu */}
-      <div className="w-1/2 flex items-center justify-center px-6 py-12 bg-gradient-to-r from-gray-200 via-gray-500 to-gray-800 text-black">
-        <div className=" bg-gray-50  p-6 rounded-lg shadow-md w-full max-w-sm">
+      <div className="w-full md:w-1/2 h-full flex items-center justify-center px-6 py-12 bg-gradient-to-r from-gray-200 via-gray-500 to-gray-800 text-black">
+        <div className="bg-gray-50 p-6 rounded-lg shadow-md w-full max-w-sm">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="mt-2 mb-10 italic font-script text-center text-6xl font-bold tracking-tight text-gray-800 ">
+            <h2 className="mt-2 mb-10 italic font-script text-center text-4xl md:text-6xl font-bold tracking-tight text-gray-800">
               picgram
             </h2>
           </div>
@@ -93,7 +94,6 @@ const LoginPage = () => {
               placeholder="Password"
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 bg-gray-100"
               required
-
             />
             <button
               type="submit"
@@ -120,7 +120,9 @@ const LoginPage = () => {
                         role: result.data.data.role,
                       };
                       dispatch(setCredentials(userData));
-                      toast.success("Welcome back " + " " + result.data.data.username);
+                      toast.success(
+                        "Welcome back " + " " + result.data.data.username
+                      );
                       setTimeout(() => {
                         navigate("/");
                       }, 1000);
@@ -129,20 +131,13 @@ const LoginPage = () => {
                     console.error("Login failed:", err);
                   }
                 }}
-                onError={() => {
-                }}
+                onError={() => {}}
               />
             </span>
           </div>
 
-          {/* <div className="text-center text-sm text-gray-500 mt-4">
-            <a href="#" className="text-gray-600 hover:underline">
-              you forgot your password?
-            </a>
-          </div> */}
           <div className="flex items-center justify-between my-4">
             <hr className="w-full border-gray-300" />
-            <span className="text-gray-500 text-sm"></span>
           </div>
 
           <div className="flex items-center justify-between">
@@ -155,7 +150,6 @@ const LoginPage = () => {
               </button>
             </Link>
           </div>
-          <div></div>
         </div>
       </div>
     </div>
