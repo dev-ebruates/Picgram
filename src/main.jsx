@@ -13,6 +13,7 @@ import TermsAndCommunityPage from "./pages/TermsAndCommunityPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import StoryPage from "./pages/StoryPage.jsx";
+import ToogleHeader from "./components/header/ToogleHeader.jsx";
 
 const clientId =
   "1050319585875-1ujql7a4palt2csnbm2ohf1ufbcr1mio.apps.googleusercontent.com";
@@ -22,7 +23,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Provider store={store}>
         <Routes>
-        <Route path="/story" element={<StoryPage />} />
+          <Route path="/story" element={<StoryPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/terms" element={<TermsAndCommunityPage />} />
@@ -37,12 +38,17 @@ createRoot(document.getElementById("root")).render(
           <Route
             path="/*"
             element={
-              <div className="grid grid-cols-[250px_1fr] min-h-screen">
-                <div className="border-r border-gray-200">
+              <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] min-h-screen">
+                <div className="hidden lg:block border-r border-gray-200">
                   <Header />
                 </div>
-                <div >
-                  <App />
+                <div className="grid grid-cols-1 ">
+                  <div className="lg:hidden">
+                    <ToogleHeader />
+                  </div>
+                  <div>
+                    <App />
+                  </div>
                 </div>
               </div>
             }
