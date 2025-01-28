@@ -18,12 +18,12 @@ import profilePicture from "../images/profilePicture.jpg";
 
 const ProfilePage = () => {
   const location = useLocation();
-  const params = useParams(); // URL'den parametreleri al
-  const username = params.username; // URL'den kullanıcı adını al
+  const params = useParams();
+  const username = params.username;
   const { data: myProfile } = useGetMyProfileQuery();
   const currentUser = myProfile?.data;
 
-  const isOwnProfile = !username || currentUser?.username === username; // Kendi profilimi mi kontrol et
+  const isOwnProfile = !username || currentUser?.username === username;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -34,11 +34,10 @@ const ProfilePage = () => {
   const [updateUserBioMutation] = useUpdateUserBioMutation();
   const [updateUserProfilePictureMutation] =
     useUpdateUserProfilePictureMutation();
-  const [deletePostMutation] = useDeletePostMutation(); // Silme mutation'ı tanımlandı
+  const [deletePostMutation] = useDeletePostMutation();
   const { refetch } = useGetAllByUsernameQuery(
     username || currentUser?.username
   );
-  //refecth fonksiyonunu kullanarak gönderileri yeniden yükle
 
   const myProfileQuery = useGetMyProfileQuery();
   const userProfileQuery = useGetProfileQuery(username);
@@ -60,7 +59,6 @@ const ProfilePage = () => {
   useEffect(() => {
     if (location.state?.openNewPost) {
       setIsModalOpen(true);
-      // state'i temizleyelim ki sayfa yenilendiğinde modal tekrar açılmasın
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -71,7 +69,7 @@ const ProfilePage = () => {
   const handleBioUpdate = async () => {
     try {
       await updateUserBioMutation({ bio: newBio });
-      myProfileQuery.refetch(); // Profili yeniden yükle
+      myProfileQuery.refetch();
       setIsEditing(false);
     } catch (error) {
       console.error("Biyografi güncellenirken hata oluştu:", error);
@@ -85,7 +83,7 @@ const ProfilePage = () => {
         profilePicture: mediaUrl,
       };
       await updateUserProfilePictureMutation(ProfilePictureData).unwrap();
-      myProfileQuery.refetch(); // Profili yeniden yükle
+      myProfileQuery.refetch();
       setIsProfileModalOpen(false);
       setMediaUrl("");
     } catch (error) {
@@ -100,28 +98,27 @@ const ProfilePage = () => {
 
   const confirmDelete = async (postId) => {
     try {
-      await deletePostMutation(postId).unwrap(); // Post silme işlemi
-      await refetch(); // Gönderi listesini yeniden yükle
-      setShowDeleteModal(false); // Modalı kapat
+      await deletePostMutation(postId).unwrap();
+      await refetch();
+      setShowDeleteModal(false);
     } catch (error) {
       console.error("Gönderi silinirken hata oluştu:", error);
     }
   };
 
   const handleDeletePost = (postId) => {
-    // Silme işlemi
     setPostIdToDelete(postId);
-    setShowDeleteModal(true); // Onay modalını göster
+    setShowDeleteModal(true);
   };
 
   if (getProfileLoading) return <div>Yükleniyor...</div>;
   if (!profile?.data) return <div>Profil bulunamadı</div>;
 
   return (
-    <div className="flex h-screen">
-      {/* Sağ taraf: Profil */}
-      <div className="flex-1 bg-white ml-20">
-        {/* Profil İçeriği */}
+<div className="flex flex-col lg:flex-row h-screen">
+  {/* Sağ taraf: Profil */}
+  <div className="flex-1 bg-white mt-16 lg:mt-8 sm:mx-auto sm:w-full sm:ml-8 sm:max-w-md">
+    {/* Profil İçeriği */}
         <div>
           <div className="flex flex-col bg-black text-white min-h-screen">
             {/* Profil Başlığı */}
@@ -133,7 +130,7 @@ const ProfilePage = () => {
                     : profilePicture
                 }
                 alt="Profile"
-                className="w-24 h-24 rounded-full border-4 border-gray-600"
+                className="w-24 h-24 rounded-full border-4 border-gray-600 cursor-pointer"
                 onClick={
                   isOwnProfile ? () => setIsProfileModalOpen(true) : undefined
                 }
@@ -154,22 +151,22 @@ const ProfilePage = () => {
                         rows=""
                       />
                       <button
-                        className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check "
+                        className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check"
                         onClick={() => handleBioUpdate()}
                       ></button>
                       <button
-                        className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times "
+                        className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times"
                         onClick={() => setIsEditing(false)}
                       ></button>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-2 ml-auto">
-                      <p className="text-sm max-w-[700px]">
+                      <p className="text-sm max-w-[200px] sm:max-w-[300px] md:max-w-[500px] lg:max-w-[700px]">
                         {profile?.data?.bio}
                       </p>
                       {isOwnProfile && (
                         <button
-                          className="text-gray-400 hover:text-white"
+                          className="text-gray-400 hover:text-white ml-2 sm:ml-6"
                           onClick={() => {
                             setNewBio(profile?.data?.bio);
                             setIsEditing(true);
@@ -212,7 +209,8 @@ const ProfilePage = () => {
                   New post
                 </button>
               )}
-              <div className="grid grid-cols-3 gap-4 w-full mr-10 relative z-0">
+              {/* Responsive Grid için düzenleme */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full mr-10">
                 {posts?.map((item, index) => (
                   <div
                     key={index}
@@ -226,8 +224,7 @@ const ProfilePage = () => {
                     {isOwnProfile && (
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <button
-                          className="absolute top-3 right-3 text-white p-2 rounded-lg bg-gray-500/80 
-                          hover:bg-gray-600/80 transition-colors duration-300"
+                          className="absolute top-3 right-3 text-white p-2 rounded-lg bg-gray-500/80 hover:bg-gray-600/80 transition-colors duration-300"
                           onClick={() => handleDeletePost(item.id)}
                         >
                           <i className="fas fa-trash-alt"></i>
@@ -324,16 +321,13 @@ const ProfilePage = () => {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 bg-gray-800/80 text-white rounded-lg border border-gray-700/50
-                hover:bg-gray-700/80 transition-all duration-300 text-sm"
+                className="px-4 py-2 bg-gray-800/80 text-white rounded-lg border border-gray-700/50 hover:bg-gray-700/80 transition-all duration-300 text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={() => confirmDelete(postIdToDelete)}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white 
-                font-medium hover:from-blue-600 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/20 
-                transition-all duration-300 text-sm"
+                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 text-sm"
               >
                 Delete
               </button>

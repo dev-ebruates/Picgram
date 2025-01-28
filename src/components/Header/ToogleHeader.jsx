@@ -37,9 +37,11 @@ const ToogleHeader = () => {
   return (
     <header className="fixed top-0 left-0 w-full bg-black shadow-md z-50 px-4">
       <div className="flex justify-between items-center p-2 text-white">
+        <Link to={"/"}>
         <div className="italic font-serif text-2xl tracking-tight text-white pl-2">
           Picgram
         </div>
+        </Link>
         <button
           onClick={toggleMenu}
           className="lg:hidden p-2 mr-4 rounded-md bg-gray-600 hover:bg-gray-700"
