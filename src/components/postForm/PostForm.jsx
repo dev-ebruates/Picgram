@@ -23,7 +23,7 @@ const PostForm = ({ handleCloseModal }) => {
 
   return (
     <div
-      className="flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 p-6 rounded-lg shadow-xl w-[450px] h-[650px] relative"
+      className="flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 p-4 sm:p-6 rounded-lg shadow-xl max-w-md w-full h-auto relative"
       style={{ zIndex: 2000 }}
     >
       {/* Resim Önizlemesi */}
@@ -32,12 +32,12 @@ const PostForm = ({ handleCloseModal }) => {
         <img
           src={mediaUrl || createPostImage}
           alt="Create Post"
-          className="relative w-[250px] h-[250px] object-cover rounded-lg border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
+          className="relative w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-lg border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
         />
       </div>
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 text-white w-full max-w-xl"
+        className="space-y-6 text-white w-full"
       >
         <div className="space-y-2">
           <label
@@ -66,7 +66,7 @@ const PostForm = ({ handleCloseModal }) => {
             id="caption"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 min-h-[120px]"
+            className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 min-h-[100px]"
             required
           />
         </div>
