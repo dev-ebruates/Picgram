@@ -175,7 +175,7 @@ const Message = () => {
             </div>
 
             {/* Mesaj Gönderme Alanı */}
-            <div className="p-4 border-t border-zinc-800/50 bg-zinc-900/50">
+            <div className="p-4 border-t border-zinc-800/50 bg-zinc-900/50 sm:sticky sm:bottom-0">
               <div className="flex items-center space-x-4">
                 <div className="flex-grow">
                   <input
