@@ -7,7 +7,6 @@ import { useGetMyProfileQuery } from "../features/userFeatures/userApi.js";
 import { useGetAllPostsQuery } from "../features/postFeatures/postApi.js";
 import { v4 as uuidv4 } from "uuid";
 
-
 const CommentsPage = ({ handleCloseModal, post }) => {
   const [newComment, setNewComment] = useState("");
   const commentsEndRef = useRef(null);
@@ -104,23 +103,30 @@ const CommentsPage = ({ handleCloseModal, post }) => {
                         </span>
                         {comment?.username === username && (
                           <button
-                            onClick={() => handleDeleteComment(post.id, comment.id)}
+                            onClick={() =>
+                              handleDeleteComment(post.id, comment.id)
+                            }
                             className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
                           >
-                            Sil
+                            <i className="fas fa-trash"></i>
                           </button>
                         )}
                       </div>
-                      <p className="text-sm text-gray-300">{comment?.comment}</p>
+                      <p className="text-sm text-gray-300">
+                        {comment?.comment}
+                      </p>
                       <div className="flex justify-end">
                         <span className="text-xs text-gray-500">
-                          {new Date(comment?.createdAt).toLocaleDateString("tr-TR", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                          {new Date(comment?.createdAt).toLocaleDateString(
+                            "tr-TR",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
                         </span>
                       </div>
                     </div>
@@ -150,7 +156,7 @@ const CommentsPage = ({ handleCloseModal, post }) => {
                     : "bg-gray-500 text-gray-300 cursor-not-allowed"
                 }`}
               >
-                Gönder
+                Send
               </button>
             </form>
           </div>
