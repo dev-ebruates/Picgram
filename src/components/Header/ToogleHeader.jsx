@@ -35,7 +35,7 @@ const ToogleHeader = () => {
     setIsNotificationsOpen(!isNotificationsOpen);
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-black shadow-md z-50 px-4">
+    <header className="fixed top-0 left-0 w-full h-16 bg-black shadow-md z-50 px-4">
       <div className="flex justify-between items-center p-2 text-white">
         <Link to={"/"}>
         <div className="italic font-serif text-2xl tracking-tight text-white pl-2">

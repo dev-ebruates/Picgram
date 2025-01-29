@@ -115,10 +115,10 @@ const ProfilePage = () => {
   if (!profile?.data) return <div>Profil bulunamadı</div>;
 
   return (
-<div className="flex flex-col lg:flex-row h-screen">
-  {/* Sağ taraf: Profil */}
-  <div className="flex-1 bg-white mt-16 lg:mt-8 sm:mx-auto sm:w-full sm:ml-8 sm:max-w-md">
-    {/* Profil İçeriği */}
+    <div className="flex flex-col items-center justify-center h-screen w-full bg-black text-white mt-16
+    ">
+      <div className="flex flex-col w-full max-w-5xl px-4">
+        {/* Profil İçeriği */}
         <div>
           <div className="flex flex-col bg-black text-white min-h-screen">
             {/* Profil Başlığı */}
@@ -130,7 +130,7 @@ const ProfilePage = () => {
                     : profilePicture
                 }
                 alt="Profile"
-                className="w-24 h-24 rounded-full border-4 border-gray-600 cursor-pointer"
+                className="w-32 h-32 rounded-full border-4 border-gray-600 cursor-pointer"
                 onClick={
                   isOwnProfile ? () => setIsProfileModalOpen(true) : undefined
                 }
@@ -210,16 +210,16 @@ const ProfilePage = () => {
                 </button>
               )}
               {/* Responsive Grid için düzenleme */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full mr-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 w-full">
                 {posts?.map((item, index) => (
                   <div
                     key={index}
-                    className="relative group aspect-square bg-black border border-gray-800/50 rounded-lg overflow-hidden"
+                    className="relative group w-full h-auto bg-black border border-gray-800/50 rounded-lg overflow-hidden"
                   >
                     <img
                       src={item.mediaUrl}
                       alt="UserPost"
-                      className="w-full h-full object-cover"
+                      className="w-full h-auto object-cover aspect-square"
                     />
                     {isOwnProfile && (
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
