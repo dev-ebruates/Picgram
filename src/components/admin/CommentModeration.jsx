@@ -50,7 +50,7 @@ const CommentModeration = () => {
   );
 
   if (isLoading) {
-    return <div>Yorumlar yükleniyor...</div>;
+    return <div>Comment moderation is loading...</div>;
   }
 
   return (
