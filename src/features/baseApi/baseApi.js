@@ -18,11 +18,6 @@ export const baseApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  extractRehydrationInfo(action, { reducerPath }) {
-    if (action.type === 'auth/logout') {
-      return null;
-    }
-  },
   keepUnusedDataFor: 0, // Kullanılmayan verileri hemen temizle
 });
 
@@ -33,13 +28,8 @@ export const baseApiMiddleware = baseApi.middleware;
 export const rtkQueryErrorLogger = (api) => (next) => (action) => {
   // Token geçersizse veya süresi dolmuşsa otomatik logout
   if (action.type.endsWith('/rejected')) {
-    const error = action.payload;
-    
-    // 401 (Unauthorized) veya 403 (Forbidden) durumlarında logout
-    if (error?.status === 401 || error?.status === 403) {
+    if (action.payload?.status === 401) {
       api.dispatch(logout());
-      // Sayfayı login'e yönlendir
-      window.location.href = '/login';
     }
   }
   return next(action);

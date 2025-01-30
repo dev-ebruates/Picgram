@@ -4,7 +4,7 @@ import { authApi } from '../features/authFeatures/authApi.js';
 import { userApi } from '../features/userFeatures/userApi.js';
 import { storyApi } from '../features/storyFeatures/storyApi.js';
 import { postApi } from '../features/postFeatures/postApi.js';
-import authReducer, { logout } from '../features/authFeatures/authSlice.js';
+import authReducer from '../features/authFeatures/authSlice.js';
 import { baseApi, RESET_STATE_ACTION_TYPE, rtkQueryErrorLogger } from '../features/baseApi/baseApi.js';
 import {searchApi} from '../features/searchFeatures/searchApi.js'
 import {messageApi} from '../features/messageFeatures/messageApi.js'
