@@ -33,12 +33,17 @@ function Post({ post }) {
   // };
 
   // Tarih formatlaması
+  const getUTCOffset = (date) => {
+    const offset = new Date().getTimezoneOffset();
+    var utcOffset = `${offset > 0 ? "-" : "+"}${Math.abs(offset) / 60}`;
+    return new Date(date).setHours(new Date(date).getHours() + parseInt(utcOffset))
+  };
   const formatDate = (dateString) => {
     try {
       if (!dateString) return "";
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "";
-      return formatDistanceToNow(date, { locale: enUS, addSuffix: true });
+      return formatDistanceToNow(getUTCOffset(date), { locale: enUS, addSuffix: true });
     } catch (error) {
       console.error("Tarih formatlama hatası:", error);
       return "";
