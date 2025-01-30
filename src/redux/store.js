@@ -25,7 +25,6 @@ const connection = new HubConnectionBuilder()
 const startConnection = async () => {
   try {
     await connection.start();
-    console.log("SignalR bağlantısı başarılı");
   } catch (err) {
     console.error("SignalR bağlantı hatası:", err);
     setTimeout(startConnection, 5000);
@@ -33,16 +32,13 @@ const startConnection = async () => {
 };
 
 connection.onclose(async () => {
-  console.log("SignalR bağlantısı koptu");
   await startConnection();
 });
 
 connection.onreconnecting(error => {
-  console.log("SignalR yeniden bağlanıyor...", error);
 });
 
 connection.onreconnected(connectionId => {
-  console.log("SignalR yeniden bağlandı", connectionId);
   // Yeniden bağlandıktan sonra verileri güncelle
   store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
   store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
