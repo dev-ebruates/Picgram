@@ -115,14 +115,13 @@ const ProfilePage = () => {
   if (!profile?.data) return <div>Profil bulunamadı</div>;
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen w-full bg-black text-white mt-16
-    ">
-      <div className="flex flex-col w-full max-w-5xl px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen w-full bg-black text-white pt-16 pb-4 px-4">
+      <div className="flex flex-col w-full max-w-5xl">
         {/* Profil İçeriği */}
-        <div>
-          <div className="flex flex-col bg-black text-white min-h-screen">
+        <div className="w-full">
+          <div className="flex flex-col bg-black text-white">
             {/* Profil Başlığı */}
-            <div className="flex items-center space-x-8 mt-6">
+            <div className="flex flex-col items-center sm:flex-row sm:items-start sm:space-x-8 mt-4 space-y-4 sm:space-y-0">
               <img
                 src={
                   profile?.data?.userProfilePicture
@@ -130,43 +129,45 @@ const ProfilePage = () => {
                     : profilePicture
                 }
                 alt="Profile"
-                className="w-32 h-32 rounded-full border-4 border-gray-600 cursor-pointer"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-gray-600 cursor-pointer object-cover"
                 onClick={
                   isOwnProfile ? () => setIsProfileModalOpen(true) : undefined
                 }
               />
-              <div>
-                <h2 className="text-3xl font-semibold">
+              <div className="text-center sm:text-left w-full">
+                <h2 className="text-2xl sm:text-3xl font-semibold mb-2">
                   {profile?.data?.username}
                 </h2>
-                <p className="text-sm">{profile?.data?.fullname}</p>
-                <div className="flex items-center space-x-2">
+                <p className="text-sm mb-2">{profile?.data?.fullname}</p>
+                <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
                   {isEditing ? (
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full">
                       <textarea
                         type="text"
                         value={newBio}
                         onChange={(e) => setNewBio(e.target.value)}
                         className="px-2 py-1 text-sm border border-gray-600 rounded bg-gray-800 text-white w-full max-w-[400px] resize-none focus:outline-none"
-                        rows=""
+                        rows="3"
                       />
-                      <button
-                        className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check"
-                        onClick={() => handleBioUpdate()}
-                      ></button>
-                      <button
-                        className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times"
-                        onClick={() => setIsEditing(false)}
-                      ></button>
+                      <div className="flex space-x-2">
+                        <button
+                          className="h-7 w-7 text-sm text-white bg-blue-600 rounded hover:bg-blue-500 fas fa-check"
+                          onClick={() => handleBioUpdate()}
+                        ></button>
+                        <button
+                          className="h-7 w-7 text-sm text-white rounded bg-gray-800 hover:bg-gray-600 fas fa-times"
+                          onClick={() => setIsEditing(false)}
+                        ></button>
+                      </div>
                     </div>
                   ) : (
-                    <div className="flex items-center space-x-2 ml-auto">
-                      <p className="text-sm max-w-[200px] sm:max-w-[300px] md:max-w-[500px] lg:max-w-[700px]">
+                    <div className="flex flex-col sm:flex-row items-center w-full">
+                      <p className="text-sm max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl text-center sm:text-left mb-2 sm:mb-0">
                         {profile?.data?.bio}
                       </p>
                       {isOwnProfile && (
                         <button
-                          className="text-gray-400 hover:text-white ml-2 sm:ml-6"
+                          className="text-gray-400 hover:text-white ml-0 sm:ml-2"
                           onClick={() => {
                             setNewBio(profile?.data?.bio);
                             setIsEditing(true);
@@ -180,9 +181,9 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center px-20">
+            <div className="flex flex-col items-center w-full px-4 sm:px-20">
               {/* Takipçi Bilgileri */}
-              <div className="w-full mr-10 flex justify-around p-6 mb-10 border-b border-gray-900">
+              <div className="w-full flex justify-around p-4 sm:p-6 my-4 sm:my-10 border-b border-gray-900">
                 <div className="text-center">
                   <p className="text-l font-medium">{posts?.length || 0}</p>
                   <p className="text-sm text-gray-400">posts</p>
@@ -200,6 +201,7 @@ const ProfilePage = () => {
                   <p className="text-sm text-gray-400">following</p>
                 </div>
               </div>
+
               {/* Yeni Gönderi Ekle Butonu */}
               {isOwnProfile && (
                 <button
@@ -239,7 +241,7 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Profil Resmi Modal */}
       {isProfileModalOpen && (
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-start justify-center pt-20 z-[9999]">
           <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 w-[400px] shadow-2xl border border-gray-700/50">
@@ -293,7 +295,7 @@ const ProfilePage = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 text-sm"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300 text-sm"
                 >
                   Save Changes
                 </button>
