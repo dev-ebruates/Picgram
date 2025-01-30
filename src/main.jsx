@@ -13,7 +13,7 @@ import TermsAndCommunityPage from "./pages/TermsAndCommunityPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import StoryPage from "./pages/StoryPage.jsx";
-import ToogleHeader from "./components/header/ToogleHeader.jsx";
+import ToogleHeader from "./components/Header/ToogleHeader.jsx";
 
 const clientId =
   "1050319585875-1ujql7a4palt2csnbm2ohf1ufbcr1mio.apps.googleusercontent.com";
