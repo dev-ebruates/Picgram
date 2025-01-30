@@ -14,11 +14,12 @@ import AdminPage from "./pages/AdminPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import StoryPage from "./pages/StoryPage.jsx";
 import ToogleHeader from "./components/Header/ToogleHeader.jsx";
-
+import ErrorBoundary from './components/ErrorBoundray.jsx';
 const clientId =
   "1050319585875-1ujql7a4palt2csnbm2ohf1ufbcr1mio.apps.googleusercontent.com";
 
 createRoot(document.getElementById("root")).render(
+  <ErrorBoundary>
   <GoogleOAuthProvider clientId={clientId}>
     <BrowserRouter>
       <Provider store={store}>
@@ -57,4 +58,5 @@ createRoot(document.getElementById("root")).render(
       </Provider>
     </BrowserRouter>
   </GoogleOAuthProvider>
+  </ErrorBoundary>
 );
