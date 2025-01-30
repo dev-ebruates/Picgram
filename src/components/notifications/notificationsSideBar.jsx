@@ -6,13 +6,24 @@ import { Link } from "react-router-dom";
 const notificationsSideBar = ({ isOpen, onClose }) => {
   const { data, error, isLoading } = useGetAllNotificationByUserIdQuery();
 
+  const getUTCOffset = (date) => {
+    const offset = new Date().getTimezoneOffset();
+    var utcOffset = `${offset > 0 ? "-" : "+"}${Math.abs(offset) / 60}`;
+    return new Date(date).setHours(new Date(date).getHours() + parseInt(utcOffset))
+  };
+
   const getNotificationText = (type, username) => {
     switch (type) {
       case 1:
         return (
           <>
-            <Link to={`/${username}`} className="hover:opacity-80 transition-opacity">
-              <span className="font-bold text-sm text-gray-200">{username} </span>
+            <Link
+              to={`/${username}`}
+              className="hover:opacity-80 transition-opacity"
+            >
+              <span className="font-bold text-sm text-gray-200">
+                {username}{" "}
+              </span>
             </Link>
             <span className="text-gray-400 text-xs">liked your post</span>
           </>
@@ -20,8 +31,13 @@ const notificationsSideBar = ({ isOpen, onClose }) => {
       case 2:
         return (
           <>
-            <Link to={`/${username}`} className="hover:opacity-80 transition-opacity">
-              <span className="font-bold text-sm text-gray-200">{username} </span>
+            <Link
+              to={`/${username}`}
+              className="hover:opacity-80 transition-opacity"
+            >
+              <span className="font-bold text-sm text-gray-200">
+                {username}{" "}
+              </span>
             </Link>
             <span className="text-gray-400 text-xs">
               commented on your post
@@ -75,36 +91,41 @@ const notificationsSideBar = ({ isOpen, onClose }) => {
 
         <div className="space-y-4">
           {data &&
-            data.slice().reverse().map((notification) => (
-              <motion.div
-                key={notification.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-center justify-between p-4 bg-gray-900 rounded-xl hover:bg-gray-800 transition-colors group cursor-pointer"
-              >
-                <div className="flex-1 mr-4">
-                  <span className="text-gray-200 text-sm">
-                    {getNotificationText(
-                      notification.type,
-                      notification.triggerUsername
-                    )}
-                  </span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <img
-                    src={notification.mediaUrl}
-                    alt="Post"
-                    className="w-16 h-16 object-cover rounded-lg mb-1 group-hover:scale-105 transition-transform border border-gray-800"
-                  />
-                  <span className="text-xs text-gray-500">
-                    {formatDistanceToNow(new Date(notification.createdAt), {
-                      addSuffix: true,
-                    })}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+            data
+              .slice()
+              .reverse()
+              .map((notification) => (
+                <motion.div
+                  key={notification.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center justify-between p-4 bg-gray-900 rounded-xl hover:bg-gray-800 transition-colors group cursor-pointer"
+                >
+                  <div className="flex-1 mr-4">
+                    <span className="text-gray-200 text-sm">
+                      {getNotificationText(
+                        notification.type,
+                        notification.triggerUsername
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={notification.mediaUrl}
+                      alt="Post"
+                      className="w-16 h-16 object-cover rounded-lg mb-1 group-hover:scale-105 transition-transform border border-gray-800"
+                    />
+                    <span className="text-xs text-gray-500">
+                      {formatDistanceToNow(getUTCOffset(notification.createdAt),
+                        {
+                          addSuffix: true,
+                        }
+                      )}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
         </div>
       </div>
     </motion.div>
