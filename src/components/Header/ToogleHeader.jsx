@@ -64,68 +64,77 @@ const ToogleHeader = () => {
       </div>
 
       {isMenuOpen && (
-        <nav className="bg-black text-white p-3 lg:hidden">
-          <ul className="space-y-3">
-            <li className="flex items-center space-x-2">
-              <Link to="/" className="block flex items-center">
-                <div>
-                  <i className="fas fa-home text-lg mr-2"></i>
-                  <span className="text-lg">Home</span>
-                </div>
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <Link className="block" onClick={toggleSearch}>
-                <div>
-                  <i className="fas fa-search text-lg mr-2"></i>
-                  <span className="text-lg">Search</span>
-                </div>
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <Link to="/messages" className="block">
-                <div>
-                  <i className="fas fa-comment text-lg mr-2"></i>
-                  <span className="text-lg">Message</span>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link className="block" onClick={toggleNotifications}>
-                <div>
-                  <i className="fas fa-heart text-lg mr-2"></i>
-                  <span className="text-lg">Notifications</span>
-                </div>
-              </Link>
-            </li>
-            {myProfile?.data?.role === 1 && (
-              <li>
-                <Link to="/admin" className="block">
-                  <div>
-                    <i className="fas fa-crown text-lg mr-2"></i>
-                    <span className="text-lg">Administrator</span>
-                  </div>
-                </Link>
-              </li>
-            )}
-            <li>
-              <Link to={`/${username}`} className="block">
-                <div>
-                  <i className="fas fa-user text-lg mr-2"></i>
-                  <span className="text-lg">Profile</span>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link to="/login" className="block" onClick={handleLogout}>
-                <div>
-                  <i className="fas fa-sign-out-alt text-lg mr-2"></i>
-                  <span className="text-lg">Logout</span>
-                </div>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+       <nav className="bg-black text-white p-3 lg:hidden">
+       <ul className="space-y-3">
+         <li className="flex items-center space-x-2">
+           <Link to="/" className="block flex items-center" onClick={() => setIsMenuOpen(false)}>
+             <div>
+               <i className="fas fa-home text-lg mr-2"></i>
+               <span className="text-lg">Home</span>
+             </div>
+           </Link>
+         </li>
+         <li className="flex items-center space-x-2">
+           <Link className="block" onClick={() => {
+             toggleSearch();
+             setIsMenuOpen(false);
+           }}>
+             <div>
+               <i className="fas fa-search text-lg mr-2"></i>
+               <span className="text-lg">Search</span>
+             </div>
+           </Link>
+         </li>
+         <li className="flex items-center space-x-2">
+           <Link to="/messages" className="block" onClick={() => setIsMenuOpen(false)}>
+             <div>
+               <i className="fas fa-comment text-lg mr-2"></i>
+               <span className="text-lg">Message</span>
+             </div>
+           </Link>
+         </li>
+         <li>
+           <Link className="block" onClick={() => {
+             toggleNotifications();
+             setIsMenuOpen(false);
+           }}>
+             <div>
+               <i className="fas fa-heart text-lg mr-2"></i>
+               <span className="text-lg">Notifications</span>
+             </div>
+           </Link>
+         </li>
+         {myProfile?.data?.role === 1 && (
+           <li>
+             <Link to="/admin" className="block" onClick={() => setIsMenuOpen(false)}>
+               <div>
+                 <i className="fas fa-crown text-lg mr-2"></i>
+                 <span className="text-lg">Administrator</span>
+               </div>
+             </Link>
+           </li>
+         )}
+         <li>
+           <Link to={`/${username}`} className="block" onClick={() => setIsMenuOpen(false)}>
+             <div>
+               <i className="fas fa-user text-lg mr-2"></i>
+               <span className="text-lg">Profile</span>
+             </div>
+           </Link>
+         </li>
+         <li>
+           <Link to="/login" className="block" onClick={() => {
+             handleLogout();
+             setIsMenuOpen(false);
+           }}>
+             <div>
+               <i className="fas fa-sign-out-alt text-lg mr-2"></i>
+               <span className="text-lg">Logout</span>
+             </div>
+           </Link>
+         </li>
+       </ul>
+     </nav>
       )}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
