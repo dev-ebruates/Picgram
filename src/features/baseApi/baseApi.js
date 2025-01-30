@@ -1,14 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { logout } from '../authFeatures/authSlice';
 
 // Base API yapılandırması
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token || localStorage.getItem('authToken');
-      
+    prepareHeaders: (headers) => {
+      // Auth token'ı ekle
+      const token = localStorage.getItem('authToken');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -26,11 +25,9 @@ export const baseApiMiddleware = baseApi.middleware;
 
 // Error handling middleware
 export const rtkQueryErrorLogger = (api) => (next) => (action) => {
-  // Token geçersizse veya süresi dolmuşsa otomatik logout
-  if (action.type.endsWith('/rejected')) {
-    if (action.payload?.status === 401) {
-      api.dispatch(logout());
-    }
+  if (action?.payload?.status === 401) {
+    localStorage.removeItem('authToken');
+    // window.location.href = '/login';
   }
   return next(action);
 };

@@ -15,13 +15,7 @@ import {reportsApi} from '../features/reportsFeatures/reportsApi.js'
 const connection = new HubConnectionBuilder()
     .withUrl(import.meta.env.VITE_BASE_URL + "/notificationHub", {
       accessTokenFactory: () => {
-        const token = localStorage.getItem("authToken");
-        // Token yoksa veya geçersizse null döndür
-        if (!token) {
-          console.warn("No authentication token found");
-          return null;
-        }
-        return token;
+        return localStorage.getItem("authToken"); // JWT token'ınızı buradan alın
       }
     })
     .withAutomaticReconnect()
@@ -30,19 +24,9 @@ const connection = new HubConnectionBuilder()
 // Bağlantı durumu yönetimi
 const startConnection = async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      console.warn("Cannot start SignalR connection: No token");
-      return;
-    }
     await connection.start();
-    console.log("SignalR Connected successfully");
   } catch (err) {
     console.error("SignalR bağlantı hatası:", err);
-    // Token geçersizse veya süresi dolmuşsa logout yap
-    if (err.message.includes("Unauthorized")) {
-      store.dispatch(logout());
-    }
     setTimeout(startConnection, 5000);
   }
 };
