@@ -35,7 +35,7 @@ const PostForm = ({ handleCloseModal }) => {
     console.log(formData);
 
     try {
-      const response = await fetch(import.meta.env.VITE_PICTURE_BASE_URL + "/picture/upload", {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/picture/upload", {
         method: "POST",
         body: formData,
       });
