@@ -159,7 +159,7 @@ const ProfilePage = () => {
                     : profilePicture
                 }
                 alt="Profile"
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-gray-600 cursor-pointer object-cover object-center"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 aspect-square border-gray-600 cursor-pointer object-cover object-center"
                 onClick={
                   isOwnProfile ? () => setIsProfileModalOpen(true) : undefined
                 }
