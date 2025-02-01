@@ -11,8 +11,6 @@ export const pictureApi = createApi({
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
-      // Content type header'ı ekle
-      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
