@@ -18,10 +18,10 @@ export const pictureApi = createApi({
   }),
   endpoints: (builder) => ({
     createPicture: builder.mutation({
-      query: (picture) => ({
+      query: (formData) => ({
         url: "/picture/upload",
         method: "POST",
-        body: picture,
+        body: formData,
       }),
     }),
   }),
