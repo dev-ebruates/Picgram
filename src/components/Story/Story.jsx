@@ -7,7 +7,7 @@ import {
 import { useState } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
 import { useRef } from "react";
-import { useCreatePictureMutation } from "../features/pictureFeatures/pictureApi";
+import { useCreatePictureMutation } from "../../features/pictureFeatures/pictureApi.js";
 
 function Story() {
   const {
