@@ -6,19 +6,15 @@ import CommentsPage from "./pages/CommentsPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function App() {
-  const navigate = useNavigate();
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        onClick={() => {
-          navigate("/messages");
-        }}
-      />
+      <Link to="/messages" className="flex items-center gap-2">
+        <ToastContainer position="top-right" autoClose={3000} />
+      </Link>
+
       <Routes>
         <Route
           path="/"
