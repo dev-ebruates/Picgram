@@ -39,15 +39,12 @@ const PostForm = ({ handleCloseModal }) => {
       const data = await createPicture(formData).unwrap();
       console.log(data);
 
-      if (data.ok) {
+      if (data.success) {
         setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.Url);
       } else {
         alert("Dosya yüklenemedi");
       }
     } catch (error) {
-      console.log(error);
-      console.log(error.data);
-      console.log(error.data?.message);
       alert("Dosya yüklenirken hata oluştu");
     }
   };
