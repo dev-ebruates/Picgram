@@ -37,6 +37,7 @@ const PostForm = ({ handleCloseModal }) => {
 
     try {
       const data = await createPicture(formData).unwrap();
+      console.log(data);
 
       if (data.ok) {
         setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.Url);
