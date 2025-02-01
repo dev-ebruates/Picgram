@@ -14,6 +14,7 @@ import {reportsApi} from '../features/reportsFeatures/reportsApi.js'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const connection = new HubConnectionBuilder()
     .withUrl(import.meta.env.VITE_BASE_URL + "/notificationHub", {
       accessTokenFactory: () => {
@@ -48,7 +49,7 @@ connection.onreconnected(connectionId => {
 
 startConnection();
 
-connection.on("ReceiveNotification", (methodName) => {
+connection.on("ReceiveNotification", (methodName, payload) => {
   if (methodName === "LikePost") {
     store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
   }
@@ -62,12 +63,14 @@ connection.on("ReceiveNotification", (methodName) => {
   if(methodName === "CreateMessage"){
     store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
   }
-  if(methodName === "CreateMessage"){
-    toast.info(`Yeni mesaj 📩`, {
+  if(methodName === "NewMessage"){
+    toast.info(`${payload} - Yeni mesaj 📩`, {
       position: "top-right",
       autoClose: 3000,
+      onClick: () => {
+        window.location.href = '/messages';
+      }
     });
-
   }
   if (methodName === "CommentPost") {
     // Yorumları güncellemek için ilgili post'u invalidate et
@@ -79,6 +82,7 @@ connection.on("ReceiveNotification", (methodName) => {
 });
 
 const rootReducer = (state, action) => {
+  
   if (action.type === RESET_STATE_ACTION_TYPE) {
     state = undefined;
   }
