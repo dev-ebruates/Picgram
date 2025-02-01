@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <Link to="/messages" className="flex items-center gap-2">
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer position="top-center" autoClose={3000} />
       </Link>
 
       <Routes>
