@@ -67,9 +67,7 @@ connection.on("ReceiveNotification", (methodName, payload) => {
     toast.info(`${payload} - Yeni mesaj 📩`, {
       position: "top-right",
       autoClose: 3000,
-      onClick: () => {
-        window.location.href = '/messages';
-      }
+      
     });
   }
   if (methodName === "CommentPost") {
