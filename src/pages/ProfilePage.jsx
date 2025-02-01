@@ -130,7 +130,9 @@ const ProfilePage = () => {
       console.log(data);
 
       if (data.success) {
-        setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url);
+        setMediaUrl(
+          import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url
+        );
       } else {
         alert("Dosya yüklenemedi");
       }
@@ -138,7 +140,6 @@ const ProfilePage = () => {
       alert("Dosya yüklenirken hata oluştu");
     }
   };
-
 
   if (getProfileLoading) return <div>Yükleniyor...</div>;
   if (!profile?.data) return <div>Profil bulunamadı</div>;
@@ -158,7 +159,7 @@ const ProfilePage = () => {
                     : profilePicture
                 }
                 alt="Profile"
-                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-gray-600 cursor-pointer object-cover"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-gray-600 cursor-pointer object-cover object-center"
                 onClick={
                   isOwnProfile ? () => setIsProfileModalOpen(true) : undefined
                 }
@@ -292,7 +293,7 @@ const ProfilePage = () => {
                 <img
                   src={mediaUrl || profilePicture}
                   alt="Create Post"
-                  className="relative w-[180px] h-[180px] object-cover rounded-full border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
+                  className="relative w-[180px] h-[180px] object-cover object-center aspect-square rounded-full border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
                   onClick={handleClickPicture}
                 />
               </div>
