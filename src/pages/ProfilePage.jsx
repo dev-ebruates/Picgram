@@ -15,11 +15,14 @@ import {
 } from "../features/postFeatures/postApi";
 import { useParams, useLocation } from "react-router-dom";
 import profilePicture from "../images/profilePicture.jpg";
+import { useRef } from "react";
+import { useCreatePictureMutation } from "../features/pictureFeatures/pictureApi";
 
 const ProfilePage = () => {
   const location = useLocation();
   const params = useParams();
   const username = params.username;
+  const fileInputRef = useRef(null); // Dosya input referansı
   const { data: myProfile } = useGetMyProfileQuery();
   const currentUser = myProfile?.data;
 
@@ -38,6 +41,7 @@ const ProfilePage = () => {
   const { refetch } = useGetAllByUsernameQuery(
     username || currentUser?.username
   );
+  const [createPicture] = useCreatePictureMutation();
 
   const myProfileQuery = useGetMyProfileQuery();
   const userProfileQuery = useGetProfileQuery(username);
@@ -110,6 +114,31 @@ const ProfilePage = () => {
     setPostIdToDelete(postId);
     setShowDeleteModal(true);
   };
+  const handleClickPicture = () => {
+    fileInputRef.current.click(); // Dosya seçme penceresini aç
+  };
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+
+    try {
+      const data = await createPicture(formData).unwrap();
+      console.log(data);
+
+      if (data.success) {
+        setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url);
+      } else {
+        alert("Dosya yüklenemedi");
+      }
+    } catch (error) {
+      alert("Dosya yüklenirken hata oluştu");
+    }
+  };
+
 
   if (getProfileLoading) return <div>Yükleniyor...</div>;
   if (!profile?.data) return <div>Profil bulunamadı</div>;
@@ -264,8 +293,16 @@ const ProfilePage = () => {
                   src={mediaUrl || profilePicture}
                   alt="Create Post"
                   className="relative w-[180px] h-[180px] object-cover rounded-full border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
+                  onClick={handleClickPicture}
                 />
               </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleFileChange}
+              />
 
               <div className="space-y-1.5">
                 <label
