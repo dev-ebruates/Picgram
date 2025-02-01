@@ -1,16 +1,27 @@
 import { Link } from "react-router-dom";
 import "./Story.css";
-import { useGetAllStoriesQuery, useCreateStoryMutation } from "../../features/storyFeatures/storyApi.js";
-import {useState } from "react";
+import {
+  useGetAllStoriesQuery,
+  useCreateStoryMutation,
+} from "../../features/storyFeatures/storyApi.js";
+import { useState } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
+import { useRef } from "react";
+import { useCreatePictureMutation } from "../features/pictureFeatures/pictureApi";
 
 function Story() {
-  const { data: stories, isLoading: storiesLoading, error : storiesError } = useGetAllStoriesQuery();
+  const {
+    data: stories,
+    isLoading: storiesLoading,
+    error: storiesError,
+  } = useGetAllStoriesQuery();
   const [createStory] = useCreateStoryMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mediaUrl, setMediaUrl] = useState("");
- 
-  const { refetch }  = useGetAllStoriesQuery();
+  const fileInputRef = useRef(null); // Dosya input referansı
+
+  const [createPicture] = useCreatePictureMutation();
+  const { refetch } = useGetAllStoriesQuery();
   if (storiesLoading) return <div>Yükleniyor...</div>;
   if (storiesError) return <div>Hata: {storiesError}</div>;
 
@@ -27,14 +38,41 @@ function Story() {
     e.preventDefault();
     try {
       const storyData = {
-        mediaUrl: mediaUrl
+        mediaUrl: mediaUrl,
       };
       await createStory(storyData).unwrap();
       setIsModalOpen(false);
       setMediaUrl("");
       await refetch();
     } catch (error) {
-      console.error('Story eklenirken hata oluştu:', error);
+      console.error("Story eklenirken hata oluştu:", error);
+    }
+  };
+
+  const handleClickStory = () => {
+    fileInputRef.current.click(); // Dosya seçme penceresini aç
+  };
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+
+    try {
+      const data = await createPicture(formData).unwrap();
+      console.log(data);
+
+      if (data.success) {
+        setMediaUrl(
+          import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url
+        );
+      } else {
+        alert("Dosya yüklenemedi");
+      }
+    } catch (error) {
+      alert("Dosya yüklenirken hata oluştu");
     }
   };
 
@@ -44,24 +82,26 @@ function Story() {
         <div className="flex gap-4 min-w-max">
           {/* Story Ekleme Butonu */}
           <div className="story flex-none group">
-            <div 
-              onClick={handleAddStory} 
+            <div
+              onClick={handleAddStory}
               className={`w-16 h-16 rounded-full p-0.5 cursor-pointer 
                 bg-gradient-to-br from-purple-600 to-pink-500 
                 hover:from-purple-500 hover:to-pink-400 
                 transform hover:scale-105 transition-all duration-300
-                ${storiesLoading ? 'opacity-50' : ''}`}
+                ${storiesLoading ? "opacity-50" : ""}`}
             >
               <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center">
                 {storiesLoading ? (
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500" />
                 ) : (
-                  <span className="text-3xl text-purple-500 group-hover:text-purple-400 transition-colors">+</span>
+                  <span className="text-3xl text-purple-500 group-hover:text-purple-400 transition-colors">
+                    +
+                  </span>
                 )}
               </div>
             </div>
             <span className="text-sm font-bold text-center mt-1 text-gray-300 group-hover:text-purple-400 transition-colors">
-              {storiesLoading ? 'Yükleniyor...' : ''}
+              {storiesLoading ? "Yükleniyor..." : ""}
             </span>
           </div>
 
@@ -70,9 +110,9 @@ function Story() {
             <div key={index} className="story flex-none ">
               <Link
                 to="/story"
-                state={{ 
+                state={{
                   username: story.username,
-                  allUsers: stories?.map(story => story.username),
+                  allUsers: stories?.map((story) => story.username),
                 }}
                 className="flex flex-col items-center justify-center "
               >
@@ -81,7 +121,9 @@ function Story() {
                   alt={story.username}
                   className="w-16 h-16 rounded-full border-2 story-img border-purple-400  hover:border-purple-800 cursor-pointer"
                 />
-                <span className="text-sm font-bold text-center mt-1">{story.username}</span>
+                <span className="text-sm font-bold text-center mt-1">
+                  {story.username}
+                </span>
               </Link>
             </div>
           ))}
@@ -109,6 +151,14 @@ function Story() {
                         height: "200px",
                         objectFit: "cover",
                       }}
+                      onClick={handleClickStory}
+                    />
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      accept="image/*"
+                      onChange={handleFileChange}
                     />
                   </div>
                 </div>
