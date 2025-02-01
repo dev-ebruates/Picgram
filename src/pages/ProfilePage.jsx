@@ -41,7 +41,7 @@ const ProfilePage = () => {
   const { refetch } = useGetAllByUsernameQuery(
     username || currentUser?.username
   );
-  const [createPicture] = useCreatePictureMutation();
+  const [createPicture , { isLoading }] = useCreatePictureMutation();
 
   const myProfileQuery = useGetMyProfileQuery();
   const userProfileQuery = useGetProfileQuery(username);
@@ -293,6 +293,11 @@ const ProfilePage = () => {
                 <div className="flex flex-col items-center space-y-2">
                  <h1 className="flex justify-center items-center">Click to select an image</h1>
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
+                {isLoading && (
+  <div className="absolute inset-0 flex items-center justify-center z-10">
+    <div className="w-[180px] h-[180px] border-4 border-gray-700 rounded-full animate-spin border-t-blue-500 border-r-purple-500"></div>
+  </div>
+)}
                 <img
                   src={mediaUrl || profilePicture}
                   alt="Create Post"
