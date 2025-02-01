@@ -35,14 +35,13 @@ const PostForm = ({ handleCloseModal }) => {
     console.log(formData);
 
     try {
-      const response = await fetch("http://localhost:5148/picture/upload", {
+      const response = await fetch(import.meta.env.VITE_PICTURE_BASE_URL + "/picture/upload", {
         method: "POST",
         body: formData,
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
-        setMediaUrl(data);
+        setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.Url);
       } else {
         alert("Dosya yüklenemedi");
       }
