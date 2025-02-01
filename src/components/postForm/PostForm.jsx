@@ -2,13 +2,14 @@ import { useState, useRef } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
 import { useCreatePostMutation } from "../../features/postFeatures/postApi";
 import { v4 as uuidv4 } from "uuid";
-
+import { useCreatePictureMutation } from "../../features/pictureFeatures/pictureApi";
 const PostForm = ({ handleCloseModal }) => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [caption, setCaption] = useState("");
   const fileInputRef = useRef(null); // Dosya input referansı
 
   const [createPost, { isLoading }] = useCreatePostMutation();
+  const [createPicture] = useCreatePictureMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,12 +36,9 @@ const PostForm = ({ handleCloseModal }) => {
     console.log(formData);
 
     try {
-      const response = await fetch(import.meta.env.VITE_BASE_URL + "/picture/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (response.ok) {
+      const data = await createPicture(formData).unwrap();
+
+      if (data.ok) {
         setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.Url);
       } else {
         alert("Dosya yüklenemedi");
