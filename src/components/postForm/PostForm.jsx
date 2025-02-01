@@ -40,7 +40,7 @@ const PostForm = ({ handleCloseModal }) => {
       console.log(data);
 
       if (data.success) {
-        setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.Url);
+        setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url);
       } else {
         alert("Dosya yüklenemedi");
       }
