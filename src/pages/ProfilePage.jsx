@@ -288,7 +288,10 @@ const ProfilePage = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              
               <div className="w-full flex justify-center mb-4 relative group">
+                <div className="flex flex-col items-center space-y-2">
+                 <h1 className="flex justify-center items-center">Click to select an image</h1>
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
                 <img
                   src={mediaUrl || profilePicture}
@@ -296,6 +299,7 @@ const ProfilePage = () => {
                   className="relative w-[180px] h-[180px] object-cover object-center aspect-square rounded-full border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
                   onClick={handleClickPicture}
                 />
+                </div>
               </div>
               <input
                 type="file"

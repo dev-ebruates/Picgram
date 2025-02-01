@@ -142,10 +142,11 @@ function Story() {
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
                   <div className="relative">
+                    <h1 className="flex justify-center items-center">Click to select an image</h1>
                     <img
                       src={mediaUrl || createPostImage}
                       alt="Create Post"
-                      className="w-full h-full object-cover rounded-lg border-2 border-gray-800 transition-all duration-300 group-hover:scale-[1.02]"
+                      className="w-full h-full object-cover rounded-lg border-2 border-gray-800 transition-all duration-300 group-hover:scale-[1.02] cursor-pointer hover:opacity-80"
                       style={{
                         width: "200px",
                         height: "200px",

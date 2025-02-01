@@ -40,7 +40,9 @@ const PostForm = ({ handleCloseModal }) => {
       console.log(data);
 
       if (data.success) {
-        setMediaUrl(import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url);
+        setMediaUrl(
+          import.meta.env.VITE_PICTURE_BASE_URL + "/" + data.data.url
+        );
       } else {
         alert("Dosya yüklenemedi");
       }
@@ -57,12 +59,17 @@ const PostForm = ({ handleCloseModal }) => {
       {/* Resim Önizlemesi */}
       <div className="w-full flex justify-center mb-6 relative group">
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
-        <img
-          src={mediaUrl || createPostImage}
-          alt="Create Post"
-          className="relative w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-lg border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300 cursor-pointer"
-          onClick={handleClick}
-        />
+        <div className="flex flex-col items-center space-y-2">
+          <h1 className="flex justify-center items-center">
+            Click to select an image
+          </h1>
+          <img
+            src={mediaUrl || createPostImage}
+            alt="Create Post"
+            className="relative w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-lg border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300 cursor-pointer"
+            onClick={handleClick}
+          />
+        </div>
       </div>
       <input
         type="file"
@@ -73,7 +80,10 @@ const PostForm = ({ handleCloseModal }) => {
       />
       <form onSubmit={handleSubmit} className="space-y-6 text-white w-full">
         <div className="space-y-2">
-          <label htmlFor="media" className="block text-sm font-medium text-gray-300">
+          <label
+            htmlFor="media"
+            className="block text-sm font-medium text-gray-300"
+          >
             Media URL
           </label>
           <input
@@ -86,7 +96,10 @@ const PostForm = ({ handleCloseModal }) => {
           />
         </div>
         <div className="space-y-2">
-          <label htmlFor="caption" className="block text-sm font-medium text-gray-300">
+          <label
+            htmlFor="caption"
+            className="block text-sm font-medium text-gray-300"
+          >
             Caption
           </label>
           <textarea
