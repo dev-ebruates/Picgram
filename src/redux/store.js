@@ -11,6 +11,8 @@ import {messageApi} from '../features/messageFeatures/messageApi.js'
 import {notificationsApi} from '../features/notifications/notificationsApi.js'
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import {reportsApi} from '../features/reportsFeatures/reportsApi.js'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const connection = new HubConnectionBuilder()
     .withUrl(import.meta.env.VITE_BASE_URL + "/notificationHub", {
@@ -59,6 +61,13 @@ connection.on("ReceiveNotification", (methodName) => {
   }
   if(methodName === "CreateMessage"){
     store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+  }
+  if(methodName === "CreateMessage"){
+    toast.info(`Yeni mesaj 📩`, {
+      position: "top-right",
+      autoClose: 3000,
+    });
+
   }
   if (methodName === "CommentPost") {
     // Yorumları güncellemek için ilgili post'u invalidate et

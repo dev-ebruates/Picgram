@@ -1,5 +1,7 @@
 import Feed from "../components/Feed/Feed";
 import Story from "../components/Story/Story.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const HomePage = () => {
   return (
