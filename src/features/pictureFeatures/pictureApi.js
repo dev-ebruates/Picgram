@@ -19,10 +19,7 @@ export const pictureApi = createApi({
       query: (formData) => ({
         url: "/picture/upload",
         method: "POST",
-        body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        body: formData
       }),
     }),
   }),
