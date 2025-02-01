@@ -22,6 +22,9 @@ export const pictureApi = createApi({
         url: "/picture/upload",
         method: "POST",
         body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }),
     }),
   }),
