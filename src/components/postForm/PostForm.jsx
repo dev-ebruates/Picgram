@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import createPostImage from "../../images/createPostImage.jpg";
 import { useCreatePostMutation } from "../../features/postFeatures/postApi";
 import { v4 as uuidv4 } from "uuid";
@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 const PostForm = ({ handleCloseModal }) => {
   const [mediaUrl, setMediaUrl] = useState("");
   const [caption, setCaption] = useState("");
+  const fileInputRef = useRef(null); // Dosya input referansı
 
   const [createPost, { isLoading }] = useCreatePostMutation();
 
@@ -21,6 +22,35 @@ const PostForm = ({ handleCloseModal }) => {
     }
   };
 
+  const handleClick = () => {
+    fileInputRef.current.click(); // Dosya seçme penceresini aç
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+
+    try {
+      const response = await fetch("http://localhost:5148/picture/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setMediaUrl(data);
+      } else {
+        alert("Dosya yüklenemedi");
+      }
+    } catch (error) {
+      alert("Dosya yüklenirken hata oluştu");
+    }
+  };
+
   return (
     <div
       className="flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800 p-4 sm:p-6 rounded-lg shadow-xl max-w-md w-full h-auto relative"
@@ -32,18 +62,20 @@ const PostForm = ({ handleCloseModal }) => {
         <img
           src={mediaUrl || createPostImage}
           alt="Create Post"
-          className="relative w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-lg border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300"
+          className="relative w-40 h-40 sm:w-56 sm:h-56 object-cover rounded-lg border-4 border-gray-700 shadow-xl hover:border-gray-600 transition-all duration-300 cursor-pointer"
+          onClick={handleClick}
         />
       </div>
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6 text-white w-full"
-      >
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+      <form onSubmit={handleSubmit} className="space-y-6 text-white w-full">
         <div className="space-y-2">
-          <label
-            htmlFor="media"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="media" className="block text-sm font-medium text-gray-300">
             Media URL
           </label>
           <input
@@ -56,10 +88,7 @@ const PostForm = ({ handleCloseModal }) => {
           />
         </div>
         <div className="space-y-2">
-          <label
-            htmlFor="caption"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="caption" className="block text-sm font-medium text-gray-300">
             Caption
           </label>
           <textarea
