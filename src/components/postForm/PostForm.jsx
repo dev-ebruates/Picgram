@@ -45,6 +45,7 @@ const PostForm = ({ handleCloseModal }) => {
         alert("Dosya yüklenemedi");
       }
     } catch (error) {
+      alert(error);
       alert("Dosya yüklenirken hata oluştu");
     }
   };
