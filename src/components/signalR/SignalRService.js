@@ -1,7 +1,7 @@
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { store } from "../../redux/store.js";
+import  {store}  from "../../redux/store.js";
 import { notificationsApi } from "../../features/notifications/notificationsApi.js";
 import { messageApi } from "../../features/messageFeatures/messageApi.js";  
 import {postApi} from "../../features/postFeatures/postApi.js"
