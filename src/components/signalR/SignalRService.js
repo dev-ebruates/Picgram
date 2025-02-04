@@ -22,7 +22,7 @@ class SignalRService {
 
     console.log("connection: ", this.connection);
     this.connection = new HubConnectionBuilder()
-      .withUrl(import.meta.env.VITE_API_URL + "/notificationHub", {
+      .withUrl(import.meta.env.VITE_BASE_URL + "/notificationHub", {
         accessTokenFactory: () => authToken
       })
       .withAutomaticReconnect()
