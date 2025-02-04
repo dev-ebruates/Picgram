@@ -10,8 +10,7 @@ import {messageApi} from '../features/messageFeatures/messageApi.js'
 import {notificationsApi} from '../features/notifications/notificationsApi.js'
 import {reportsApi} from '../features/reportsFeatures/reportsApi.js'
 import "react-toastify/dist/ReactToastify.css";
-
-
+import { setupListeners } from '@reduxjs/toolkit/query';
 
 const rootReducer = (state, action) => {
   
@@ -35,24 +34,31 @@ const rootReducer = (state, action) => {
   };
 };
 
-const middlewares = [
-  authApi.middleware,
-  userApi.middleware,
-  storyApi.middleware,
-  postApi.middleware,
-  baseApi.middleware,
-  searchApi.middleware,
-  messageApi.middleware,
-  notificationsApi.middleware,
-  reportsApi.middleware,
-  rtkQueryErrorLogger
-];
-
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middlewares),
+  middleware: (getDefaultMiddleware) => {
+    const middlewares = getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+      },
+    }).concat(
+      authApi.middleware,
+      userApi.middleware,
+      storyApi.middleware,
+      postApi.middleware,
+      baseApi.middleware,
+      searchApi.middleware,
+      messageApi.middleware,
+      notificationsApi.middleware,
+      reportsApi.middleware,
+      rtkQueryErrorLogger
+    );
+    return middlewares;
+  },
 });
+
+// Listener kurulumu
+setupListeners(store.dispatch);
 
 export default store;
 export { store };
