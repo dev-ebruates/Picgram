@@ -36,7 +36,7 @@ createRoot(document.getElementById("root")).render(
           />
           <Route
             path="/*"
-            element={
+            element={<ProtectedRoute >
               <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] min-h-screen">
                 <div className="hidden lg:block border-r border-gray-200">
                   <Header />
@@ -50,6 +50,7 @@ createRoot(document.getElementById("root")).render(
                   </div>
                 </div>
               </div>
+            </ProtectedRoute>
             }
           />
         </Routes>
