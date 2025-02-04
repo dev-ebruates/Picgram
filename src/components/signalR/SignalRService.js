@@ -88,6 +88,11 @@ class SignalRService {
   // Bağlantı durumu yönetimi
   startConnection = async () => {
     try {
+      const token = localStorage.getItem("authToken");
+          if (!token) {
+            console.warn("SignalR bağlantısı için token bulunamadı");
+            return null;
+          }
       if(this.connection === null){
         console.log("SignalR bağlantısı yapılandırılmadı...");
         return;
