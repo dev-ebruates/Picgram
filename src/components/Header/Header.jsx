@@ -11,6 +11,7 @@ import SearchSideBar from "../search/searchSideBar.jsx";
 import NotificationsSideBar from "../notifications/notificationsSideBar.jsx";
 import { useGetMyProfileQuery } from "../../features/userFeatures/userApi.js";
 import { Link } from "react-router-dom";
+import { SignalRService } from "../../components/signalR/SignalRService.js";
 
 function Header() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function Header() {
 
   const handleLogout = () => {
     // Tüm state'leri temizle
+    SignalRService.getInstance().stopConnection();
     dispatch(logout());
     dispatch(resetApiState());
 

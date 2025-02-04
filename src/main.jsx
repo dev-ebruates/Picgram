@@ -16,7 +16,7 @@ import StoryPage from "./pages/StoryPage.jsx";
 import ToogleHeader from "./components/Header/ToogleHeader.jsx";
 import { SignalRService } from "./components/signalR/SignalRService.js";
 
-SignalRService.getInstance().startConnection();
+SignalRService.getInstance();
 
 createRoot(document.getElementById("root")).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

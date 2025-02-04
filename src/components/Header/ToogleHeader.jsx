@@ -9,6 +9,7 @@ import SearchSideBar from "../search/searchSideBar.jsx";
 import NotificationsSideBar from "../notifications/notificationsSideBar.jsx";
 import { useGetMyProfileQuery } from "../../features/userFeatures/userApi.js";
 import { Link } from "react-router-dom";
+import { SignalRService } from "../../components/signalR/SignalRService.js";
 
 const ToogleHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,6 +26,7 @@ const ToogleHeader = () => {
   const username = myProfile?.data?.username;
 
   const handleLogout = () => {
+    SignalRService.getInstance().stopConnection();
     dispatch(logout());
     dispatch(resetApiState());
     navigate("/login");
