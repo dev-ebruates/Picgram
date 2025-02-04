@@ -26,7 +26,7 @@ const ToogleHeader = () => {
   const username = myProfile?.data?.username;
 
   const handleLogout = () => {
-    SignalRService.getInstance().stopConnection();
+    // SignalRService.getInstance().stopConnection();
     dispatch(logout());
     dispatch(resetApiState());
     navigate("/login");

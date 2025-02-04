@@ -34,7 +34,7 @@ function Header() {
 
   const handleLogout = () => {
     // Tüm state'leri temizle
-    SignalRService.getInstance().stopConnection();
+    // SignalRService.getInstance().stopConnection();
     dispatch(logout());
     dispatch(resetApiState());
 
