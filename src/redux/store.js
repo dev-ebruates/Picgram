@@ -35,7 +35,7 @@ const rootReducer = (state, action) => {
   };
 };
 
-await SignalRService.getInstance().initialize();
+SignalRService.getInstance().initialize();
 
 const store = configureStore({
   reducer: rootReducer,
