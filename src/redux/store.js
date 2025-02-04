@@ -46,6 +46,14 @@ connection.onreconnected(connectionId => {
   store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
   store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
 });
+const stopConnection = async () => {
+  try {
+    await connection.stop();
+    console.log("SignalR bağlantısı kapatıldı");
+  } catch (err) {
+    console.error("SignalR bağlantı kapatma hatası:", err);
+  }
+};
 
 startConnection();
 
@@ -119,6 +127,6 @@ const store = configureStore({
     ),
 });
 
-
+export { connection, startConnection, stopConnection };
 
 export default store;
