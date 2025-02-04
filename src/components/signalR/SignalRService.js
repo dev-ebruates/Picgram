@@ -115,4 +115,5 @@ class SignalRService {
  
 }
 
+export { SignalRService };
 export default SignalRService.getInstance();
