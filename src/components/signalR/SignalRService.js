@@ -12,13 +12,17 @@ class SignalRService {
   connection = null;
 
   initialize = async () => {
+    console.log("initialize çalıştı");
     var authToken = localStorage.getItem("authToken");
+    console.log("authToken: ", authToken);
     if(authToken === null){
+      console.log("authToken: null");
       return;
     }
 
+    console.log("connection: ", this.connection);
     this.connection = new HubConnectionBuilder()
-      .withUrl(import.meta.env.VITE_API_URL + "/hubs/notification", {
+      .withUrl(import.meta.env.VITE_API_URL + "/notificationHub", {
         accessTokenFactory: () => authToken
       })
       .withAutomaticReconnect()
@@ -67,7 +71,9 @@ class SignalRService {
         // Ayrıca gönderiler listesine özel bir güncelleme yapabilirsiniz
       }
     });
+    console.log("start connection: ", this.connection);
     await this.connection?.start();
+    console.log("connection started: ", this.connection);
   }
 
   // Singleton instance'ını almak için statik metod
