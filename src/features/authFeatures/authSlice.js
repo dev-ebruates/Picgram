@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stopConnection } from '../../redux/store';  // SignalR bağlantısını kapatmak için import et
+import { SignalRService } from '../../components/signalR/SignalRService.js';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -21,8 +21,9 @@ const authSlice = createSlice({
       localStorage.setItem('role', payload.role);
     },
     logout: (state) => {
+      SignalRService.getInstance().stopConnection();
       // SignalR bağlantısını kapat
-      stopConnection();
+     
 
       // Önce local storage'dan token'ı sil
       localStorage.removeItem('authToken');

@@ -14,12 +14,12 @@ import AdminPage from "./pages/AdminPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import StoryPage from "./pages/StoryPage.jsx";
 import ToogleHeader from "./components/Header/ToogleHeader.jsx";
+import { SignalRService } from "./components/signalR/SignalRService.js";
 
-const clientId =
-  "1050319585875-1ujql7a4palt2csnbm2ohf1ufbcr1mio.apps.googleusercontent.com";
+SignalRService.getInstance().startConnection();
 
 createRoot(document.getElementById("root")).render(
-  <GoogleOAuthProvider clientId={clientId}>
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <BrowserRouter>
       <Provider store={store}>
         <Routes>
