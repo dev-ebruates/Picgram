@@ -14,9 +14,8 @@ import AdminPage from "./pages/AdminPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import StoryPage from "./pages/StoryPage.jsx";
 import ToogleHeader from "./components/Header/ToogleHeader.jsx";
-import { SignalRService } from "./components/signalR/SignalRService.js";
 
-SignalRService.getInstance();
+
 
 createRoot(document.getElementById("root")).render(
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

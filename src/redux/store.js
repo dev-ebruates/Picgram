@@ -11,6 +11,7 @@ import {notificationsApi} from '../features/notifications/notificationsApi.js'
 import {reportsApi} from '../features/reportsFeatures/reportsApi.js'
 import "react-toastify/dist/ReactToastify.css";
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { SignalRService } from "../components/signalR/SignalRService.js";
 
 const rootReducer = (state, action) => {
   
@@ -33,6 +34,8 @@ const rootReducer = (state, action) => {
 
   };
 };
+
+SignalRService.getInstance().startConnection();
 
 const store = configureStore({
   reducer: rootReducer,
