@@ -9,24 +9,17 @@ import {postApi} from "../../features/postFeatures/postApi.js"
 class SignalRService {
   // Singleton instance
   static instance;
+  connection = null;
 
-  constructor() {
-    // Eğer zaten bir instance varsa, mevcut instance'ı döndür
-    if (SignalRService.instance) {
-      return SignalRService.instance;
+  initialize = async () => {
+    var authToken = localStorage.getItem("authToken");
+    if(authToken === null){
+      return;
     }
-    SignalRService.instance = this;
 
     this.connection = new HubConnectionBuilder()
       .withUrl(import.meta.env.VITE_API_URL + "/hubs/notification", {
-        accessTokenFactory: () => {
-          const token = localStorage.getItem("authToken");
-          if (!token) {
-            console.warn("SignalR bağlantısı için token bulunamadı");
-            return null;
-          }
-          return token;
-        }
+        accessTokenFactory: () => authToken
       })
       .withAutomaticReconnect()
       .build();
@@ -35,14 +28,14 @@ class SignalRService {
     //   await this.startConnection();
     // };
 
-    this.connection.onreconnecting = (error) => {
-      console.log("Yeniden bağlanmaya çalışılıyor...", error);
-    };
+    // this.connection.onreconnecting = (error) => {
+    //   console.log("Yeniden bağlanmaya çalışılıyor...", error);
+    // };
 
-    this.connection.onreconnected = (connectionId) => {
-      store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
-      store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
-    };
+    // this.connection.onreconnected = (connectionId) => {
+    //   store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+    //   store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
+    // };
 
 
     this.connection.on("ReceiveNotification", (methodName, payload) => {
@@ -74,7 +67,7 @@ class SignalRService {
         // Ayrıca gönderiler listesine özel bir güncelleme yapabilirsiniz
       }
     });
-    this.startConnection();
+    await this.connection?.start();
   }
 
   // Singleton instance'ını almak için statik metod
@@ -84,26 +77,6 @@ class SignalRService {
     }
     return SignalRService.instance;
   }
-
-  // Bağlantı durumu yönetimi
-  startConnection = async () => {
-    try {
-      const token = localStorage.getItem("authToken");
-          if (!token) {
-            console.warn("SignalR bağlantısı için token bulunamadı");
-            return null;
-          }
-      if(this.connection === null){
-        console.log("SignalR bağlantısı yapılandırılmadı...");
-        return;
-      }
-      await this.connection?.start();
-      console.log("SignalR bağlantısı başarılı");
-    } catch (err) {
-      console.error("SignalR bağlantı hatası:", err);
-      setTimeout(this.startConnection, 5000);
-    }
-  };
 
   stopConnection = async () => {
     try {
