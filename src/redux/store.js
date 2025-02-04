@@ -18,7 +18,13 @@ import "react-toastify/dist/ReactToastify.css";
 const connection = new HubConnectionBuilder()
     .withUrl(import.meta.env.VITE_BASE_URL + "/notificationHub", {
       accessTokenFactory: () => {
-        return localStorage.getItem("authToken"); // JWT token'ınızı buradan alın
+        const token = localStorage.getItem("authToken");
+        // Token kontrolü ekle
+        if (!token) {
+          console.warn("SignalR bağlantısı için token bulunamadı");
+          return null;
+        }
+        return token;
       }
     })
     .withAutomaticReconnect()
@@ -46,10 +52,15 @@ connection.onreconnected(connectionId => {
   store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
   store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
 });
+
 const stopConnection = async () => {
   try {
-    await connection.stop();
-    console.log("SignalR bağlantısı kapatıldı");
+    if (connection.state === "Connected") {
+      await connection.stop();
+      console.log("SignalR bağlantısı kapatıldı");
+    } else {
+      console.log("SignalR bağlantısı zaten kapalı veya bağlanmamış");
+    }
   } catch (err) {
     console.error("SignalR bağlantı kapatma hatası:", err);
   }

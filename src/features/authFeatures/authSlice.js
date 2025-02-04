@@ -24,14 +24,17 @@ const authSlice = createSlice({
       // SignalR bağlantısını kapat
       stopConnection();
 
-      state.username = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.role = null
+      // Önce local storage'dan token'ı sil
       localStorage.removeItem('authToken');
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('username');
       localStorage.removeItem('role');
+
+      // Sonra state'i sıfırla
+      state.username = null;
+      state.token = null;
+      state.isAuthenticated = false;
+      state.role = null;
     }
   }
 });
