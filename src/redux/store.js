@@ -35,25 +35,24 @@ const rootReducer = (state, action) => {
   };
 };
 
+const middlewares = [
+  authApi.middleware,
+  userApi.middleware,
+  storyApi.middleware,
+  postApi.middleware,
+  baseApi.middleware,
+  searchApi.middleware,
+  messageApi.middleware,
+  notificationsApi.middleware,
+  reportsApi.middleware,
+  rtkQueryErrorLogger
+];
+
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      // featureApi.middleware,
-      authApi.middleware,
-      userApi.middleware,
-      storyApi.middleware,
-      postApi.middleware,
-      baseApi.middleware,
-      searchApi.middleware,
-      messageApi.middleware,
-      notificationsApi.middleware,
-      reportsApi.middleware,
-      rtkQueryErrorLogger
-    ),
+    getDefaultMiddleware().concat(middlewares),
 });
-
-
 
 export default store;
 export { store };
