@@ -7,8 +7,17 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import SignalRService from "./components/signalR/SignalRService.js";
 
 function App() {
+  const authToken = useSelector((state) => state.auth.token);
+  useEffect(() => {
+    if (authToken) {
+      SignalRService.getInstance().initialize();
+    }
+  }, [authToken]); // Token değiştiğinde SignalR başlasın
   return (
     <>
       <Link to="/messages" className="flex items-center gap-2">
