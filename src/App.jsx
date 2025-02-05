@@ -7,8 +7,21 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "./features/authFeatures/authSlice.js";
+import { useEffect } from "react";
+import { SignalRService } from "./components/signalR/SignalRService.js";
 
 function App() {
+  const token = useSelector(selectCurrentToken);
+
+  useEffect(() => {
+    if (token) {
+      console.log('Token değişti:', token);
+      SignalRService.getInstance().initialize();
+      // Yeni token ile yapılacak işlemler
+    }
+  }, [token]); // token değiştiğinde tetiklenir
   return (
     <>
       <Link to="/messages" className="flex items-center gap-2">
