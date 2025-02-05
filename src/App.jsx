@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import SignalRService from "./components/signalR/SignalRService.jsx";
+import SignalRService from "./components/signalR/SignalRService.js";
 
 function App() {
   const authToken = useSelector((state) => state.auth.token);
