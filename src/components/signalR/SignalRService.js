@@ -11,7 +11,6 @@ export default class SignalRService {
   static _instance = null;
   connection = null;
 
-  // Private constructor
   constructor() {
     if (SignalRService._instance) {
       return SignalRService._instance;
@@ -19,12 +18,11 @@ export default class SignalRService {
     SignalRService._instance = this;
   }
 
-  // Singleton instance'ını almak için statik metod
   static getInstance() {
-    if (!this._instance) {
-      this._instance = new SignalRService();
+    if (!SignalRService._instance) {
+      SignalRService._instance = new SignalRService();
     }
-    return this._instance;
+    return SignalRService._instance;
   }
 
   initialize = async () => {
