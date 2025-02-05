@@ -1,7 +1,7 @@
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
 
-class SignalRService {
+export default class SignalRService {
   // Singleton instance
   static instance;
   connection = null;
@@ -58,4 +58,3 @@ class SignalRService {
 }
 
 export { SignalRService };
-export default SignalRService.getInstance();

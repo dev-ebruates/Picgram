@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/authFeatures/authSlice.js";
 import { GoogleLogin } from "@react-oauth/google";
 import { ToastContainer, toast } from "react-toastify";
-import { SignalRService } from "../components/signalR/SignalRService.js";
+import SignalRService from "../components/signalR/SignalRService.js";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
