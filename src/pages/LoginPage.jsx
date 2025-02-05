@@ -16,6 +16,7 @@ const LoginPage = () => {
     emailOrUsername: "",
     password: "",
   });
+  console.log("flkasdglkasjgskd");
 
   const dispatch = useDispatch();
   const [authMutation] = useAuthMutation();
