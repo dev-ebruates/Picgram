@@ -14,8 +14,11 @@ import SignalRService from "./components/signalR/SignalRService.js";
 function App() {
   const authToken = useSelector((state) => state.auth.token);
   useEffect(() => {
+    const signalRService = SignalRService.getInstance();
     if (authToken) {
-      SignalRService.getInstance().initialize();
+      signalRService.initialize();
+    } else {
+      signalRService.stopConnection();
     }
   }, [authToken]); // Token değiştiğinde SignalR başlasın
   return (

@@ -42,9 +42,8 @@ const LoginPage = () => {
           role: result.data.data.role,
         };
         dispatch(setCredentials(userData));
-        setTimeout(() => {
-          SignalRService.getInstance().initialize();
-        }, 500); // 500ms bekleyerek bağlantıyı başlat
+        const signalRService = SignalRService.getInstance();
+        signalRService.initialize();
         toast.success("Welcome back " + " " + result.data.data.username);
         setTimeout(() => {
           navigate("/");
