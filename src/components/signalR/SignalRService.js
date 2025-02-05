@@ -8,21 +8,21 @@ import { postApi } from "../../features/postFeatures/postApi.js";
 
 export default class SignalRService {
   // Singleton instance
-  static _instance = null;
+  static instance = null;
   connection = null;
 
   constructor() {
-    if (SignalRService._instance) {
-      return SignalRService._instance;
+    if (SignalRService.instance) {
+      return SignalRService.instance;
     }
-    SignalRService._instance = this;
+    SignalRService.instance = this;
   }
 
   static getInstance() {
-    if (!SignalRService._instance) {
-      SignalRService._instance = new SignalRService();
+    if (!SignalRService.instance) {
+      SignalRService.instance = new SignalRService();
     }
-    return SignalRService._instance;
+    return SignalRService.instance;
   }
 
   initialize = async () => {
