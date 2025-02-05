@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/authFeatures/authSlice.js";
 import { GoogleLogin } from "@react-oauth/google";
 import { ToastContainer, toast } from "react-toastify";
+import { SignalRService } from "../components/signalR/SignalRService.js";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -41,6 +42,7 @@ const LoginPage = () => {
           role: result.data.data.role,
         };
         dispatch(setCredentials(userData));
+        SignalRService.getInstance().initialize();
         toast.success("Welcome back " + " " + result.data.data.username);
         setTimeout(() => {
           navigate("/");
