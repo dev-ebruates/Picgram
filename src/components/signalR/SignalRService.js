@@ -45,6 +45,7 @@ class SignalRService {
     this.connection.on("ReceiveNotification", (methodName, payload) => {
       if (methodName === "LikePost") {
         store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
+        store.dispatch(postApi.util.invalidateTags(["Posts"]));
       }
       if(methodName === "CommentPost"){
         store.dispatch(notificationsApi.util.invalidateTags(["Notifications"]));
