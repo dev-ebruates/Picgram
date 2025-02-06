@@ -117,7 +117,7 @@ const notificationsSideBar = ({ isOpen, onClose }) => {
                       className="w-16 h-16 object-cover rounded-lg mb-1 group-hover:scale-105 transition-transform border border-gray-800"
                     />
                     <span className="text-xs text-gray-500">
-                      {formatDistanceToNow(getUTCOffset(notification.createdAt),
+                      {formatDistanceToNow(notification.createdAt,
                         {
                           addSuffix: true,
                         }

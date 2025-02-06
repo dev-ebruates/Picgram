@@ -75,7 +75,7 @@ function Post({ post }) {
           <p className="font-semibold">{post?.username}</p>
           <p className="text-sm text-gray-500">
             {" "}
-            {formatDistanceToNow(getUTCOffset(post?.createdAt), {
+            {formatDistanceToNow(post?.createdAt, {
               addSuffix: true,
             })}
           </p>
