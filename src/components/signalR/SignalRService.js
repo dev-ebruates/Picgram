@@ -56,13 +56,13 @@ class SignalRService {
       if(methodName === "CreateMessage"){
         store.dispatch(messageApi.util.invalidateTags(["Conversations"]));
       }
-      // if(methodName === "NewMessage"){
-      //   toast.info(`${payload} - Yeni mesaj 📩`, {
-      //     position: "top-right",
-      //     autoClose: 1000,
+      if(methodName === "NewMessage"){
+        toast.info(`${payload} - Yeni mesaj 📩`, {
+          position: "top-right",
+          autoClose: 1000,
           
-      //   });
-      // }
+        });
+      }
       if (methodName === "CommentPost") {
         // Yorumları güncellemek için ilgili post'u invalidate et
         store.dispatch(postApi.util.invalidateTags(["Posts"]));
