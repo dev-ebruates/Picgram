@@ -84,7 +84,7 @@ function Post({ post }) {
         </Link>
         <div className="ml-3">
           <p className="font-semibold">{post?.username}</p>
-          <p className="text-sm text-gray-500">{formatDate(post?.createdAt)}</p>
+          <p className="text-sm text-gray-500">{getUTCOffset(post?.createdAt)}</p>
         </div>
       </div>
 
