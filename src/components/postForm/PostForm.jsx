@@ -14,7 +14,7 @@ const PostForm = ({ handleCloseModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createPost({ mediaUrl, caption, id: uuidv4() }).unwrap();
+      await createPost({ mediaUrl, caption, id: uuidv4(), createdAt: new Date() }).unwrap();
       handleCloseModal();
       setMediaUrl("");
       setCaption("");

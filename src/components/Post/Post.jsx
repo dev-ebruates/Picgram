@@ -40,20 +40,6 @@ function Post({ post }) {
       new Date(date).getHours() + parseInt(utcOffset)
     );
   };
-  const formatDate = (dateString) => {
-    try {
-      if (!dateString) return "";
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) return "";
-      return formatDistanceToNow(getUTCOffset(date), {
-        locale: enUS,
-        addSuffix: true,
-      });
-    } catch (error) {
-      console.error("Tarih formatlama hatası:", error);
-      return "";
-    }
-  };
 
   // Caption'ı kırp ve "Devamını oku" özelliği ekle
   const renderCaption = () => {
