@@ -36,14 +36,19 @@ function Post({ post }) {
   const getUTCOffset = (date) => {
     const offset = new Date().getTimezoneOffset();
     var utcOffset = `${offset > 0 ? "-" : "+"}${Math.abs(offset) / 60}`;
-    return new Date(date).setHours(new Date(date).getHours() + parseInt(utcOffset))
+    return new Date(date).setHours(
+      new Date(date).getHours() + parseInt(utcOffset)
+    );
   };
   const formatDate = (dateString) => {
     try {
       if (!dateString) return "";
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "";
-      return formatDistanceToNow(getUTCOffset(date), { locale: enUS, addSuffix: true });
+      return formatDistanceToNow(getUTCOffset(date), {
+        locale: enUS,
+        addSuffix: true,
+      });
     } catch (error) {
       console.error("Tarih formatlama hatası:", error);
       return "";
@@ -75,16 +80,19 @@ function Post({ post }) {
       <div className="flex items-center px-4 py-3">
         <Link to={`/${post?.username}`}>
           <img
-            src={
-              post?.userProfilePicture
-            }
+            src={post?.userProfilePicture}
             alt="Profil Resmi"
             className="w-16 h-16 rounded-full"
           />
         </Link>
         <div className="ml-3">
           <p className="font-semibold">{post?.username}</p>
-          <p className="text-sm text-gray-500">{getUTCOffset(post?.createdAt)}</p>
+          <p className="text-sm text-gray-500">
+            {" "}
+            {formatDistanceToNow(getUTCOffset(post?.createdAt), {
+              addSuffix: true,
+            })}
+          </p>
         </div>
       </div>
 
